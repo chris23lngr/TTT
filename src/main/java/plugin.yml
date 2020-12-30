@@ -1,0 +1,10 @@
+name: TTT
+authors:
+  - z1up
+  - Chrxssx
+version: 0.2
+main: de.z1up.ttt.TTT
+
+commands:
+  addmap:
+  build:

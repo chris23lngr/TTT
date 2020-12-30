@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" name="TTT">
+    <output-path>$PROJECT_DIR$/../../server/dev/plugins</output-path>
+    <root id="archive" name="TTT.jar">
+      <element id="file-copy" path="$PROJECT_DIR$/src/main/java/plugin.yml" />
+      <element id="module-output" name="TTT" />
+    </root>
+  </artifact>
+</component>
