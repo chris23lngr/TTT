@@ -1,6 +1,7 @@
 package de.z1up.ttt.manager;
 
 import de.z1up.ttt.TTT;
+import de.z1up.ttt.util.Data;
 import de.z1up.ttt.util.ItemBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -58,6 +59,7 @@ public class PlayerManager {
         Bukkit.getScheduler().runTaskLaterAsynchronously(TTT.getInstance(), () -> {
 
             //player.teleport(Spawns.getLobby());
+            Data.invManager.setSpecInv(player);
             player.setGameMode(GameMode.ADVENTURE);
             player.getInventory().clear();
             player.getInventory().setArmorContents(null);
@@ -65,12 +67,6 @@ public class PlayerManager {
             player.setHealth(20.0D);
             player.setAllowFlight(true);
             player.setFlying(true);
-            player.getInventory().setItem(0,
-                    new ItemBuilder(Material.COMPASS, (short) 0)
-                    .setDisplayName("§9§lLebende Spieler").build());
-            player.getInventory().setItem(8,
-                    new ItemBuilder(Material.MAGMA_CREAM, (short) 0)
-                    .setDisplayName("§8§lSpiel verlassen").build());
             player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY,
                     99999999, 1, false, false));
 

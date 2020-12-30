@@ -20,6 +20,7 @@ public class ClassLoader {
         new ListenerInventoryClick();
         new ListenerPlayerChat();
         new ListenerPlayerDropItem();
+        new ListenerPlayerInteract();
         new ListenerPlayerJoin();
         new ListenerPlayerLogin();
         new ListenerThunderChange();

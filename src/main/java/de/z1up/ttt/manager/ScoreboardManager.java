@@ -15,9 +15,9 @@ import java.util.Iterator;
 public class ScoreboardManager {
 
     public Scoreboard board;
-    String rnd;
-    SecureRandom random;
-    public String replayId;
+    private String rnd;
+    private SecureRandom random;
+    private String replayId;
 
     public ScoreboardManager() {
         init();
@@ -66,5 +66,9 @@ public class ScoreboardManager {
         }
 
         return sb.toString();
+    }
+
+    public String getReplayId() {
+        return replayId;
     }
 }

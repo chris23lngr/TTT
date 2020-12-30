@@ -21,14 +21,13 @@ public class ListenerPlayerChat implements Listener {
 
         final Player player = event.getPlayer();
 
-        /*
-            String message = e.getMessage();
-            String text = "[%time%] %playername% >> %message%";
-            text = text.replaceAll("%time%", ReplayFile.getTime());
-            text = text.replaceAll("%playername%", player.getName());
-            text = text.replaceAll("%message%", message);
-            ReplayFile.addLine(text);
-         */
+        String message = event.getMessage();
+        String text = "[%time%] %playername% >> %message%";
+        text = text.replaceAll("%time%", Data.replayFile.getTime());
+        text = text.replaceAll("%playername%", player.getName());
+        text = text.replaceAll("%message%", message);
+        Data.replayFile.addLine(text);
+
 
         if(Data.playerManager.isSpec(player)) {
             if(Data.gameManager.inRestart()) {
@@ -39,7 +38,7 @@ public class ListenerPlayerChat implements Listener {
             return;
         }
 
-        String message = event.getMessage().replaceAll("%", "%%");
+        message = event.getMessage().replaceAll("%", "%%");
 
         if(Data.gameManager.inGame()) {
 

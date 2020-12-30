@@ -33,19 +33,10 @@ public class ListenerPlayerJoin implements Listener {
             event.setJoinMessage(Data.getPrefix() + "§c" + player.getName()
                     + " §7ist dem Spiel beigetreten§8.");
 
-            // inventory items
-            player.getInventory().setItem(4, Data.ruleBook.getBook());
-            player.getInventory().setItem(0,
-                    new ItemBuilder(Material.REDSTONE_TORCH_ON, (short) 0)
-                            .setDisplayName("§4§lEinstellungen").build());
-            player.getInventory().setItem(8,
-                    new ItemBuilder(Material.MAGMA_CREAM, (short) 0)
-                            .setDisplayName("§8§lSpiel verlassen").build());
 
+            Data.invManager.setLobbyItems(player);
 
-            // effects
-            MessageAPI.sendTitle(player, 20, 40, 20, "§4TTT", "§a§lRenixinside.de");
-            player.playSound(player.getLocation(), Sound.LEVEL_UP, 3.0F, 2.0F);
+            UserAPI.playJoinEffects(player);
 
             Data.sbManager.setScoreBoard(player, Data.gameManager.getGameState());
 
