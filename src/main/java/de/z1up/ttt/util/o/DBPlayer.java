@@ -1,6 +1,9 @@
 package de.z1up.ttt.util.o;
 
 
+import de.z1up.ttt.util.Data;
+
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.UUID;
 
@@ -16,8 +19,12 @@ public class DBPlayer {
     int kills;
     int deaths;
     Collection<Integer> achievements;
+    int testerEntered;
+    int passesUsed;
 
-    public DBPlayer(UUID uuid, int wins, int looses, int tPasses, int dPasses, int iPasses, int karma, int kills, int deaths, Collection<Integer> achievements) {
+    public DBPlayer(UUID uuid, int wins, int looses, int tPasses, int dPasses, int iPasses,
+                    int karma, int kills, int deaths, Collection<Integer> achievements,
+                    int testerEntered, int passesUsed) {
         this.uuid = uuid;
         this.wins = wins;
         this.looses = looses;
@@ -27,7 +34,13 @@ public class DBPlayer {
         this.karma = karma;
         this.kills = kills;
         this.deaths = deaths;
-        this.achievements = achievements;
+        if(achievements == null) {
+            this.achievements = new ArrayList<>();
+        } else {
+            this.achievements = achievements;
+        }
+        this.testerEntered = testerEntered;
+        this.passesUsed = passesUsed;
     }
 
     public UUID getUuid() {
@@ -98,7 +111,31 @@ public class DBPlayer {
         this.karma = this.karma - karma;
     }
 
-    public void update() {
+    public Collection<Integer> getAchievements() {
+        return achievements;
+    }
 
+    public int getKills() {
+        return kills;
+    }
+
+    public int getTesterEntered() {
+        return testerEntered;
+    }
+
+    public int getPassesUsed() {
+        return passesUsed;
+    }
+
+    public int getDeaths() {
+        return deaths;
+    }
+
+    public void insert() {
+        Data.dbPlayerWrapper.insertPlayer(this);
+    }
+
+    public void update() {
+        Data.dbPlayerWrapper.updatePlayer(this);
     }
 }

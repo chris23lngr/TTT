@@ -15,6 +15,7 @@ import java.util.function.Consumer;
 
 import de.z1up.ttt.TTT;
 import org.bukkit.Bukkit;
+import org.bukkit.scheduler.BukkitScheduler;
 
 public class SQL {
 
@@ -240,6 +241,17 @@ public class SQL {
         }
         return null;
 
+    }
+
+    public ResultSet getResultAsync(String query, List<Object> values) {
+        final ResultSet[] rs = new ResultSet[1];
+        Bukkit.getScheduler().runTaskAsynchronously(TTT.getInstance(), new Runnable() {
+            @Override
+            public void run() {
+                rs[0] = getResult(query, values);
+            }
+        });
+        return rs[0];
     }
 
     // Asynchronous methods

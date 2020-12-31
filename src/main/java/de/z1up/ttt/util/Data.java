@@ -3,10 +3,11 @@ package de.z1up.ttt.util;
 import de.z1up.ttt.TTT;
 import de.z1up.ttt.book.RuleBook;
 import de.z1up.ttt.manager.*;
+import de.z1up.ttt.mysql.wrapper.AchievementWrapper;
+import de.z1up.ttt.mysql.wrapper.DBPlayerWrapper;
 import de.z1up.ttt.mysql.SQL;
 import de.z1up.ttt.mysql.SQLConfig;
 import de.z1up.ttt.replay.ReplayFile;
-import net.minecraft.server.v1_8_R3.Scoreboard;
 
 public class Data {
 
@@ -25,6 +26,9 @@ public class Data {
     public static ReplayFile replayFile;
     public static RuleBook ruleBook;
 
+    public static DBPlayerWrapper dbPlayerWrapper;
+    public static AchievementWrapper achievementWrapper;
+
     public void init() {
 
         SQLConfig config = new SQLConfig(TTT.getInstance().getDataFolder().getPath(), "mysql.yml");
@@ -40,6 +44,9 @@ public class Data {
 
         replayFile = new ReplayFile();
         ruleBook = new RuleBook();
+
+        dbPlayerWrapper = new DBPlayerWrapper(sql);
+        achievementWrapper = new AchievementWrapper(sql);
 
         ClassLoader loader = new ClassLoader();
         loader.load();

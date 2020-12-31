@@ -3,6 +3,7 @@ package de.z1up.ttt.manager;
 import de.z1up.ttt.TTT;
 import de.z1up.ttt.util.Data;
 import de.z1up.ttt.util.ItemBuilder;
+import de.z1up.ttt.util.o.Achievement;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -21,7 +22,16 @@ public class InventoryManager {
 
                 ItemStack filler = new ItemBuilder(Material.INK_SACK, (short) 8).setDisplayName("§7Erfolg").build();
                 for(int i = 0; i < 50; i++) {
-                    inventory.setItem(i, filler);
+                    Achievement achievement = Data.achievementWrapper.getExistingAchievement(i);
+
+                    if(achievement != null) {
+                        String name = achievement.getName();
+                        String desc = achievement.getDescription();
+
+                        ItemStack item = new ItemBuilder(Material.INK_SACK, (short) 8)
+                                .setDisplayName("§a" + name).setLore("§7" + desc).build();
+                        inventory.setItem(i-1, item);
+                    }
                 }
 
                 player.openInventory(inventory);

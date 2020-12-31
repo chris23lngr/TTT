@@ -5,6 +5,7 @@ import de.z1up.ttt.util.Data;
 import de.z1up.ttt.util.ItemBuilder;
 import de.z1up.ttt.util.MessageAPI;
 import de.z1up.ttt.util.UserAPI;
+import de.z1up.ttt.util.o.DBPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.Sound;
@@ -27,6 +28,13 @@ public class ListenerPlayerJoin implements Listener {
         final Player player = event.getPlayer();
 
         UserAPI.resetPlayer(player);
+
+        if(!Data.dbPlayerWrapper.isRegistered(player.getUniqueId())) {
+            DBPlayer dbPlayer = new DBPlayer(player.getUniqueId(), 0,
+                    0, 5, 5, 0, 1000, 0,
+                    0, null, 0, 0);
+            dbPlayer.insert();
+        }
 
         if(Data.gameManager.inLobby()) {
 
