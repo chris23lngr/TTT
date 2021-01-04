@@ -3,9 +3,11 @@ package de.z1up.ttt.mysql.wrapper;
 import de.z1up.ttt.mysql.SQL;
 import de.z1up.ttt.util.o.Achievement;
 
+import java.nio.file.Watchable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Arrays;
+import java.util.HashMap;
 
 public class AchievementWrapper {
 
@@ -14,7 +16,6 @@ public class AchievementWrapper {
     private final String ATTRIBUTE_NAME = "NAME";
     private final String ATTRIBUTE_DESCRIPTION = "DESCRIPTION";
     private final String ATTRIBUTE_ACHIEVED_BY = "ACHIEVED_BY";
-
 
     private SQL sql;
 
@@ -72,7 +73,7 @@ public class AchievementWrapper {
 
     private void insertAchievements() {
         int id = 0;
-        while (id < 50) {
+        while (id < 15) {
             id = id + 1;
             System.out.println(id);
             if(!existsAchievement(id)) insertAchievement(getNewAchievement(id));
@@ -84,27 +85,27 @@ public class AchievementWrapper {
     }
 
     public Achievement getNewAchievement(int id) {
-        if(id==1) {
-            return getFirstKill();
-        } else if (id==2) {
-            return getGameMode();
-        } else if (id==3) {
-            return getFirstWin();
-        } else if (id==4) {
-            return getFirstDetectiveWin();
-        } else if (id==5) {
-            return getFirstTraitorWin();
-        } else if (id==6) {
-            return getLaeuft();
-        } else if (id==7) {
-            return getDoneWell();
-        } else if (id==8) {
-            return getPro();
-        } else if (id==9) {
-            return getWOW();
-        } else {
+        if(id == 0 || id > 50) {
             return getFirstKill();
         }
+        if(id == 1) return getFirstKill();
+        if(id == 2) return getGameMode();
+        if(id == 3) return getFirstWin();
+        if(id == 4) return getFirstDetectiveWin();
+        if(id == 5) return getFirstTraitorWin();
+        if(id == 6) return getLaeuft();
+        if(id == 7) return getDoneWell();
+        if(id == 8) return getPro();
+        if(id == 9) return getWOW();
+        if(id == 10) return getMaschine();
+        if(id == 11) return getSchoen();
+        if(id == 12) return getSchoenGemacht();
+        if(id == 13) return getGeil();
+        if(id == 14) return getNice();
+        if(id == 15) return getWinner();
+        if(id == 16) return getOP();
+        if(id == 17) return getTester();
+        return null;
     }
 
     public Achievement getExistingAchievement(int id) {
@@ -180,26 +181,55 @@ public class AchievementWrapper {
     }
 
     public Achievement getSchoen() {
-        Achievement achievement = new Achievement(9, "Schön!", "Mache 75 Kills", 0);
+        Achievement achievement = new Achievement(11, "Schön!", "Mache 10 Siege", 0);;
         return achievement;
     }
 
-    public Achievement getWOW() {
-        Achievement achievement = new Achievement(9, "WOW!", "Mache 75 Kills", 0);
+    public Achievement getSchoenGemacht() {
+        Achievement achievement = new Achievement(12, "Schön Gemacht", "Mache 25 Siege", 0);
         return achievement;
     }
 
 
-    public Achievement getWOW() {
-        Achievement achievement = new Achievement(9, "WOW!", "Mache 75 Kills", 0);
+    public Achievement getGeil() {
+        Achievement achievement = new Achievement(13, "Geil", "Du hast 50 Siege erreicht! Respekt :D", 0);
         return achievement;
     }
 
-    public Achievement getWOW() {
-        Achievement achievement = new Achievement(9, "WOW!", "Mache 75 Kills", 0);
+    public Achievement getNice() {
+        Achievement achievement = new Achievement(14, "Nice", "Mache 75 Siege", 0);
         return achievement;
     }
 
+    public Achievement getWinner() {
+        Achievement achievement = new Achievement(15, "Winner", "Mache 100 Siege. Respekt :D", 0);
+        return achievement;
+    }
+
+    public Achievement getOP() {
+        Achievement achievement = new Achievement(16, "OP", "Öffne eine Enderchest", 0);
+        return achievement;
+    }
+
+    public Achievement getTester() {
+        Achievement achievement = new Achievement(17, "Tester", "Betrete den Tester als Innocent", 0);
+        return achievement;
+    }
+
+    public Achievement getMutig() {
+        Achievement achievement = new Achievement(18, "Mutig", "Betrete den Tester als Traitor", 0);
+        return achievement;
+    }
+
+    public Achievement getUnnoetig() {
+        Achievement achievement = new Achievement(19, "Unnötig?", "Betrete den Tester als Detektiv", 0);
+        return achievement;
+    }
+
+    public Achievement getFirstDeath() {
+        Achievement achievement = new Achievement(20, "First Death", "Sterbe als erster in der Runde", 0);
+        return achievement;
+    }
 
 
 }

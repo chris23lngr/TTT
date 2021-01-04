@@ -8,3 +8,5 @@ main: de.z1up.ttt.TTT
 commands:
   addmap:
   build:
+  start:
+  setspawn:

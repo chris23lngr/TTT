@@ -3,10 +3,13 @@ package de.z1up.ttt.command;
 import de.z1up.ttt.TTT;
 import de.z1up.ttt.manager.MapManager;
 import de.z1up.ttt.util.Data;
+import de.z1up.ttt.util.o.Map;
+import org.bukkit.Material;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemStack;
 
 public class CommandAddMap implements CommandExecutor {
 
@@ -32,16 +35,31 @@ public class CommandAddMap implements CommandExecutor {
             return true;
         }
 
-        String mapName = args[0];
+        ItemStack itemStack = player.getItemInHand();
 
-        if(Data.mapManager.existsMap(mapName)) {
-            player.sendMessage(Data.getPrefix() + "§cDiese Map exestiert bereits!");
+        if(itemStack == null || itemStack.getType() == Material.AIR) {
+            player.sendMessage(Data.getPrefix() + "§7Du musst ein Item in deiner Hand halten.");
             return true;
         }
 
-        Data.mapManager.registerNewMap(mapName);
-        player.sendMessage(Data.getPrefix() + "§7Die Map §c" + mapName + " §7wurde erfolgreich regestriert§8.");
+        if(itemStack.getType() == null) {
+            player.sendMessage(Data.getPrefix() + "§7Material ist invalide.");
+            return true;
+        }
 
+        String mapName = args[0];
+
+        if(Data.mapWrapper.existsName(mapName)) {
+            player.sendMessage(Data.getPrefix() + "§cEs exestiert bereits eine Map mit diesem Namen!");
+            return true;
+        }
+
+        Material material = itemStack.getType();
+        int id = Data.mapWrapper.createID();
+        Map map = new Map(id, mapName, material, null, null);
+
+        Data.mapWrapper.insert(map);
+        player.sendMessage(Data.getPrefix() + "§7Map §e" + mapName + " §7wurde erstellt.");
         return false;
     }
 }

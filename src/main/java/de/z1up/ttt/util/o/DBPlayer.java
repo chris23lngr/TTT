@@ -132,10 +132,10 @@ public class DBPlayer {
     }
 
     public void insert() {
-        Data.dbPlayerWrapper.insertPlayer(this);
+        Data.dbPlayerWrapper.insert(this);
     }
 
     public void update() {
-        Data.dbPlayerWrapper.updatePlayer(this);
+        Data.dbPlayerWrapper.update(this);
     }
 }

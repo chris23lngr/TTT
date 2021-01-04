@@ -63,7 +63,11 @@ public class ListenerPlayerInteract implements Listener {
                 }
 
                 if(display.equals("§bMap voting")) {
-                    Data.invManager.openVotingInv(player);
+                    if(Data.voteManager.isVotePeriodActive()) {
+                        Data.invManager.openVotingInv(player);
+                    } else {
+                        player.sendMessage(Data.getPrefix() + "§cDie Votephase ist bereits beendet.");
+                    }
                     return;
                 }
 

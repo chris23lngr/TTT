@@ -4,12 +4,15 @@ import de.z1up.ttt.TTT;
 import de.z1up.ttt.util.Data;
 import de.z1up.ttt.util.ItemBuilder;
 import de.z1up.ttt.util.o.Achievement;
+import de.z1up.ttt.util.o.Map;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemFactory;
 import org.bukkit.inventory.ItemStack;
+
+import java.util.Collection;
 
 public class InventoryManager {
 
@@ -75,6 +78,33 @@ public class InventoryManager {
     }
 
     public void openVotingInv(Player player) {
+
+        Bukkit.getScheduler().runTaskAsynchronously(TTT.getInstance(), new Runnable() {
+            @Override
+            public void run() {
+
+                Inventory inventory = Bukkit.createInventory(player, 9 * 3, "§bMapvoting");
+
+                ItemStack filler = new ItemBuilder(Material.STAINED_GLASS_PANE, (short) 8).setDisplayName("§c ").build();
+                for(int i = 0; i < inventory.getSize(); i++) {
+                    inventory.setItem(i, filler);
+                }
+
+                Collection<Map> maps = Data.mapManager.getMaps();
+
+                int pos = 9;
+
+                for(Map map : maps) {
+
+                    ItemStack item = new ItemBuilder(map.getItemMat(), (short) 0).setDisplayName("§a" + map.getName()).setLore("§dVotes: " + map.getVotes()).build();
+                    inventory.setItem(pos, item);
+                    pos = pos + 4;
+
+                }
+                player.openInventory(inventory);
+
+            }
+        });
 
     }
 

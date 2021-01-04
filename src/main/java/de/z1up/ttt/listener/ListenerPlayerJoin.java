@@ -29,7 +29,7 @@ public class ListenerPlayerJoin implements Listener {
 
         UserAPI.resetPlayer(player);
 
-        if(!Data.dbPlayerWrapper.isRegistered(player.getUniqueId())) {
+        if(!Data.dbPlayerWrapper.existsPlayer(player.getUniqueId())) {
             DBPlayer dbPlayer = new DBPlayer(player.getUniqueId(), 0,
                     0, 5, 5, 0, 1000, 0,
                     0, null, 0, 0);
@@ -47,6 +47,8 @@ public class ListenerPlayerJoin implements Listener {
             UserAPI.playJoinEffects(player);
 
             Data.sbManager.setScoreBoard(player, Data.gameManager.getGameState());
+
+            Data.timerManager.checkPlayersForStart();
 
             return;
         }

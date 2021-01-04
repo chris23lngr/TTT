@@ -20,13 +20,16 @@ public class ListenerPlayerChat implements Listener {
     public void onCall(final AsyncPlayerChatEvent event) {
 
         final Player player = event.getPlayer();
-
         String message = event.getMessage();
+
+        /*
         String text = "[%time%] %playername% >> %message%";
         text = text.replaceAll("%time%", Data.replayFile.getTime());
         text = text.replaceAll("%playername%", player.getName());
         text = text.replaceAll("%message%", message);
         Data.replayFile.addLine(text);
+
+         */
 
 
         if(Data.playerManager.isSpec(player)) {
