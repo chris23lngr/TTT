@@ -21,6 +21,12 @@ public class ListenerPlayerQuit implements Listener {
 
         event.setQuitMessage(Data.getPrefix() + "§c" + player.getName() + " §7hat das Spiel verlassen.");
 
+        if(Data.voteManager.hasVoted(player)) {
+            if(Data.voteManager.isVotePeriodActive()) {
+                Data.voteManager.unvote(player);
+            }
+        }
+
     }
 
 }

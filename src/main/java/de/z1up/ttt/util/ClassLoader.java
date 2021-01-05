@@ -1,9 +1,6 @@
 package de.z1up.ttt.util;
 
-import de.z1up.ttt.command.CommandAddMap;
-import de.z1up.ttt.command.CommandBuild;
-import de.z1up.ttt.command.CommandSetSpawn;
-import de.z1up.ttt.command.CommandStart;
+import de.z1up.ttt.command.*;
 import de.z1up.ttt.listener.*;
 
 public class ClassLoader {
@@ -40,6 +37,7 @@ public class ClassLoader {
         new CommandBuild();
         new CommandStart();
         new CommandSetSpawn();
+        new CommandForceMap();
     }
 
 }

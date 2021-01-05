@@ -52,6 +52,8 @@ public class CommandForceMap implements CommandExecutor {
         }
 
         Map map = (Map) Data.mapWrapper.get(mapName);
+        Data.mapManager.setMapToPlay(map);
+        player.sendMessage(Data.getPrefix() + "§aDie Map wurde erfolgreich auf §b" + mapName + " §agesetzt.");
 
         return false;
     }

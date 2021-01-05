@@ -1,12 +1,20 @@
 package de.z1up.ttt.mysql.wrapper;
 
 import de.z1up.ttt.mysql.SQL;
+import de.z1up.ttt.util.Data;
+import de.z1up.ttt.util.o.Map;
 import de.z1up.ttt.util.o.Spawn;
+import io.netty.handler.codec.http.HttpContentEncoder;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
+import java.lang.reflect.Array;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
+import java.util.Set;
 
 public class SpawnWrapper implements Wrapper {
 
@@ -99,6 +107,37 @@ public class SpawnWrapper implements Wrapper {
 
     @Override
     public Object get(Object e) {
+
+        if(!(e instanceof Integer)) {
+            return true;
+        }
+
+        String stmt = "SELECT * FROM " + TABLE_NAME + " WHERE " + ATTRIBUTE_ID + "=?";
+
+        ResultSet rs = sql.getResult(stmt, Arrays.asList((Integer) e));
+
+        try {
+            if(rs.next()) {
+
+                int id = rs.getInt(ATTRIBUTE_ID);
+                int mapId = rs.getInt(ATTRIBUTE_MAP);
+                String worldName = rs.getString(ATTRIBUTE_WORLD_NAME);
+                double x = rs.getDouble(ATTRIBUTE_X);
+                double y = rs.getDouble(ATTRIBUTE_Y);
+                double z = rs.getDouble(ATTRIBUTE_Z);
+                float yaw = rs.getFloat(ATTRIBUTE_YAW);
+                float pitch = rs.getFloat(ATTRIBUTE_PITCH);
+
+                Location location = new Location(Bukkit.getWorld(worldName), x, y, z, yaw, pitch);
+                Map map = (Map) Data.mapWrapper.get(mapId);
+
+                Spawn spawn = new Spawn(id, location, map);
+
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+
         return null;
     }
 
@@ -112,6 +151,27 @@ public class SpawnWrapper implements Wrapper {
             return createID();
         }
         return id;
+    }
+
+    public ArrayList<Spawn> getSpawnsFor(Map map) {
+
+        int mapid = map.getId();
+
+        String stmt = "SELECT * FROM " + TABLE_NAME + " WHERE " + ATTRIBUTE_MAP + "=?";
+
+        ArrayList<Spawn> spawns = new ArrayList<>();
+
+        ResultSet rs = sql.getResult(stmt, Arrays.asList(mapid));
+
+        try {
+            while (rs.next()) {
+                Spawn spawn = (Spawn) get(rs.getInt(ATTRIBUTE_ID));
+                spawns.add(spawn);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return spawns;
     }
 
 }

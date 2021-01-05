@@ -151,12 +151,12 @@ public class MapWrapper implements Wrapper{
         return null;
     }
 
-    public Collection<Map> getRandomMaps() {
+    public ArrayList<Map> getRandomMaps() {
         String stmt = "SELECT * FROM " + TABLE_NAME + " ORDER BY RAND() LIMIT 3";
 
         ResultSet rs = sql.getResult(stmt, null);
 
-        Collection<Map> maps = new ArrayList<>();
+        ArrayList<Map> maps = new ArrayList<>();
 
         try {
             while (rs.next()){

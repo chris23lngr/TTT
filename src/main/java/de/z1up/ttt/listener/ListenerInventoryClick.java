@@ -63,8 +63,6 @@ public class ListenerInventoryClick implements Listener {
 
     private void onMapVote(InventoryClickEvent context) {
 
-        System.out.println("cli");
-
         ItemStack itemStack = context.getCurrentItem();
         String display = itemStack.getItemMeta().getDisplayName();
 
@@ -74,13 +72,17 @@ public class ListenerInventoryClick implements Listener {
             return;
         }
 
-
-
+        Player player = (Player) context.getWhoClicked();
         Map map = (Map) Data.mapWrapper.get(mapName);
 
         if(Data.voteManager.isVotePeriodActive()) {
-            Data.voteManager.vote((Player) context.getWhoClicked(), map);
-            ((Player) context.getWhoClicked()).closeInventory();
+
+            if(Data.voteManager.hasVoted(player)) {
+                Data.voteManager.unvote(player);
+            }
+
+            Data.voteManager.vote(player, map);
+            player.closeInventory();
         }
 
 

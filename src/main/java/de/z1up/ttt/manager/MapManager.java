@@ -3,11 +3,12 @@ package de.z1up.ttt.manager;
 import de.z1up.ttt.util.Data;
 import de.z1up.ttt.util.o.Map;
 
+import java.util.ArrayList;
 import java.util.Collection;
 
 public class MapManager implements Manager {
 
-    private Collection<Map> maps;
+    private ArrayList<Map> maps;
 
     private Map mapToPlay;
 
@@ -34,7 +35,7 @@ public class MapManager implements Manager {
     }
 
     public boolean isMapSet() {
-        return mapToPlay == null;
+        return mapToPlay != null;
     }
 
     public void setMapToPlay(Map mapToPlay) {
@@ -44,4 +45,24 @@ public class MapManager implements Manager {
     public Map getMapToPlay() {
         return mapToPlay;
     }
+
+    public Map getVotedMap() {
+
+        int mapVotesOne = maps.get(0).getVotes();
+        int mapVotesTwo = maps.get(1).getVotes();
+        int mapVotesThree = maps.get(2).getVotes();
+
+        Map map = maps.get(0);
+
+        if(mapVotesTwo > mapVotesOne) {
+            map = maps.get(1);
+        }
+
+        if(mapVotesThree > mapVotesTwo) {
+            map = maps.get(2);
+        }
+
+        return map;
+    }
+
 }

@@ -2,6 +2,8 @@ package de.z1up.ttt.manager;
 
 import de.z1up.ttt.TTT;
 import de.z1up.ttt.util.Data;
+import de.z1up.ttt.util.o.DBPlayer;
+import de.z1up.ttt.util.o.Map;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.scoreboard.DisplaySlot;
@@ -42,19 +44,59 @@ public class ScoreboardManager {
             obj.setDisplaySlot(DisplaySlot.SIDEBAR);
             obj.setDisplayName("   §8« §arenixinside.de §8»   ");
             obj.getScore("§7§8 ").setScore(9);
-            obj.getScore("§6§lKarma").setScore(8);
-            //obj.getScore("§9§8➟ §1§7" + MySQLStats.getKarma(p)).setScore(7);
-            obj.getScore("§9§8➟ §1§7" + "NOT SET").setScore(7);
+            obj.getScore("§6Karma").setScore(8);
+
+            if(Data.dbPlayerWrapper.existsPlayer(player.getUniqueId())) {
+                //int karma = ((DBPlayer) Data.dbPlayerWrapper.get(player.getUniqueId())).getKarma();
+                //obj.getScore("§9§8➟ §1§7" + karma).setScore(7);
+            } else {
+                obj.getScore("§9§8➟ §1§70").setScore(7);
+            }
+
             obj.getScore("§7§9 ").setScore(5);
-            obj.getScore("§b§lMap").setScore(4);
-            //obj.getScore("§8➟ §2§7" + (String)Data.getMap.get("MAP")).setScore(3);
-            obj.getScore("§8➟ §2§7" + "NOT SET").setScore(3);
+            obj.getScore("§bMap").setScore(4);
+
+            if(Data.mapManager.isMapSet()) {
+                Map map = Data.mapManager.getMapToPlay();
+                obj.getScore("§8➟ §2§c" + map.getName()).setScore(3);
+            } else {
+                obj.getScore("§8➟ §2§cAbstimmung...").setScore(3);
+            }
+
             obj.getScore("§4§9§l ").setScore(2);
-            obj.getScore("§e§lReplayID").setScore(1);
+            obj.getScore("§eReplayID").setScore(1);
             obj.getScore("§8➟ §5§7" + replayId).setScore(0);
             player.getScoreboard().clearSlot(DisplaySlot.SIDEBAR);
             player.setScoreboard(Bukkit.getScoreboardManager().getNewScoreboard());
             player.setScoreboard(board);
+    }
+
+    public void updateLobbySB(Player player) {
+        /*
+        board = player.getScoreboard();
+        Objective obj = board.getObjective(DisplaySlot.SIDEBAR);
+        obj.setDisplaySlot(DisplaySlot.SIDEBAR);
+
+        if(Data.dbPlayerWrapper.existsPlayer(player.getUniqueId())) {
+            int karma = ((DBPlayer) Data.dbPlayerWrapper.get(player.getUniqueId())).getKarma();
+            obj.getScore("§9§8➟ §1§7" + karma).setScore(7);
+        } else {
+            obj.getScore("§9§8➟ §1§70").setScore(7);
+        }
+
+
+        if(Data.mapManager.isMapSet()) {
+            Map map = Data.mapManager.getMapToPlay();
+            obj.getScore("§8➟ §2§c" + map.getName()).setScore(3);
+        } else {
+            obj.getScore("§8➟ §2§cAbstimmung...").setScore(3);
+        }
+
+        player.setScoreboard(board);
+
+         */
+
+        setLobbySB(player);
     }
 
 

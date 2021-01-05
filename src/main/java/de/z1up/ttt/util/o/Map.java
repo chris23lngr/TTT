@@ -98,4 +98,8 @@ public class Map {
     public void removeVote() {
         votes = votes - 1;
     }
+
+    public void setSpawns(Collection<Spawn> spawns) {
+        this.spawns = spawns;
+    }
 }
