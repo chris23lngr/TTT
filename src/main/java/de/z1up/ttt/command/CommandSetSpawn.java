@@ -1,7 +1,8 @@
 package de.z1up.ttt.command;
 
 import de.z1up.ttt.TTT;
-import de.z1up.ttt.util.Data;
+import de.z1up.ttt.core.Core;
+import de.z1up.ttt.util.Messages;
 import de.z1up.ttt.util.o.Map;
 import de.z1up.ttt.util.o.Spawn;
 import org.bukkit.Location;
@@ -16,61 +17,48 @@ import java.util.List;
 
 public class CommandSetSpawn implements CommandExecutor, TabCompleter {
 
+    private final String NAME = "setspawn";
+
     public CommandSetSpawn() {
-        TTT.getInstance().getCommand("setspawn").setExecutor(this::onCommand);
-        TTT.getInstance().getCommand("setspawn").setTabCompleter(this::onTabComplete);
+        TTT.getInstance().getCommand(NAME).setExecutor(this::onCommand);
+        TTT.getInstance().getCommand(NAME).setPermissionMessage(Messages.NO_PERM);
+        TTT.getInstance().getCommand(NAME).setPermission("ttt." + NAME);
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
-        if(!sender.hasPermission("ttt.setspawn")) {
-            sender.sendMessage(Data.getNoperm());
-            return true;
-        }
-
         if(!(sender instanceof Player)) {
-            sender.sendMessage(Data.getPrefix() + "§cKommmand kann nur von Spielern genutzt werden.");
             return true;
         }
 
         Player player = (Player) sender;
 
-        if (!Data.gameManager.inLobby()) {
-            player.sendMessage(Data.getPrefix() + "§cKommmand kann nur währen Lobbyphase genutzt werden.");
-            return true;
-        }
-
-        if(!Data.buildManager.canBuild(player)) {
-            player.sendMessage(Data.getPrefix() + "§cKommmand kann nur im Baumodus genutzt werden.");
-            return true;
-        }
-
-        if(Data.timerManager.getLobbyCountdown().isActive()) {
-            player.sendMessage(Data.getPrefix() + "§cKommmand kann nicht genutzt werden, während ein Countdown läuft.");
+        if (!TTT.core.gameManager.inLobby()) {
+            player.sendMessage(Messages.CMD_NOT_EXECUTABLE_ATM);
             return true;
         }
 
         if(args.length < 1) {
-            player.sendMessage(Data.getPrefix() + "§7Bitte nutze §c/setspawn <Map>");
+            player.sendMessage(Messages.WRON_USAGE + command.getUsage());
             return true;
         }
 
         String mapName = args[0];
 
-        if(!Data.mapManager.existsName(mapName)) {
-            player.sendMessage(Data.getPrefix() + "§cDiese Map exestiert nicht.");
+        if(!TTT.core.mapManager.existsName(mapName)) {
+            player.sendMessage(Messages.MAP_NOT_EXIST);
             return true;
         }
 
         Location location = player.getLocation();
-        int id = Data.spawnManager.createID();
-        Map map = Data.mapManager.getMap(mapName);
+        int id = TTT.core.spawnManager.createID();
+        Map map = TTT.core.mapManager.getMap(mapName);
 
         Spawn spawn = new Spawn(id, location, map);
-        Data.spawnManager.insert(spawn);
+        TTT.core.spawnManager.insert(spawn);
 
-        player.sendMessage(Data.getPrefix() + "§7Auf der Map §a" + map.getName() + " §7wurde ein Spawn mit der ID §a" + spawn.getId() + " §7gesetzt§8.");
+        player.sendMessage(Messages.SPAWN_SET + map.getName());
 
         return false;
     }
@@ -78,10 +66,9 @@ public class CommandSetSpawn implements CommandExecutor, TabCompleter {
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
 
-        ArrayList<Map> playableMaps = Data.mapManager.getPossibleMaps();
+        ArrayList<Map> playableMaps = TTT.core.mapManager.getPossibleMaps();
 
         List<String> completes = new ArrayList<>();
-
         playableMaps.forEach(map -> completes.add(map.getName()));
 
         return completes;

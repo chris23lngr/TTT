@@ -5,7 +5,7 @@ import de.z1up.ttt.event.CountdownTimeChangeEvent;
 import de.z1up.ttt.event.MapSetEvent;
 import de.z1up.ttt.manager.GameManager;
 import de.z1up.ttt.scheduler.TTTRunnable;
-import de.z1up.ttt.util.Data;
+import de.z1up.ttt.core.Core;
 import de.z1up.ttt.util.o.Map;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
@@ -26,16 +26,16 @@ public class ListenerCountdownTimeChange implements Listener {
         if(task.getGameState() == GameManager.GameState.LOBBYPHASE) {
 
             if(task.getTime() == 59) {
-                Data.voteManager.setVotePeriodActive(true);
+                Core.voteManager.setVotePeriodActive(true);
             } else if(task.getTime() == 5) {
-                Data.voteManager.setVotePeriodActive(false);
+                Core.voteManager.setVotePeriodActive(false);
                 Bukkit.getOnlinePlayers().forEach(player -> {
                     player.closeInventory();
                 });
 
-                if(!Data.mapManager.isMapSet()) {
-                    Map map = Data.mapManager.getVotedMap();
-                    Data.mapManager.setMapToPlay(map);
+                if(!Core.mapManager.isMapSet()) {
+                    Map map = Core.mapManager.getVotedMap();
+                    Core.mapManager.setMapToPlay(map);
                     Event mapSetEvent = new MapSetEvent(map, false);
                     Bukkit.getPluginManager().callEvent(mapSetEvent);
                 }

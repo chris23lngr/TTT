@@ -1,8 +1,7 @@
 package de.z1up.ttt.listener;
 
-import com.mysql.jdbc.Buffer;
 import de.z1up.ttt.TTT;
-import de.z1up.ttt.util.Data;
+import de.z1up.ttt.core.Core;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -22,7 +21,7 @@ public class ListenerPlayerInteract implements Listener {
 
         Player player = event.getPlayer();
 
-        if(Data.buildManager.canBuild(player)) {
+        if(Core.buildManager.canBuild(player)) {
             event.setCancelled(false);
             return;
         }
@@ -33,7 +32,7 @@ public class ListenerPlayerInteract implements Listener {
             return;
         }
 
-        if(Data.playerManager.isSpec(player)
+        if(Core.playerManager.isSpec(player)
                 && (event.getAction().equals(Action.RIGHT_CLICK_BLOCK)
                 || event.getAction().equals(Action.PHYSICAL))) {
             event.setCancelled(true);
@@ -42,7 +41,7 @@ public class ListenerPlayerInteract implements Listener {
 
         if(event.getAction().equals(Action.RIGHT_CLICK_AIR) || event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
 
-            if(Data.gameManager.inLobby()) {
+            if(Core.gameManager.inLobby()) {
 
                 if(event.getItem() == null) return;
                 if(event.getItem().getItemMeta() == null) return;
@@ -53,26 +52,26 @@ public class ListenerPlayerInteract implements Listener {
                 String display = event.getItem().getItemMeta().getDisplayName();
 
                 if(display.equals("§eErfolge")) {
-                    Data.invManager.openAchievementsInv(player);
+                    Core.invManager.openAchievementsInv(player);
                     return;
                 }
 
                 if(display.equals("§4Einstellungen")) {
-                    Data.invManager.openSettingsInv(player);
+                    Core.invManager.openSettingsInv(player);
                     return;
                 }
 
                 if(display.equals("§bMap voting")) {
-                    if(Data.voteManager.isVotePeriodActive()) {
-                        Data.invManager.openVotingInv(player);
+                    if(Core.voteManager.isVotePeriodActive()) {
+                        Core.invManager.openVotingInv(player);
                     } else {
-                        player.sendMessage(Data.getPrefix() + "§cDie Votephase ist bereits beendet.");
+                        player.sendMessage(Core.getPrefix() + "§cDie Votephase ist bereits beendet.");
                     }
                     return;
                 }
 
                 if(display.equals("§8Spiel verlassen")) {
-                    player.kickPlayer(Data.getPrefix() + "§cDu hast das Spiel verlassen!");
+                    player.kickPlayer(Core.getPrefix() + "§cDu hast das Spiel verlassen!");
                     return;
                 }
 

@@ -3,7 +3,7 @@ package de.z1up.ttt.listener;
 import de.z1up.ttt.TTT;
 import de.z1up.ttt.event.GameStateChangeEvent;
 import de.z1up.ttt.manager.GameManager;
-import de.z1up.ttt.util.Data;
+import de.z1up.ttt.core.Core;
 import de.z1up.ttt.util.o.Map;
 import de.z1up.ttt.util.o.Spawn;
 import org.bukkit.Bukkit;
@@ -33,12 +33,12 @@ public class ListenerGameStateChange implements Listener {
 
             while (iterator.hasNext()) {
                 Player player = (Player) iterator.next();
-                if(!Data.playerManager.isSpec(player)) {
+                if(!Core.playerManager.isSpec(player)) {
                     players.add(player);
                 }
             }
 
-            Map map = Data.mapManager.getMapToPlay();
+            Map map = Core.mapManager.getMapToPlay();
             Bukkit.getConsoleSender().sendMessage("MAP ID: " + map.getId());
             ArrayList<Spawn> spawns = map.getSpawns();
             spawns.forEach(spawn -> System.out.println("SPAWN ID" + spawn.getId()));

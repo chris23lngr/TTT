@@ -1,7 +1,7 @@
 package de.z1up.ttt.util.o;
 
 
-import de.z1up.ttt.util.Data;
+import de.z1up.ttt.core.Core;
 
 import java.util.ArrayList;
 import java.util.Collection;
@@ -132,10 +132,10 @@ public class DBPlayer extends Object {
     }
 
     public void insert() {
-        Data.wrapperPlayer.insert(this);
+        Core.wrapperPlayer.insert(this);
     }
 
     public void update() {
-        Data.wrapperPlayer.update(this);
+        Core.wrapperPlayer.update(this);
     }
 }

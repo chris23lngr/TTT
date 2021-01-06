@@ -1,7 +1,8 @@
 package de.z1up.ttt.command;
 
 import de.z1up.ttt.TTT;
-import de.z1up.ttt.util.Data;
+import de.z1up.ttt.core.Core;
+import de.z1up.ttt.util.Messages;
 import de.z1up.ttt.util.o.Spawn;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -10,63 +11,52 @@ import org.bukkit.entity.Player;
 
 public class CommandRemoveSpawn implements CommandExecutor {
 
+    private final String NAME = "removespawm";
+
     public CommandRemoveSpawn() {
-        TTT.getInstance().getCommand("removespawn").setExecutor(this::onCommand);
+        TTT.getInstance().getCommand(NAME).setExecutor(this::onCommand);
+        TTT.getInstance().getCommand(NAME).setPermissionMessage(Messages.NO_PERM);
+        TTT.getInstance().getCommand(NAME).setPermission("ttt." + NAME);
     }
 
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
-        if(!sender.hasPermission("ttt.removespawn")) {
-            sender.sendMessage(Data.getNoperm());
-            return true;
-        }
-
         if(!(sender instanceof Player)) {
-            sender.sendMessage(Data.getPrefix() + "§cKommmand kann nur von Spielern genutzt werden.");
             return true;
         }
 
         Player player = (Player) sender;
 
-        if (!Data.gameManager.inLobby()) {
-            player.sendMessage(Data.getPrefix() + "§cKommmand kann nur währen Lobbyphase genutzt werden.");
-            return true;
-        }
-
-        if(!Data.buildManager.canBuild(player)) {
-            player.sendMessage(Data.getPrefix() + "§cKommmand kann nur im Baumodus genutzt werden.");
-            return true;
-        }
-
-        if(Data.timerManager.getLobbyCountdown().isActive()) {
-            player.sendMessage(Data.getPrefix() + "§cKommmand kann nicht genutzt werden, während ein Countdown läuft.");
+        if (!TTT.core.gameManager.inLobby() ||
+                TTT.core.timerManager.getLobbyCountdown().isActive()) {
+            player.sendMessage(Messages.CMD_NOT_EXECUTABLE_ATM);
             return true;
         }
 
         if(args.length < 1) {
-            player.sendMessage(Data.getPrefix() + "§7Bitte nutze §c/removespawn <id>");
+            player.sendMessage(Messages.WRON_USAGE + command.getUsage());
             return true;
         }
 
         String idArg = args[0];
 
         if(!isNumeric(idArg)) {
-            player.sendMessage(Data.getPrefix() + "§cDie Spawn ID muss eine nummer sein.");
+            player.sendMessage(Messages.ATTRIBUTE_NOT_NUMERIC);
             return true;
         }
 
         int id = Integer.parseInt(idArg);
 
-        if(!Data.spawnManager.existsID(id)) {
-            player.sendMessage(Data.getPrefix() + "§cDiese Spawn ID exestiert nicht.");
+        if(!TTT.core.spawnManager.existsID(id)) {
+            player.sendMessage(Messages.ID_NOT_EXISTS);
             return true;
         }
 
-        Spawn spawn = Data.spawnManager.getSpawn(id);
-        Data.spawnManager.delete(spawn);
+        Spawn spawn = TTT.core.spawnManager.getSpawn(id);
+        TTT.core.spawnManager.delete(spawn);
 
-        player.sendMessage(Data.getPrefix() + "§7Der Spawn mit der id §c" + id + " §7wurde gelöscht§8.");
+        player.sendMessage(Messages.SPAWN_DELETED + id);
 
         return false;
     }

@@ -2,7 +2,7 @@ package de.z1up.ttt.manager;
 
 import de.z1up.ttt.TTT;
 import de.z1up.ttt.interfaces.Manager;
-import de.z1up.ttt.util.Data;
+import de.z1up.ttt.core.Core;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
@@ -63,7 +63,7 @@ public class PlayerManager implements Manager {
         Bukkit.getScheduler().runTaskLaterAsynchronously(TTT.getInstance(), () -> {
 
             //player.teleport(Spawns.getLobby());
-            Data.invManager.setSpecInv(player);
+            Core.invManager.setSpecInv(player);
             player.setGameMode(GameMode.ADVENTURE);
             player.getInventory().clear();
             player.getInventory().setArmorContents(null);

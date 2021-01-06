@@ -1,7 +1,8 @@
 package de.z1up.ttt.command;
 
 import de.z1up.ttt.TTT;
-import de.z1up.ttt.util.Data;
+import de.z1up.ttt.core.Core;
+import de.z1up.ttt.util.Messages;
 import de.z1up.ttt.util.o.Map;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -14,9 +15,12 @@ import java.util.List;
 
 public class CommandForceMap implements CommandExecutor, TabCompleter {
 
+    private final String NAME = "forcemap";
+
     public CommandForceMap() {
-        TTT.getInstance().getCommand("forcemap").setExecutor(this::onCommand);
-        TTT.getInstance().getCommand("forcemap").setTabCompleter(this::onTabComplete);
+        TTT.getInstance().getCommand(NAME).setExecutor(this::onCommand);
+        TTT.getInstance().getCommand(NAME).setPermissionMessage(Messages.NO_PERM);
+        TTT.getInstance().getCommand(NAME).setPermission("ttt." + NAME);
     }
 
     @Override
@@ -28,48 +32,38 @@ public class CommandForceMap implements CommandExecutor, TabCompleter {
 
         Player player = (Player) sender;
 
-        if(!player.hasPermission("ttt.forcemap")) {
-            player.sendMessage(Data.getNoperm());
-            return true;
-        }
-
         if(args.length < 1) {
-            player.sendMessage(Data.getPrefix() + "§7Bitte nutze §c/forcemap <Map>");
+            player.sendMessage(Messages.WRON_USAGE + command.getUsage());
             return true;
         }
 
         String mapName = args[0];
 
-        if(!Data.mapManager.existsName(mapName)) {
-            player.sendMessage(Data.getPrefix() + "§cDiese Map exestiert nicht.");
+        if(!TTT.core.mapManager.existsName(mapName)) {
+            player.sendMessage(Messages.MAP_NOT_EXIST);
             return true;
         }
 
-        if (!Data.gameManager.inLobby()) {
-            player.sendMessage(Data.getPrefix() + "§cDas Spiel hat bereits gestartet!");
+        if (!TTT.core.gameManager.inLobby() || TTT.core.mapManager.isMapSet()) {
+            player.sendMessage(Messages.CMD_NOT_EXECUTABLE_ATM);
             return true;
         }
 
-        if(Data.mapManager.isMapSet()) {
-            player.sendMessage(Data.getPrefix() + "§cDie Map wurde bereits gesetzt!");
-            return true;
-        }
+        // Set the forced map
+        Map map = TTT.core.mapManager.getMap(mapName);
+        TTT.core.mapManager.setMapToPlay(map);
 
-        Map map = Data.mapManager.getMap(mapName);
-        Data.mapManager.setMapToPlay(map);
-
-        player.sendMessage(Data.getPrefix() + "§aDie Map wurde erfolgreich auf §b" + mapName + " §agesetzt.");
-
+        // Send a success message
+        player.sendMessage(Messages.FM_SUCCESS);
         return false;
     }
 
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
 
-        ArrayList<Map> playableMaps = Data.mapManager.getPossibleMaps();
+        ArrayList<Map> playableMaps = TTT.core.mapManager.getPossibleMaps();
 
         List<String> completes = new ArrayList<>();
-
         playableMaps.forEach(map -> completes.add(map.getName()));
 
         return completes;

@@ -1,7 +1,7 @@
 package de.z1up.ttt.listener;
 
 import de.z1up.ttt.TTT;
-import de.z1up.ttt.util.Data;
+import de.z1up.ttt.core.Core;
 import org.bukkit.Bukkit;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -16,7 +16,7 @@ public class ListenerEntityDamageByEntity implements Listener {
     @EventHandler
     public void onCall(final EntityDamageByEntityEvent event) {
 
-        if(Data.gameManager.inGame()) {
+        if(Core.gameManager.inGame()) {
 
             event.setCancelled(false);
 

@@ -1,7 +1,7 @@
 package de.z1up.ttt.listener;
 
 import de.z1up.ttt.TTT;
-import de.z1up.ttt.util.Data;
+import de.z1up.ttt.core.Core;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -19,24 +19,24 @@ public class ListenerPlayerLogin implements Listener {
     @EventHandler
     public void onCall(final PlayerLoginEvent event) {
 
-        if(Data.gameManager.notSet()) {
+        if(Core.gameManager.notSet()) {
             event.disallow(PlayerLoginEvent.Result.KICK_OTHER,
                     "§cEs ist ein Fehler aufgetreten!");
             return;
         }
 
-        if(Data.gameManager.inRestart()) {
+        if(Core.gameManager.inRestart()) {
             event.disallow(PlayerLoginEvent.Result.KICK_OTHER,
                     "§7Der Server restartet.");
             return;
         }
 
-        if(Data.gameManager.inGame() || Data.gameManager.inSavePhase()) {
+        if(Core.gameManager.inGame() || Core.gameManager.inSavePhase()) {
             event.allow();
             return;
         }
 
-        if(Data.gameManager.inLobby()) {
+        if(Core.gameManager.inLobby()) {
 
             final Player player = event.getPlayer();
 

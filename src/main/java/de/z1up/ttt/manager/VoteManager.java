@@ -1,7 +1,7 @@
 package de.z1up.ttt.manager;
 
 import de.z1up.ttt.interfaces.Manager;
-import de.z1up.ttt.util.Data;
+import de.z1up.ttt.core.Core;
 import de.z1up.ttt.util.o.Map;
 import org.bukkit.entity.Player;
 
@@ -29,7 +29,7 @@ public class VoteManager implements Manager {
 
     public void vote(Player player, Map voted) {
         votes.put(player, voted);
-        for(Map map : Data.mapManager.getMaps()) {
+        for(Map map : Core.mapManager.getMaps()) {
             if (map.getName().equals(voted.getName())) {
                 map.addVote();
             }
@@ -39,7 +39,7 @@ public class VoteManager implements Manager {
     public void unvote(Player player) {
         Map voted = votes.get(player);
         votes.remove(player);
-        for(Map map : Data.mapManager.getMaps()) {
+        for(Map map : Core.mapManager.getMaps()) {
             if (map.getName().equals(voted.getName())) {
                 map.removeVote();
             }

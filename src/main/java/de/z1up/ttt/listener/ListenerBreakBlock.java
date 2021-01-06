@@ -1,8 +1,7 @@
 package de.z1up.ttt.listener;
 
-import com.mysql.jdbc.Buffer;
 import de.z1up.ttt.TTT;
-import de.z1up.ttt.util.Data;
+import de.z1up.ttt.core.Core;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -21,7 +20,7 @@ public class ListenerBreakBlock implements Listener {
 
         final Player player = event.getPlayer();
 
-        if(Data.buildManager.canBuild(player)) {
+        if(Core.buildManager.canBuild(player)) {
             event.setCancelled(false);
         } else {
             event.setCancelled(true);

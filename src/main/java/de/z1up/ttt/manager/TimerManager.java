@@ -3,7 +3,7 @@ package de.z1up.ttt.manager;
 import de.z1up.ttt.TTT;
 import de.z1up.ttt.interfaces.Manager;
 import de.z1up.ttt.scheduler.TTTRunnable;
-import de.z1up.ttt.util.Data;
+import de.z1up.ttt.core.Core;
 import de.z1up.ttt.util.MessageAPI;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -25,7 +25,7 @@ public class TimerManager implements Manager {
     @Override
     public void init() {
         lobbyCountdown = new TTTRunnable(60, false, GameManager.GameState.LOBBYPHASE,
-                Data.getPrefix() + "§7Das Spiel startet in §a"
+                Core.getPrefix() + "§7Das Spiel startet in §a"
                         + (Integer.parseInt("2") == 1 ? "einer Sekunde" : "%time% Sekunden") + "§8!");
     }
 
@@ -41,7 +41,7 @@ public class TimerManager implements Manager {
             }
         }
 
-        if (Data.gameManager.inLobby()) {
+        if (Core.gameManager.inLobby()) {
             if(!lobbyCountdown.isActive()) {
                 if((lobbyCountdown.getTime() != 0) && (lobbyCountdown.getTime() != -1)) {
                     lobbyCountdown.runAsync();
@@ -52,7 +52,7 @@ public class TimerManager implements Manager {
 
     public void startTimerWaitingForPlayers() {
 
-        if(!Data.gameManager.inLobby()) {
+        if(!Core.gameManager.inLobby()) {
             return;
         }
 
@@ -67,7 +67,7 @@ public class TimerManager implements Manager {
             @Override
             public void run() {
 
-                if(!Data.gameManager.inLobby()) {
+                if(!Core.gameManager.inLobby()) {
                     cancel();
                     return;
                 }
@@ -77,7 +77,7 @@ public class TimerManager implements Manager {
                     return;
                 }
 
-                String msg = Data.getPrefix() + "§7Warten auf weitere Spieler... " +
+                String msg = Core.getPrefix() + "§7Warten auf weitere Spieler... " +
                         "§8[§e" + Bukkit.getOnlinePlayers().size() + "/" + Bukkit.getMaxPlayers() + "§8]";
 
                 Bukkit.getOnlinePlayers().forEach(player -> {

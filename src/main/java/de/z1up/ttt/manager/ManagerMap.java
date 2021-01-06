@@ -2,7 +2,7 @@ package de.z1up.ttt.manager;
 
 import de.z1up.ttt.interfaces.Manager;
 import de.z1up.ttt.mysql.wrapper.WrapperMap;
-import de.z1up.ttt.util.Data;
+import de.z1up.ttt.core.Core;
 import de.z1up.ttt.util.Messages;
 import de.z1up.ttt.util.o.Map;
 import org.bukkit.Bukkit;
@@ -16,7 +16,7 @@ public class ManagerMap extends WrapperMap implements Manager {
     private Map mapToPlay;
 
     public ManagerMap() {
-        super(Data.sql);
+        super(Core.sql);
         load();
     }
 

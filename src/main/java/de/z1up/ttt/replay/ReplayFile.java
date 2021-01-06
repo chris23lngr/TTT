@@ -1,6 +1,6 @@
 package de.z1up.ttt.replay;
 
-import de.z1up.ttt.util.Data;
+import de.z1up.ttt.core.Core;
 
 import java.io.BufferedWriter;
 import java.io.File;
@@ -15,7 +15,7 @@ public class ReplayFile {
     String replayID;
 
     public ReplayFile() {
-        replayID = Data.sbManager.getReplayId();
+        replayID = Core.sbManager.getReplayId();
     }
 
     void loadFile() {

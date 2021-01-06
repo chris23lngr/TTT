@@ -1,37 +1,39 @@
 package de.z1up.ttt.command;
 
 import de.z1up.ttt.TTT;
-import de.z1up.ttt.util.Data;
+import de.z1up.ttt.core.Core;
+import de.z1up.ttt.util.Messages;
+import org.apache.logging.log4j.message.Message;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 
 public class CommandStart implements CommandExecutor {
 
-    public CommandStart() {
-        TTT.getInstance().getCommand("start").setExecutor(this::onCommand);
-    }
+    private final String NAME = "start";
 
+    public CommandStart() {
+        TTT.getInstance().getCommand(NAME).setExecutor(this::onCommand);
+        TTT.getInstance().getCommand(NAME).setPermissionMessage(Messages.NO_PERM);
+        TTT.getInstance().getCommand(NAME).setPermission("ttt." + NAME);
+    }
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
-        if(!sender.hasPermission("ttt.start")) {
-            sender.sendMessage(Data.getNoperm());
+        if (!TTT.core.gameManager.inLobby() ||
+                TTT.core.timerManager.getLobbyCountdown().getTime() <= 10) {
+            sender.sendMessage(Messages.CMD_NOT_EXECUTABLE_ATM);
             return true;
         }
 
-        if (!Data.gameManager.inLobby()) {
-            sender.sendMessage(Data.getPrefix() + "§cKommmand kann nur währen Lobbyphase genutzt werden.");
+        if(TTT.core.timerManager.getLobbyCountdown().isForced()) {
+            sender.sendMessage(Messages.FS_ALREADY_ACTIVATED);
             return true;
         }
 
-        if(Data.timerManager.getLobbyCountdown().isForced()) {
-            sender.sendMessage(Data.getPrefix() + "§cDer §bForce Start §7wurde bereits aktiviert§8!");
-            return true;
-        }
-
-        Data.timerManager.getLobbyCountdown().runForcedStart();
-        sender.sendMessage(Data.getPrefix() + "§aDer §bForce Start §awurde aktiviert§8!");
+        TTT.core.timerManager.getLobbyCountdown().runForcedStart();
+        
+        sender.sendMessage(Messages.FS_SUCCESS);
 
         return false;
     }

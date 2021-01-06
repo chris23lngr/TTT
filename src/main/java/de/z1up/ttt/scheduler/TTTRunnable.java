@@ -4,13 +4,12 @@ import de.z1up.ttt.TTT;
 import de.z1up.ttt.event.CountdownFinishEvent;
 import de.z1up.ttt.event.CountdownTimeChangeEvent;
 import de.z1up.ttt.manager.GameManager;
-import de.z1up.ttt.util.Data;
+import de.z1up.ttt.core.Core;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.lang.reflect.Method;
-import java.sql.BatchUpdateException;
 
 public class TTTRunnable extends BukkitRunnable {
 
@@ -108,7 +107,7 @@ public class TTTRunnable extends BukkitRunnable {
     @Override
     public synchronized void cancel() throws IllegalStateException {
         super.cancel();
-        Bukkit.getServer().broadcastMessage(Data.getPrefix() + "§7Der Countdown wurde beendet!");
+        Bukkit.getServer().broadcastMessage(Core.getPrefix() + "§7Der Countdown wurde beendet!");
         active = false;
     }
 

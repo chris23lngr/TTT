@@ -2,7 +2,7 @@ package de.z1up.ttt.manager;
 
 import de.z1up.ttt.TTT;
 import de.z1up.ttt.interfaces.Manager;
-import de.z1up.ttt.util.Data;
+import de.z1up.ttt.core.Core;
 import de.z1up.ttt.util.ItemBuilder;
 import de.z1up.ttt.util.o.Achievement;
 import de.z1up.ttt.util.o.Map;
@@ -99,7 +99,7 @@ public class InventoryManager implements Manager {
                     inventory.setItem(i, filler);
                 }
 
-                Collection<Map> maps = Data.mapManager.getMaps();
+                Collection<Map> maps = Core.mapManager.getMaps();
 
                 int pos = 9;
 
@@ -125,7 +125,7 @@ public class InventoryManager implements Manager {
         player.getInventory().setItem(2, new ItemBuilder(Material.REDSTONE_TORCH_ON, (short) 0)
                 .setDisplayName("§4Einstellungen").build());
 
-        player.getInventory().setItem(4, Data.ruleBook.getBook());
+        player.getInventory().setItem(4, Core.ruleBook.getBook());
 
         player.getInventory().setItem(6, new ItemBuilder(Material.MAP, (short) 0)
                 .setDisplayName("§bMap voting").build());

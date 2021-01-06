@@ -1,7 +1,7 @@
 package de.z1up.ttt.listener;
 
 import de.z1up.ttt.TTT;
-import de.z1up.ttt.util.Data;
+import de.z1up.ttt.core.Core;
 import de.z1up.ttt.util.UserAPI;
 import de.z1up.ttt.util.o.DBPlayer;
 import org.bukkit.Bukkit;
@@ -23,36 +23,36 @@ public class ListenerPlayerJoin implements Listener {
 
         UserAPI.resetPlayer(player);
 
-        if(!Data.wrapperPlayer.existsPlayer(player.getUniqueId())) {
+        if(!Core.wrapperPlayer.existsPlayer(player.getUniqueId())) {
             DBPlayer dbPlayer = new DBPlayer(player.getUniqueId(), 0,
                     0, 5, 5, 0, 1000, 0,
                     0, null, 0, 0);
             dbPlayer.insert();
         }
 
-        if(Data.gameManager.inLobby()) {
+        if(Core.gameManager.inLobby()) {
 
-            event.setJoinMessage(Data.getPrefix() + "§c" + player.getName()
+            event.setJoinMessage(Core.getPrefix() + "§c" + player.getName()
                     + " §7ist dem Spiel beigetreten§8.");
 
 
-            Data.invManager.setLobbyItems(player);
+            Core.invManager.setLobbyItems(player);
 
             UserAPI.playJoinEffects(player);
 
             //Data.sbManager.setScoreBoard(player, Data.gameManager.getGameState());
 
-            Data.timerManager.checkPlayersForStart();
+            Core.timerManager.checkPlayersForStart();
 
             return;
         }
 
-        if(Data.gameManager.inGame() || Data.gameManager.inSavePhase()) {
+        if(Core.gameManager.inGame() || Core.gameManager.inSavePhase()) {
 
             event.setJoinMessage(null);
 
-            Data.playerManager.addSpectator(player);
-            Data.playerManager.enterSpecMode(player);
+            Core.playerManager.addSpectator(player);
+            Core.playerManager.enterSpecMode(player);
 
             return;
         }

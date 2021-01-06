@@ -1,7 +1,7 @@
 package de.z1up.ttt.listener;
 
 import de.z1up.ttt.TTT;
-import de.z1up.ttt.util.Data;
+import de.z1up.ttt.core.Core;
 import de.z1up.ttt.util.o.Map;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -9,9 +9,6 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
-import sun.awt.IconInfo;
-
-import java.awt.dnd.DropTarget;
 
 public class ListenerInventoryClick implements Listener {
 
@@ -28,17 +25,17 @@ public class ListenerInventoryClick implements Listener {
 
         Player whoClicked = (Player) event.getWhoClicked();
 
-        if(Data.buildManager.canBuild(whoClicked)) {
+        if(Core.buildManager.canBuild(whoClicked)) {
             event.setCancelled(false);
             return;
         }
 
-        if (Data.playerManager.isSpec(whoClicked)) {
+        if (Core.playerManager.isSpec(whoClicked)) {
             event.setCancelled(true);
             return;
         }
 
-        if(Data.gameManager.inGame()) {
+        if(Core.gameManager.inGame()) {
             event.setCancelled(false);
             return;
         }
@@ -68,20 +65,20 @@ public class ListenerInventoryClick implements Listener {
 
         String mapName = display.replaceAll("§a", "");
 
-        if(!Data.mapWrapper.existsName(mapName)) {
+        if(!Core.mapWrapper.existsName(mapName)) {
             return;
         }
 
         Player player = (Player) context.getWhoClicked();
-        Map map = (Map) Data.mapWrapper.get(mapName);
+        Map map = (Map) Core.mapWrapper.get(mapName);
 
-        if(Data.voteManager.isVotePeriodActive()) {
+        if(Core.voteManager.isVotePeriodActive()) {
 
-            if(Data.voteManager.hasVoted(player)) {
-                Data.voteManager.unvote(player);
+            if(Core.voteManager.hasVoted(player)) {
+                Core.voteManager.unvote(player);
             }
 
-            Data.voteManager.vote(player, map);
+            Core.voteManager.vote(player, map);
             player.closeInventory();
         }
 

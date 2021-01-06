@@ -1,19 +1,14 @@
 package de.z1up.ttt.listener;
 
 import de.z1up.ttt.TTT;
-import de.z1up.ttt.util.Data;
+import de.z1up.ttt.core.Core;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.block.Block;
-import org.bukkit.entity.Item;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
-import org.bukkit.event.block.BlockPlaceEvent;
 import org.bukkit.event.player.PlayerDropItemEvent;
 import org.bukkit.inventory.ItemStack;
 
-import java.awt.*;
 import java.util.ArrayList;
 
 public class ListenerPlayerDropItem implements Listener {
@@ -28,12 +23,12 @@ public class ListenerPlayerDropItem implements Listener {
         final Player player = event.getPlayer();
         final ItemStack droppedItemStack = event.getItemDrop().getItemStack();
 
-        if(Data.playerManager.isSpec(player)) {
+        if(Core.playerManager.isSpec(player)) {
             event.setCancelled(true);
             return;
         }
 
-        if(Data.gameManager.inGame()) {
+        if(Core.gameManager.inGame()) {
 
             if(!canItemBeDropped(droppedItemStack)) {
                 event.setCancelled(true);

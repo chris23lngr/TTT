@@ -1,4 +1,4 @@
-package de.z1up.ttt.util;
+package de.z1up.ttt.core;
 
 import de.z1up.ttt.command.*;
 import de.z1up.ttt.listener.*;

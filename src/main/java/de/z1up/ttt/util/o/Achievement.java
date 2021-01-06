@@ -1,6 +1,6 @@
 package de.z1up.ttt.util.o;
 
-import de.z1up.ttt.util.Data;
+import de.z1up.ttt.core.Core;
 
 public class Achievement extends Object {
 
@@ -33,6 +33,6 @@ public class Achievement extends Object {
     }
 
     public void update() {
-        Data.wrapperAchievements.update(this);
+        Core.wrapperAchievements.update(this);
     }
 }

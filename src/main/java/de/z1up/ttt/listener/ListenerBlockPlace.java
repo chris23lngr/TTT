@@ -1,7 +1,7 @@
 package de.z1up.ttt.listener;
 
 import de.z1up.ttt.TTT;
-import de.z1up.ttt.util.Data;
+import de.z1up.ttt.core.Core;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -21,13 +21,13 @@ public class ListenerBlockPlace implements Listener {
 
         final Player player = event.getPlayer();
 
-        if(Data.buildManager.canBuild(player)) {
+        if(Core.buildManager.canBuild(player)) {
             event.setCancelled(false);
             event.setBuild(true);
             return;
         }
 
-        if(Data.gameManager.inGame()) {
+        if(Core.gameManager.inGame()) {
 
             Block block = event.getBlock();
 

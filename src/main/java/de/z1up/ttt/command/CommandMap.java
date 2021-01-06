@@ -1,8 +1,10 @@
 package de.z1up.ttt.command;
 
 import de.z1up.ttt.TTT;
-import de.z1up.ttt.util.Data;
+import de.z1up.ttt.core.Core;
+import de.z1up.ttt.util.Messages;
 import de.z1up.ttt.util.o.Map;
+import javafx.scene.media.MediaErrorEvent;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -10,8 +12,11 @@ import org.bukkit.entity.Player;
 
 public class CommandMap implements CommandExecutor {
 
+    private final String NAME = "map";
+
     public CommandMap() {
-        TTT.getInstance().getCommand("map").setExecutor(this::onCommand);
+        TTT.getInstance().getCommand(NAME).setExecutor(this::onCommand);
+        TTT.getInstance().getCommand(NAME).setPermissionMessage(Messages.NO_PERM);
     }
 
     @Override
@@ -23,25 +28,15 @@ public class CommandMap implements CommandExecutor {
 
         Player player = (Player) sender;
 
-        if(!player.hasPermission("ttt.map")) {
-            player.sendMessage(Data.getNoperm());
+        if(TTT.core.gameManager.inLobby() || !TTT.core.mapManager.isMapSet()) {
+            player.sendMessage(Messages.MAP_NOT_SET);
             return true;
         }
 
-        if(Data.gameManager.inLobby()) {
-            player.sendMessage(Data.getPrefix() + "§7");
-            return true;
-        }
 
-        if(!Data.mapManager.isMapSet()) {
-            player.sendMessage(Data.getPrefix() + "§cEs wurde keine Map gefunden.");
-            return true;
-        }
+        Map map = TTT.core.mapManager.getMapToPlay();
+        player.sendMessage(Messages.PLAYING_ON + map.getName());
 
-        Map map = Data.mapManager.getMapToPlay();
-
-        player.sendMessage(Data.getPrefix() + "§7Es wird gespielt auf §c" + map.getName());
-
-        return false;
+        return true;
     }
 }

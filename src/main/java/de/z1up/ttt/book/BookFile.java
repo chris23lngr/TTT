@@ -5,7 +5,6 @@ import java.io.IOException;
 import java.util.Arrays;
 
 import de.z1up.ttt.TTT;
-import de.z1up.ttt.util.Data;
 import org.bukkit.configuration.file.YamlConfiguration;
 
 public class BookFile {

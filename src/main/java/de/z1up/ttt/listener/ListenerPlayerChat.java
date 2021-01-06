@@ -1,7 +1,7 @@
 package de.z1up.ttt.listener;
 
 import de.z1up.ttt.TTT;
-import de.z1up.ttt.util.Data;
+import de.z1up.ttt.core.Core;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -32,8 +32,8 @@ public class ListenerPlayerChat implements Listener {
          */
 
 
-        if(Data.playerManager.isSpec(player)) {
-            if(Data.gameManager.inRestart()) {
+        if(Core.playerManager.isSpec(player)) {
+            if(Core.gameManager.inRestart()) {
                 event.setCancelled(false);
             } else {
                 event.setCancelled(true);
@@ -43,19 +43,19 @@ public class ListenerPlayerChat implements Listener {
 
         message = event.getMessage().replaceAll("%", "%%");
 
-        if(Data.gameManager.inGame()) {
+        if(Core.gameManager.inGame()) {
 
-            if(Data.playerManager.isInno(player)) {
+            if(Core.playerManager.isInno(player)) {
                 event.setFormat("§2█ §8● §7" + player.getName() + " §8» §7" + message);
                 return;
             }
 
-            if(Data.playerManager.isDetective(player)) {
+            if(Core.playerManager.isDetective(player)) {
                 event.setFormat("§9█ §8● §7" + player.getName() + " §8» §7" + message);
                 return;
             }
 
-            if(Data.playerManager.isTraitor(player)) {
+            if(Core.playerManager.isTraitor(player)) {
 
                 event.setCancelled(true);
 
@@ -64,7 +64,7 @@ public class ListenerPlayerChat implements Listener {
                 if(message.startsWith("@t")) {
                     while (targets.hasNext()) {
                         Player target = (Player) targets;
-                        if(Data.playerManager.isTraitor(target)) {
+                        if(Core.playerManager.isTraitor(target)) {
                             target.sendMessage("§4█ Traitor §8● §7"
                                     + player.getName() + " §8» §7" + message);
                         }
@@ -74,7 +74,7 @@ public class ListenerPlayerChat implements Listener {
 
                 while (targets.hasNext()) {
                     Player target = (Player) targets;
-                    if(!Data.playerManager.isTraitor(target)) {
+                    if(!Core.playerManager.isTraitor(target)) {
                         target.sendMessage("§2█ §8● §7" + player.getName() + " §8» §7" + message);
                     } else {
                         target.sendMessage("§4█ §8● §7" + player.getName() + " §8» §7" + message);
@@ -85,7 +85,7 @@ public class ListenerPlayerChat implements Listener {
             return;
         }
 
-        if(Data.gameManager.inSavePhase() || Data.gameManager.inLobby() || Data.gameManager.inRestart()) {
+        if(Core.gameManager.inSavePhase() || Core.gameManager.inLobby() || Core.gameManager.inRestart()) {
             event.setFormat("§7█ §8● §7" + player.getName() + " §8» §7" + message);
             return;
         }
