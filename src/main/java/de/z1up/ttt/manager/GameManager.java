@@ -1,11 +1,30 @@
 package de.z1up.ttt.manager;
 
-public class GameManager {
+import de.z1up.ttt.interfaces.Manager;
+
+public class GameManager implements Manager {
 
     private GameState gameState;
 
     public GameManager() {
+        load();
+    }
+
+    @Override
+    public void load() {
+        init();
+    }
+
+    @Override
+    public void init() {
         gameState = GameState.LOBBYPHASE;
+    }
+
+    public enum GameState {
+        LOBBYPHASE,
+        SCHUTZPHASE,
+        INGAME,
+        RESTART
     }
 
     public void setGameState(GameState gameState) {
@@ -34,12 +53,5 @@ public class GameManager {
 
     public boolean notSet() {
         return (gameState == null);
-    }
-
-    public enum GameState {
-        LOBBYPHASE,
-        SCHUTZPHASE,
-        INGAME,
-        RESTART
     }
 }

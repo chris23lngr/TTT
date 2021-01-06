@@ -3,16 +3,20 @@ package de.z1up.ttt.command;
 import de.z1up.ttt.TTT;
 import de.z1up.ttt.util.Data;
 import de.z1up.ttt.util.o.Map;
-import org.bukkit.GameMode;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
-public class CommandForceMap implements CommandExecutor {
+import java.util.ArrayList;
+import java.util.List;
+
+public class CommandForceMap implements CommandExecutor, TabCompleter {
 
     public CommandForceMap() {
         TTT.getInstance().getCommand("forcemap").setExecutor(this::onCommand);
+        TTT.getInstance().getCommand("forcemap").setTabCompleter(this::onTabComplete);
     }
 
     @Override
@@ -36,7 +40,7 @@ public class CommandForceMap implements CommandExecutor {
 
         String mapName = args[0];
 
-        if(!Data.mapWrapper.existsName(mapName)) {
+        if(!Data.mapManager.existsName(mapName)) {
             player.sendMessage(Data.getPrefix() + "§cDiese Map exestiert nicht.");
             return true;
         }
@@ -51,10 +55,23 @@ public class CommandForceMap implements CommandExecutor {
             return true;
         }
 
-        Map map = (Map) Data.mapWrapper.get(mapName);
+        Map map = Data.mapManager.getMap(mapName);
         Data.mapManager.setMapToPlay(map);
+
         player.sendMessage(Data.getPrefix() + "§aDie Map wurde erfolgreich auf §b" + mapName + " §agesetzt.");
 
         return false;
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
+
+        ArrayList<Map> playableMaps = Data.mapManager.getPossibleMaps();
+
+        List<String> completes = new ArrayList<>();
+
+        playableMaps.forEach(map -> completes.add(map.getName()));
+
+        return completes;
     }
 }

@@ -3,20 +3,11 @@ package de.z1up.ttt.util;
 import de.z1up.ttt.TTT;
 import de.z1up.ttt.book.RuleBook;
 import de.z1up.ttt.manager.*;
-import de.z1up.ttt.mysql.wrapper.AchievementWrapper;
-import de.z1up.ttt.mysql.wrapper.DBPlayerWrapper;
+import de.z1up.ttt.mysql.wrapper.WrapperAchievements;
+import de.z1up.ttt.mysql.wrapper.WrapperPlayer;
 import de.z1up.ttt.mysql.SQL;
 import de.z1up.ttt.mysql.SQLConfig;
-import de.z1up.ttt.mysql.wrapper.MapWrapper;
-import de.z1up.ttt.mysql.wrapper.SpawnWrapper;
 import de.z1up.ttt.replay.ReplayFile;
-import de.z1up.ttt.util.o.Spawn;
-import io.netty.handler.codec.http.HttpContentEncoder;
-
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.util.Arrays;
-import java.util.Random;
 
 public class Data {
 
@@ -25,7 +16,7 @@ public class Data {
 
     public static SQL sql;
 
-    public static MapManager mapManager;
+    public static ManagerMap mapManager;
     public static GameManager gameManager;
     public static PlayerManager playerManager;
     public static BuildManager buildManager;
@@ -33,14 +24,13 @@ public class Data {
     public static InventoryManager invManager;
     public static TimerManager timerManager;
     public static VoteManager voteManager;
+    public static ManagerSpawn spawnManager;
 
     public static ReplayFile replayFile;
     public static RuleBook ruleBook;
 
-    public static DBPlayerWrapper dbPlayerWrapper;
-    public static AchievementWrapper achievementWrapper;
-    public static MapWrapper mapWrapper;
-    public static SpawnWrapper spawnWrapper;
+    public static WrapperPlayer wrapperPlayer;
+    public static WrapperAchievements wrapperAchievements;
 
     public void init() {
 
@@ -48,12 +38,10 @@ public class Data {
         sql = new SQL(config.readData());
         sql.connect();
 
-        dbPlayerWrapper = new DBPlayerWrapper(sql);
-        achievementWrapper = new AchievementWrapper(sql);
-        mapWrapper = new MapWrapper(sql);
-        spawnWrapper = new SpawnWrapper(sql);
+        wrapperPlayer = new WrapperPlayer(sql);
+        wrapperAchievements = new WrapperAchievements(sql);
 
-        mapManager = new MapManager();
+        mapManager = new ManagerMap();
         gameManager = new GameManager();
         playerManager = new PlayerManager();
         buildManager = new BuildManager();

@@ -1,19 +1,17 @@
 package de.z1up.ttt.manager;
 
 import de.z1up.ttt.TTT;
+import de.z1up.ttt.interfaces.Manager;
 import de.z1up.ttt.util.Data;
-import de.z1up.ttt.util.ItemBuilder;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
-import org.bukkit.Material;
 import org.bukkit.entity.Player;
-import org.bukkit.inventory.ItemStack;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
 
-public class PlayerManager {
+public class PlayerManager implements Manager {
 
     private ArrayList<Player> alives;
     private ArrayList<Player> traitors;
@@ -22,10 +20,16 @@ public class PlayerManager {
     private ArrayList<Player> specs;
 
     public PlayerManager() {
+        load();
+    }
+
+    @Override
+    public void load() {
         init();
     }
 
-    void init() {
+    @Override
+    public void init() {
         alives = new ArrayList<>();
         traitors = new ArrayList<>();
         detectives = new ArrayList<>();

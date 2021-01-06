@@ -8,12 +8,17 @@ import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
+import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
 
-public class CommandSetSpawn implements CommandExecutor {
+import java.util.ArrayList;
+import java.util.List;
+
+public class CommandSetSpawn implements CommandExecutor, TabCompleter {
 
     public CommandSetSpawn() {
         TTT.getInstance().getCommand("setspawn").setExecutor(this::onCommand);
+        TTT.getInstance().getCommand("setspawn").setTabCompleter(this::onTabComplete);
     }
 
     @Override
@@ -53,19 +58,32 @@ public class CommandSetSpawn implements CommandExecutor {
 
         String mapName = args[0];
 
-        if(!Data.mapWrapper.existsName(mapName)) {
+        if(!Data.mapManager.existsName(mapName)) {
             player.sendMessage(Data.getPrefix() + "§cDiese Map exestiert nicht.");
             return true;
         }
 
         Location location = player.getLocation();
-        int id = Data.spawnWrapper.createID();
-        Map map = (Map) Data.mapWrapper.get(mapName);
+        int id = Data.spawnManager.createID();
+        Map map = Data.mapManager.getMap(mapName);
 
         Spawn spawn = new Spawn(id, location, map);
+        Data.spawnManager.insert(spawn);
 
         player.sendMessage(Data.getPrefix() + "§7Auf der Map §a" + map.getName() + " §7wurde ein Spawn mit der ID §a" + spawn.getId() + " §7gesetzt§8.");
 
         return false;
+    }
+
+    @Override
+    public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
+
+        ArrayList<Map> playableMaps = Data.mapManager.getPossibleMaps();
+
+        List<String> completes = new ArrayList<>();
+
+        playableMaps.forEach(map -> completes.add(map.getName()));
+
+        return completes;
     }
 }

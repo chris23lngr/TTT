@@ -1,22 +1,20 @@
 package de.z1up.ttt.mysql.wrapper;
 
+import de.z1up.ttt.interfaces.Wrapper;
 import de.z1up.ttt.mysql.SQL;
 import de.z1up.ttt.util.Data;
 import de.z1up.ttt.util.o.Map;
 import de.z1up.ttt.util.o.Spawn;
-import io.netty.handler.codec.http.HttpContentEncoder;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
-import java.lang.reflect.Array;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Random;
-import java.util.Set;
 
-public class SpawnWrapper implements Wrapper {
+public class WrapperSpawn implements Wrapper {
 
     private final String TABLE_NAME = "spawns";
 
@@ -31,7 +29,7 @@ public class SpawnWrapper implements Wrapper {
 
     private SQL sql;
 
-    public SpawnWrapper(SQL sql) {
+    public WrapperSpawn(SQL sql) {
         this.sql = sql;
         createTable();
     }
@@ -39,7 +37,7 @@ public class SpawnWrapper implements Wrapper {
     @Override
     public void createTable() {
         String stmt = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" + ATTRIBUTE_ID + " int, " + ATTRIBUTE_MAP + " int, " + ATTRIBUTE_WORLD_NAME + " varchar(256), "
-                + ATTRIBUTE_X + " double, " + ATTRIBUTE_Y + " double, " + ATTRIBUTE_Z + " double, " + ATTRIBUTE_YAW + " float, " + ATTRIBUTE_PITCH + " float)";
+                + ATTRIBUTE_X + " double, " + ATTRIBUTE_Y + " double, " + ATTRIBUTE_Z + " double, " + ATTRIBUTE_YAW + " float, " + ATTRIBUTE_PITCH + " float);";
         sql.executeUpdateAsync(stmt, null);
     }
 
@@ -50,7 +48,7 @@ public class SpawnWrapper implements Wrapper {
             return;
         }
 
-        String stmt = "INSERT INTO " + TABLE_NAME + "(" + ATTRIBUTE_ID + ", " + ATTRIBUTE_MAP + ", " + ATTRIBUTE_WORLD_NAME + ", " + ATTRIBUTE_X + ", " + ATTRIBUTE_Y + ", " + ATTRIBUTE_Z + ", " + ATTRIBUTE_YAW + ", " + ATTRIBUTE_PITCH + ") VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+        String stmt = "INSERT INTO " + TABLE_NAME + "(" + ATTRIBUTE_ID + ", " + ATTRIBUTE_MAP + ", " + ATTRIBUTE_WORLD_NAME + ", " + ATTRIBUTE_X + ", " + ATTRIBUTE_Y + ", " + ATTRIBUTE_Z + ", " + ATTRIBUTE_YAW + ", " + ATTRIBUTE_PITCH + ") VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
 
         Spawn spawn = (Spawn) e;
 
@@ -61,7 +59,7 @@ public class SpawnWrapper implements Wrapper {
         double y = spawn.getLocation().getY();
         double z = spawn.getLocation().getZ();
         float yaw = spawn.getLocation().getYaw();
-        float pitch = spawn.getLocation().getYaw();
+        float pitch = spawn.getLocation().getPitch();
 
         sql.executeUpdateAsync(stmt, Arrays.asList(id, mapId, worldName, x, y, z, yaw, pitch));
 
@@ -74,7 +72,7 @@ public class SpawnWrapper implements Wrapper {
             return;
         }
 
-        String stmt = "UPDATE " + TABLE_NAME + " SET " + ATTRIBUTE_MAP + "=?, " + ATTRIBUTE_WORLD_NAME + "=?, " + ATTRIBUTE_X + "=?, " + ATTRIBUTE_Y + "=?, " + ATTRIBUTE_Z + "=?, " + ATTRIBUTE_YAW + "=?, " + ATTRIBUTE_PITCH + "=? WHERE " + ATTRIBUTE_ID + "=?";
+        String stmt = "UPDATE " + TABLE_NAME + " SET " + ATTRIBUTE_MAP + "=?, " + ATTRIBUTE_WORLD_NAME + "=?, " + ATTRIBUTE_X + "=?, " + ATTRIBUTE_Y + "=?, " + ATTRIBUTE_Z + "=?, " + ATTRIBUTE_YAW + "=?, " + ATTRIBUTE_PITCH + "=? WHERE " + ATTRIBUTE_ID + "=?;";
 
         Spawn spawn = (Spawn) e;
 
@@ -100,7 +98,7 @@ public class SpawnWrapper implements Wrapper {
 
         Spawn spawn = (Spawn) e;
 
-        String stmt = "DELETE * FROM " + TABLE_NAME + " WHERE " + ATTRIBUTE_ID + "=?";
+        String stmt = "DELETE * FROM " + TABLE_NAME + " WHERE " + ATTRIBUTE_ID + "=?;";
         sql.executeUpdateAsync(stmt, Arrays.asList(spawn.getId()));
 
     }
@@ -112,7 +110,7 @@ public class SpawnWrapper implements Wrapper {
             return true;
         }
 
-        String stmt = "SELECT * FROM " + TABLE_NAME + " WHERE " + ATTRIBUTE_ID + "=?";
+        String stmt = "SELECT * FROM " + TABLE_NAME + " WHERE " + ATTRIBUTE_ID + "=?;";
 
         ResultSet rs = sql.getResult(stmt, Arrays.asList((Integer) e));
 
@@ -129,13 +127,13 @@ public class SpawnWrapper implements Wrapper {
                 float pitch = rs.getFloat(ATTRIBUTE_PITCH);
 
                 Location location = new Location(Bukkit.getWorld(worldName), x, y, z, yaw, pitch);
-                Map map = (Map) Data.mapWrapper.get(mapId);
+                Map map = Data.mapManager.getMap(mapId);
 
                 Spawn spawn = new Spawn(id, location, map);
-
+                return spawn;
             }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
         }
 
         return null;
@@ -155,21 +153,20 @@ public class SpawnWrapper implements Wrapper {
 
     public ArrayList<Spawn> getSpawnsFor(Map map) {
 
-        int mapid = map.getId();
-
-        String stmt = "SELECT * FROM " + TABLE_NAME + " WHERE " + ATTRIBUTE_MAP + "=?";
-
         ArrayList<Spawn> spawns = new ArrayList<>();
+        int id = map.getId();
 
-        ResultSet rs = sql.getResult(stmt, Arrays.asList(mapid));
+        String stmt = "SELECT * FROM " + TABLE_NAME + " WHERE " + ATTRIBUTE_MAP + "=?;";
+        ResultSet rs = sql.getResult(stmt, Arrays.asList(id));
 
         try {
             while (rs.next()) {
                 Spawn spawn = (Spawn) get(rs.getInt(ATTRIBUTE_ID));
+                System.out.println(spawn.getId());
                 spawns.add(spawn);
             }
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
         }
         return spawns;
     }

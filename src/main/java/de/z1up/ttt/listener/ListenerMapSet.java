@@ -6,6 +6,7 @@ import de.z1up.ttt.util.Data;
 import de.z1up.ttt.util.o.Map;
 import de.z1up.ttt.util.o.Spawn;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
@@ -21,14 +22,14 @@ public class ListenerMapSet implements Listener {
     public void onCall(final MapSetEvent event) {
 
         Map map = event.getMap();
+        ArrayList<Spawn> spawns = Data.spawnManager.getSpawns(map.getId());
 
-        ArrayList<Spawn> spawns = Data.spawnWrapper.getSpawnsFor(map);
+        map.setSpawns(spawns);
+        Data.mapManager.setMapToPlay(map);
 
-        Data.mapManager.getMapToPlay().setSpawns(spawns);
+        Bukkit.broadcastMessage(Data.getPrefix() + "§7Es wird gespielt auf: §a" + map.getName());
 
-        Bukkit.broadcastMessage(Data.getPrefix() + "§7Es wird gespielt auf: §a" + map);
-
-        Bukkit.getOnlinePlayers().forEach(player -> Data.sbManager.updateLobbySB(player));
+        //Bukkit.getOnlinePlayers().forEach(player -> Data.sbManager.updateLobbySB(player));
 
     }
 

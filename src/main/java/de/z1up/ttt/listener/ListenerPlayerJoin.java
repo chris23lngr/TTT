@@ -2,19 +2,13 @@ package de.z1up.ttt.listener;
 
 import de.z1up.ttt.TTT;
 import de.z1up.ttt.util.Data;
-import de.z1up.ttt.util.ItemBuilder;
-import de.z1up.ttt.util.MessageAPI;
 import de.z1up.ttt.util.UserAPI;
 import de.z1up.ttt.util.o.DBPlayer;
 import org.bukkit.Bukkit;
-import org.bukkit.Material;
-import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
-import org.bukkit.scheduler.BukkitRunnable;
-import org.junit.internal.runners.statements.RunAfters;
 
 public class ListenerPlayerJoin implements Listener {
 
@@ -29,7 +23,7 @@ public class ListenerPlayerJoin implements Listener {
 
         UserAPI.resetPlayer(player);
 
-        if(!Data.dbPlayerWrapper.existsPlayer(player.getUniqueId())) {
+        if(!Data.wrapperPlayer.existsPlayer(player.getUniqueId())) {
             DBPlayer dbPlayer = new DBPlayer(player.getUniqueId(), 0,
                     0, 5, 5, 0, 1000, 0,
                     0, null, 0, 0);
@@ -46,7 +40,7 @@ public class ListenerPlayerJoin implements Listener {
 
             UserAPI.playJoinEffects(player);
 
-            Data.sbManager.setScoreBoard(player, Data.gameManager.getGameState());
+            //Data.sbManager.setScoreBoard(player, Data.gameManager.getGameState());
 
             Data.timerManager.checkPlayersForStart();
 

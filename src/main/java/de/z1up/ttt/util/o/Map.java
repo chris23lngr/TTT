@@ -1,24 +1,21 @@
 package de.z1up.ttt.util.o;
 
-import de.z1up.ttt.util.ItemBuilder;
 import org.bukkit.Material;
 import org.bukkit.craftbukkit.libs.jline.internal.Nullable;
-import org.bukkit.inventory.ItemStack;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.HashMap;
 
-public class Map {
+public class Map extends Object {
 
     private int id;
     private String name;
     private Material itemMat;
     private HashMap<RatingType, Integer> ratings;
-    private Collection<Spawn> spawns;
+    private ArrayList<Spawn> spawns;
     private int votes;
 
-    public Map(int id, String name, Material itemMat, HashMap<RatingType, Integer> ratings, @Nullable Collection<Spawn> spawns) {
+    public Map(int id, String name, Material itemMat, HashMap<RatingType, Integer> ratings, @Nullable ArrayList<Spawn> spawns) {
         this.id = id;
         this.name = name;
         this.itemMat = itemMat;
@@ -61,7 +58,7 @@ public class Map {
         spawns.remove(e);
     }
 
-    public Collection<Spawn> getSpawns() {
+    public ArrayList<Spawn> getSpawns() {
         return spawns;
     }
 
@@ -99,7 +96,7 @@ public class Map {
         votes = votes - 1;
     }
 
-    public void setSpawns(Collection<Spawn> spawns) {
+    public void setSpawns(ArrayList<Spawn> spawns) {
         this.spawns = spawns;
     }
 }

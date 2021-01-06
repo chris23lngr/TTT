@@ -22,11 +22,11 @@ public class ListenerPlayerAchieveAchievement implements Listener {
         Achievement achievement = event.getAchievement();
         Player player = event.getPlayer();
 
-        if(!Data.dbPlayerWrapper.existsPlayer(player.getUniqueId())){
+        if(!Data.wrapperPlayer.existsPlayer(player.getUniqueId())){
             return;
         }
 
-        DBPlayer dbPlayer = (DBPlayer) Data.dbPlayerWrapper.get(player);
+        DBPlayer dbPlayer = (DBPlayer) Data.wrapperPlayer.get(player);
 
         if(dbPlayer.getAchievements().contains(achievement.getId())) {
             return;

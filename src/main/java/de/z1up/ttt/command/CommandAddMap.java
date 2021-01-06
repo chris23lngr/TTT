@@ -1,7 +1,6 @@
 package de.z1up.ttt.command;
 
 import de.z1up.ttt.TTT;
-import de.z1up.ttt.manager.MapManager;
 import de.z1up.ttt.util.Data;
 import de.z1up.ttt.util.o.Map;
 import org.bukkit.Material;
@@ -49,17 +48,18 @@ public class CommandAddMap implements CommandExecutor {
 
         String mapName = args[0];
 
-        if(Data.mapWrapper.existsName(mapName)) {
+        if(Data.mapManager.existsName(mapName)) {
             player.sendMessage(Data.getPrefix() + "§cEs exestiert bereits eine Map mit diesem Namen!");
             return true;
         }
 
         Material material = itemStack.getType();
-        int id = Data.mapWrapper.createID();
+        int id = Data.mapManager.createID();
         Map map = new Map(id, mapName, material, null, null);
 
-        Data.mapWrapper.insert(map);
+        Data.mapManager.registerMap(map);
         player.sendMessage(Data.getPrefix() + "§7Map §e" + mapName + " §7wurde erstellt.");
+
         return false;
     }
 }

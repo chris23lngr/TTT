@@ -1,25 +1,32 @@
 package de.z1up.ttt.manager;
 
 import de.z1up.ttt.TTT;
+import de.z1up.ttt.interfaces.Manager;
 import de.z1up.ttt.scheduler.TTTRunnable;
 import de.z1up.ttt.util.Data;
 import de.z1up.ttt.util.MessageAPI;
-import de.z1up.ttt.util.UserAPI;
-import net.md_5.bungee.api.ChatMessageType;
-import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
 
-public class TimerManager {
+public class TimerManager implements Manager {
 
     private TTTRunnable lobbyCountdown;
 
     public TimerManager() {
+        load();
+    }
+
+    @Override
+    public void load() {
+        init();
+        startTimerWaitingForPlayers();
+    }
+
+    @Override
+    public void init() {
         lobbyCountdown = new TTTRunnable(60, false, GameManager.GameState.LOBBYPHASE,
                 Data.getPrefix() + "§7Das Spiel startet in §a"
-        + (Integer.parseInt("2") == 1 ? "einer Sekunde" : "%time% Sekunden") + "§8!");
-
-        startTimerWaitingForPlayers();
+                        + (Integer.parseInt("2") == 1 ? "einer Sekunde" : "%time% Sekunden") + "§8!");
     }
 
     public TTTRunnable getLobbyCountdown() {

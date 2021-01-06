@@ -13,21 +13,31 @@ public class ClassLoader {
     private void registerListener() {
         new ListenerBlockPlace();
         new ListenerBreakBlock();
+
         new ListenerCountdownFinish();
         new ListenerCountdownTimeChange();
+
         new ListenerEntityDamage();
         new ListenerEntityDamageByEntity();
+
         new ListenerFoodLevelChange();
+        new ListenerGameStateChange();
+
         new ListenerInventoryClick();
         new ListenerMapSet();
+
         new ListenerPlayerAchieveAchievement();
         new ListenerPlayerChat();
+
         new ListenerPlayerDropItem();
         new ListenerPlayerInteract();
+
         new ListenerPlayerJoin();
         new ListenerPlayerLogin();
+
         new ListenerPlayerQuit();
         new ListenerServer();
+
         new ListenerThunderChange();
         new ListenerWeatherChange();
     }
@@ -35,9 +45,14 @@ public class ClassLoader {
     private void registerCommands() {
         new CommandAddMap();
         new CommandBuild();
+
         new CommandStart();
         new CommandSetSpawn();
+
         new CommandForceMap();
+        new CommandRemoveSpawn();
+
+        new CommandMap();
     }
 
 }

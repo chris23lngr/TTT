@@ -1,4 +1,5 @@
-package de.z1up.ttt.mysql.wrapper;
+package de.z1up.ttt.interfaces;
+
 
 public interface Wrapper {
 

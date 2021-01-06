@@ -1,9 +1,8 @@
 package de.z1up.ttt.mysql.wrapper;
 
+import de.z1up.ttt.interfaces.Wrapper;
 import de.z1up.ttt.mysql.SQL;
 import de.z1up.ttt.util.o.DBPlayer;
-import io.netty.handler.codec.http.HttpContentEncoder;
-import org.bukkit.entity.Player;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -12,7 +11,7 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.UUID;
 
-public class DBPlayerWrapper implements Wrapper {
+public class WrapperPlayer implements Wrapper {
 
     private final String TABLE_NAME = "ttt_player";
     private final String ATTRIBUTE_UUID = "UUID";
@@ -30,7 +29,7 @@ public class DBPlayerWrapper implements Wrapper {
 
     private SQL sql;
 
-    public DBPlayerWrapper(SQL sql) {
+    public WrapperPlayer(SQL sql) {
         this.sql = sql;
         createTable();
     }
@@ -39,7 +38,7 @@ public class DBPlayerWrapper implements Wrapper {
     public void createTable() {
 
         String stmt = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + "(" + ATTRIBUTE_UUID + " varchar(64), " + ATTRIBUTE_WINS + " int, " + ATTRIBUTE_LOOSES + " int, " + ATTRIBUTE_T_PASSES + " int, " + ATTRIBUTE_D_PASSES + " int, "
-                + ATTRIBUTE_I_PASSES + " int, " + ATTRIBUTE_KARMA + " int, " + ATTRIBUTE_KILLS + " int, " + ATTRIBUTE_DEATHS + " int, " + ATTRIBUTE_ACHIEVEMENTS + " varchar(256), " + ATTRIBUTE_TESTER_ENTERED + " int, " + ATTRIBUTE_PASSES_USED + " int)";
+                + ATTRIBUTE_I_PASSES + " int, " + ATTRIBUTE_KARMA + " int, " + ATTRIBUTE_KILLS + " int, " + ATTRIBUTE_DEATHS + " int, " + ATTRIBUTE_ACHIEVEMENTS + " varchar(256), " + ATTRIBUTE_TESTER_ENTERED + " int, " + ATTRIBUTE_PASSES_USED + " int);";
 
         sql.executeUpdateAsync(stmt, null);
 
@@ -53,7 +52,7 @@ public class DBPlayerWrapper implements Wrapper {
         DBPlayer player = (DBPlayer) e;
 
         String stmt = "INSERT INTO " + TABLE_NAME + "(" + ATTRIBUTE_UUID + ", " + ATTRIBUTE_WINS + ", " + ATTRIBUTE_LOOSES + ", " + ATTRIBUTE_T_PASSES + ", " + ATTRIBUTE_D_PASSES + ", " + ATTRIBUTE_I_PASSES + ", "
-                + ATTRIBUTE_KARMA + ", " + ATTRIBUTE_KILLS + ", " + ATTRIBUTE_DEATHS + ", " + ATTRIBUTE_ACHIEVEMENTS + ", " + ATTRIBUTE_TESTER_ENTERED + ", " + ATTRIBUTE_PASSES_USED + ") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
+                + ATTRIBUTE_KARMA + ", " + ATTRIBUTE_KILLS + ", " + ATTRIBUTE_DEATHS + ", " + ATTRIBUTE_ACHIEVEMENTS + ", " + ATTRIBUTE_TESTER_ENTERED + ", " + ATTRIBUTE_PASSES_USED + ") VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?);";
 
         UUID uuid = player.getUuid();
         int wins = player.getWins();
@@ -83,7 +82,7 @@ public class DBPlayerWrapper implements Wrapper {
         DBPlayer player = (DBPlayer) e;
 
         String stmt = "UPDATE " + TABLE_NAME + " SET " + ATTRIBUTE_WINS + "=?, " + ATTRIBUTE_LOOSES + "=?, " + ATTRIBUTE_T_PASSES + "=?, " + ATTRIBUTE_D_PASSES + "=?, " + ATTRIBUTE_I_PASSES + "=?, " + ATTRIBUTE_KARMA + "=?, "
-                + ATTRIBUTE_KILLS + "=?, " + ATTRIBUTE_DEATHS + "=?, " + ATTRIBUTE_ACHIEVEMENTS + "=?, " + ATTRIBUTE_TESTER_ENTERED + "=?, " + ATTRIBUTE_PASSES_USED + "=? " + "WHERE " + ATTRIBUTE_UUID + "=?";
+                + ATTRIBUTE_KILLS + "=?, " + ATTRIBUTE_DEATHS + "=?, " + ATTRIBUTE_ACHIEVEMENTS + "=?, " + ATTRIBUTE_TESTER_ENTERED + "=?, " + ATTRIBUTE_PASSES_USED + "=? " + "WHERE " + ATTRIBUTE_UUID + "=?;";
 
         UUID uuid = player.getUuid();
         int wins = player.getWins();
@@ -108,7 +107,7 @@ public class DBPlayerWrapper implements Wrapper {
     @Override
     public void delete(Object e) {
 
-        String stmt = "DELETE * FROM " + TABLE_NAME + " WHERE " + ATTRIBUTE_UUID + "=?";
+        String stmt = "DELETE * FROM " + TABLE_NAME + " WHERE " + ATTRIBUTE_UUID + "=?;";
         Object attribute = null;
 
         if(e instanceof DBPlayer) {
@@ -124,7 +123,7 @@ public class DBPlayerWrapper implements Wrapper {
     @Override
     public Object get(Object e) {
 
-        String stmt = "SELECT * FROM " + TABLE_NAME + " WHERE " + ATTRIBUTE_UUID + "=?";
+        String stmt = "SELECT * FROM " + TABLE_NAME + " WHERE " + ATTRIBUTE_UUID + "=?;";
         Object attribute = null;
 
         if(e instanceof DBPlayer) {

@@ -2,7 +2,7 @@ package de.z1up.ttt.util.o;
 
 import org.bukkit.Location;
 
-public class Spawn {
+public class Spawn extends Object {
 
     private int id;
     private Location location;

@@ -1,6 +1,7 @@
 package de.z1up.ttt.manager;
 
 import de.z1up.ttt.TTT;
+import de.z1up.ttt.interfaces.Manager;
 import de.z1up.ttt.util.Data;
 import de.z1up.ttt.util.ItemBuilder;
 import de.z1up.ttt.util.o.Achievement;
@@ -9,12 +10,21 @@ import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
-import org.bukkit.inventory.ItemFactory;
 import org.bukkit.inventory.ItemStack;
 
 import java.util.Collection;
 
-public class InventoryManager {
+public class InventoryManager implements Manager {
+
+    @Override
+    public void load() {
+
+    }
+
+    @Override
+    public void init() {
+
+    }
 
     public void openAchievementsInv(Player player) {
         Bukkit.getScheduler().runTaskAsynchronously(TTT.getInstance(), new Runnable() {
@@ -23,9 +33,8 @@ public class InventoryManager {
 
                 Inventory inventory = Bukkit.createInventory(player, 9 * 6, "§eAchievements");
 
-                ItemStack filler = new ItemBuilder(Material.INK_SACK, (short) 8).setDisplayName("§7Erfolg").build();
                 for(int i = 0; i < 50; i++) {
-                    Achievement achievement = Data.achievementWrapper.getExistingAchievement(i);
+                    Achievement achievement = null;
 
                     if(achievement != null) {
                         String name = achievement.getName();

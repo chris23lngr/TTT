@@ -11,3 +11,5 @@ commands:
   start:
   setspawn:
   forcemap:
+  removespawn:
+  map:

@@ -7,7 +7,7 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.UUID;
 
-public class DBPlayer {
+public class DBPlayer extends Object {
 
     UUID uuid;
     int wins;
@@ -132,10 +132,10 @@ public class DBPlayer {
     }
 
     public void insert() {
-        Data.dbPlayerWrapper.insert(this);
+        Data.wrapperPlayer.insert(this);
     }
 
     public void update() {
-        Data.dbPlayerWrapper.update(this);
+        Data.wrapperPlayer.update(this);
     }
 }

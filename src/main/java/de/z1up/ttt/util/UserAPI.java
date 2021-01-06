@@ -22,7 +22,7 @@ public class UserAPI {
     }
 
     public static void playJoinEffects(Player player) {
-        MessageAPI.sendTitle(player, 20, 40, 20, "§4TTT", "§a§lRenixinside.de");
+        MessageAPI.sendTitle(player, 20, 40, 20, "§4TTT", "§aRenixinside.de");
         player.playSound(player.getLocation(), Sound.LEVEL_UP, 3.0F, 2.0F);
     }
 

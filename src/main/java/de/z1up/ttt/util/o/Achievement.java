@@ -2,7 +2,7 @@ package de.z1up.ttt.util.o;
 
 import de.z1up.ttt.util.Data;
 
-public class Achievement {
+public class Achievement extends Object {
 
     int id;
     String name;
@@ -33,6 +33,6 @@ public class Achievement {
     }
 
     public void update() {
-        Data.achievementWrapper.updateAchievement(this);
+        Data.wrapperAchievements.update(this);
     }
 }

@@ -1,5 +1,6 @@
 package de.z1up.ttt.manager;
 
+import de.z1up.ttt.interfaces.Manager;
 import de.z1up.ttt.util.Data;
 import de.z1up.ttt.util.o.Map;
 import org.bukkit.entity.Player;

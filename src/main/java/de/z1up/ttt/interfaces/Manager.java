@@ -1,4 +1,4 @@
-package de.z1up.ttt.manager;
+package de.z1up.ttt.interfaces;
 
 public interface Manager {
 

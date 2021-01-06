@@ -1,18 +1,25 @@
 package de.z1up.ttt.manager;
 
+import de.z1up.ttt.interfaces.Manager;
 import org.bukkit.entity.Player;
 
 import java.util.ArrayList;
 
-public class BuildManager {
+public class BuildManager implements Manager {
 
     private ArrayList<Player> buildPlayers;
 
     public BuildManager() {
+        load();
+    }
+
+    @Override
+    public void load() {
         init();
     }
 
-    void init() {
+    @Override
+    public void init() {
         buildPlayers = new ArrayList<>();
     }
 

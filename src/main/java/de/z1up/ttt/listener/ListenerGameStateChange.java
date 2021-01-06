@@ -4,11 +4,14 @@ import de.z1up.ttt.TTT;
 import de.z1up.ttt.event.GameStateChangeEvent;
 import de.z1up.ttt.manager.GameManager;
 import de.z1up.ttt.util.Data;
+import de.z1up.ttt.util.o.Map;
+import de.z1up.ttt.util.o.Spawn;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 
+import java.util.ArrayList;
 import java.util.Iterator;
 
 public class ListenerGameStateChange implements Listener {
@@ -25,13 +28,27 @@ public class ListenerGameStateChange implements Listener {
 
         if((from == GameManager.GameState.LOBBYPHASE) && (to == GameManager.GameState.SCHUTZPHASE)) {
 
-            Iterator players = Bukkit.getOnlinePlayers().iterator();
+            Iterator iterator = Bukkit.getOnlinePlayers().iterator();
+            ArrayList<Player> players = new ArrayList<>();
 
-            while (players.hasNext()) {
-                Player player = (Player) players.next();
+            while (iterator.hasNext()) {
+                Player player = (Player) iterator.next();
                 if(!Data.playerManager.isSpec(player)) {
-
+                    players.add(player);
                 }
+            }
+
+            Map map = Data.mapManager.getMapToPlay();
+            Bukkit.getConsoleSender().sendMessage("MAP ID: " + map.getId());
+            ArrayList<Spawn> spawns = map.getSpawns();
+            spawns.forEach(spawn -> System.out.println("SPAWN ID" + spawn.getId()));
+
+            for(int i = 0; i < players.size(); i++) {
+                Player player = players.get(i);
+                Spawn spawn = spawns.get(i);
+                player.teleport(spawn.getLocation());
+                player.sendMessage("pictch" + spawn.getLocation().getPitch());
+                player.sendMessage("yaw" + spawn.getLocation().getYaw());
             }
         }
 

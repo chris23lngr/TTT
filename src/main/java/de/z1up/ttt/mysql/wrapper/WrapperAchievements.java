@@ -1,15 +1,14 @@
 package de.z1up.ttt.mysql.wrapper;
 
+import de.z1up.ttt.interfaces.Wrapper;
 import de.z1up.ttt.mysql.SQL;
 import de.z1up.ttt.util.o.Achievement;
 
-import java.nio.file.Watchable;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.Arrays;
-import java.util.HashMap;
 
-public class AchievementWrapper {
+public class WrapperAchievements implements Wrapper {
 
     private final String TABLE_NAME = "achievements";
     private final String ATTRIBUTE_ID = "ID";
@@ -19,7 +18,7 @@ public class AchievementWrapper {
 
     private SQL sql;
 
-    public AchievementWrapper(SQL sql) {
+    public WrapperAchievements(SQL sql) {
 
         this.sql = sql;
 
@@ -27,48 +26,91 @@ public class AchievementWrapper {
         insertAchievements();
     }
 
-    private void createTable() {
+    @Override
+    public void createTable() {
 
-        sql.executeUpdateAsync("CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " ("
-                + ATTRIBUTE_ID + " int, "
-                + ATTRIBUTE_NAME + " varchar(256), "
-                + ATTRIBUTE_DESCRIPTION + " varchar(256), "
-                + ATTRIBUTE_ACHIEVED_BY + " int)", null);
+        String stmt = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" + ATTRIBUTE_ID + " int, " + ATTRIBUTE_NAME + " varchar(256), " + ATTRIBUTE_DESCRIPTION + " varchar(256), " + ATTRIBUTE_ACHIEVED_BY + " int);";
+        sql.executeUpdateAsync(stmt, null);
 
     }
 
-    public void insertAchievement(Achievement achievement) {
+    @Override
+    public void insert(Object e) {
+
+        if(!(e instanceof Achievement)) {
+            return;
+        }
+
+        Achievement achievement = (Achievement) e;
 
         int id = achievement.getId();
         String name = achievement.getName();
         String desc = achievement.getDescription();
         int achievedBy = achievement.getAchievedBy();
 
+        String stmt = "INSERT INTO " + TABLE_NAME + " (" + ATTRIBUTE_ID + ", " + ATTRIBUTE_NAME + ", " + ATTRIBUTE_DESCRIPTION + ", " + ATTRIBUTE_ACHIEVED_BY + ") VALUES (?, ?, ?, ?);";
 
-        sql.executeUpdateAsync("INSERT INTO " + TABLE_NAME + " ("
-                + ATTRIBUTE_ID + ", "
-                + ATTRIBUTE_NAME + ", "
-                + ATTRIBUTE_DESCRIPTION + ", "
-                + ATTRIBUTE_ACHIEVED_BY + ") VALUES (?, ?, ?, ?)",
-                Arrays.asList(id, name, desc, achievedBy));
-
+        sql.executeUpdateAsync(stmt, Arrays.asList(id, name, desc, achievedBy));
     }
 
-    public void updateAchievement(Achievement achievement) {
+    @Override
+    public void update(Object e) {
+
+        if(!(e instanceof Achievement)) {
+            return;
+        }
+
+        Achievement achievement = (Achievement) e;
 
         int id = achievement.getId();
         String name = achievement.getName();
         String desc = achievement.getDescription();
         int achievedBy = achievement.getAchievedBy();
 
+        String stmt = "UPDATE " + TABLE_NAME + " SET " + ATTRIBUTE_NAME + "=?, " + ATTRIBUTE_DESCRIPTION + "=?, " + ATTRIBUTE_ACHIEVED_BY + "=? " + "WHERE " + ATTRIBUTE_ID + "=?;";
 
-        sql.executeUpdateAsync("UPDATE " + TABLE_NAME + " SET "
-                        + ATTRIBUTE_NAME + "=?, "
-                        + ATTRIBUTE_DESCRIPTION + "=?, "
-                        + ATTRIBUTE_ACHIEVED_BY + "=? "
-                        + "WHERE " + ATTRIBUTE_ID + "=?",
+        sql.executeUpdateAsync(stmt,
                 Arrays.asList(name, desc, achievedBy, id));
+    }
 
+    @Override
+    public void delete(Object e) {
+
+        if(!(e instanceof Achievement)) {
+            return;
+        }
+
+        Achievement achievement = (Achievement) e;
+
+        int id = achievement.getId();
+
+        String stmt = "DELETE * FROM " + TABLE_NAME + "WHERE " + ATTRIBUTE_ID + "=?;";
+        sql.executeUpdateAsync(stmt, Arrays.asList(e));
+
+    }
+
+    @Override
+    public Object get(Object e) {
+
+        String stmt = "SELECT * FROM " + TABLE_NAME + " WHERE " + ATTRIBUTE_ID + "=?;";
+        ResultSet rs = sql.getResult(stmt, Arrays.asList(e));
+
+        try {
+            rs.next();
+
+            int id = rs.getInt(ATTRIBUTE_ID);
+            String name = rs.getString(ATTRIBUTE_NAME);
+            String desc = rs.getString(ATTRIBUTE_DESCRIPTION);
+            int achievedBy = rs.getInt(ATTRIBUTE_ACHIEVED_BY);
+
+            Achievement achievement = new Achievement(id, name, desc, achievedBy);
+            return achievement;
+
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
+        }
+
+        return null;
     }
 
     private void insertAchievements() {
@@ -76,12 +118,12 @@ public class AchievementWrapper {
         while (id < 15) {
             id = id + 1;
             System.out.println(id);
-            if(!existsAchievement(id)) insertAchievement(getNewAchievement(id));
+            //if(!existsAchievement(id)) insertAchievement(getNewAchievement(id));
         }
     }
 
-    public boolean existsAchievement(int id) {
-        return sql.existResult(TABLE_NAME, ATTRIBUTE_ID, id);
+    public boolean existsAchievement(Object e) {
+        return sql.existResult(TABLE_NAME, ATTRIBUTE_ID, e);
     }
 
     public Achievement getNewAchievement(int id) {
@@ -106,28 +148,6 @@ public class AchievementWrapper {
         if(id == 16) return getOP();
         if(id == 17) return getTester();
         return null;
-    }
-
-    public Achievement getExistingAchievement(int id) {
-        if(!existsAchievement(id)) return null;
-
-        Achievement achievement = null;
-
-        ResultSet rs = sql.getResult("SELECT * FROM " + TABLE_NAME + " WHERE " + ATTRIBUTE_ID + "=?", Arrays.asList(id));
-
-        try {
-            rs.next();
-
-            String name = rs.getString(ATTRIBUTE_NAME);
-            String desc = rs.getString(ATTRIBUTE_DESCRIPTION);
-            int achievedBy = rs.getInt(ATTRIBUTE_ACHIEVED_BY);
-
-            achievement = new Achievement(id, name, desc, achievedBy);
-        } catch (SQLException throwables) {
-            throwables.printStackTrace();
-        }
-
-        return achievement;
     }
 
     public Achievement getFirstKill() {

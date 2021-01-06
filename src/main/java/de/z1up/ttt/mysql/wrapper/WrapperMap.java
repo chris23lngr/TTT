@@ -1,5 +1,6 @@
 package de.z1up.ttt.mysql.wrapper;
 
+import de.z1up.ttt.interfaces.Wrapper;
 import de.z1up.ttt.mysql.SQL;
 import de.z1up.ttt.util.o.Map;
 import org.bukkit.Material;
@@ -8,7 +9,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.*;
 
-public class MapWrapper implements Wrapper{
+public class WrapperMap implements Wrapper {
 
     private final String TABLE_NAME = "maps";
     private final String ATTRIBUTE_ID = "ID";
@@ -22,7 +23,7 @@ public class MapWrapper implements Wrapper{
 
     private SQL sql;
 
-    public MapWrapper(SQL sql) {
+    public WrapperMap(SQL sql) {
         this.sql = sql;
         createTable();
     }
@@ -31,7 +32,7 @@ public class MapWrapper implements Wrapper{
     public void createTable() {
 
         String stmt = "CREATE TABLE IF NOT EXISTS " + TABLE_NAME + " (" + ATTRIBUTE_ID + " int, " + ATTRIBUTE_NAME + " varchar(256), " + ATTRIBUTE_ITEM_MAT + " varchar(256), " + ATTRIBUTE_JUDGE_COUNT_VERY_BAD + " bigint, "
-                + ATTRIBUTE_JUDGE_COUNT_BAD + " bigint, " + ATTRIBUTE_JUDGE_COUNT_NEUTRAL + " bigint, " + ATTRIBUTE_JUDGE_COUNT_GOOD + " bigint, " + ATTRIBUTE_JUDGE_COUNT_VERY_GOOD + " bigint)";
+                + ATTRIBUTE_JUDGE_COUNT_BAD + " bigint, " + ATTRIBUTE_JUDGE_COUNT_NEUTRAL + " bigint, " + ATTRIBUTE_JUDGE_COUNT_GOOD + " bigint, " + ATTRIBUTE_JUDGE_COUNT_VERY_GOOD + " bigint);";
 
         sql.executeUpdateAsync(stmt, null);
 
@@ -47,7 +48,7 @@ public class MapWrapper implements Wrapper{
         Map map = (Map) e;
 
         String stmt = "INSERT INTO " + TABLE_NAME + " (" + ATTRIBUTE_ID + ", " + ATTRIBUTE_NAME + ", " + ATTRIBUTE_ITEM_MAT + ", " + ATTRIBUTE_JUDGE_COUNT_VERY_BAD + ", " + ATTRIBUTE_JUDGE_COUNT_BAD + ", "
-                + ATTRIBUTE_JUDGE_COUNT_NEUTRAL + ", " + ATTRIBUTE_JUDGE_COUNT_GOOD + ", " + ATTRIBUTE_JUDGE_COUNT_VERY_GOOD + ") VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
+                + ATTRIBUTE_JUDGE_COUNT_NEUTRAL + ", " + ATTRIBUTE_JUDGE_COUNT_GOOD + ", " + ATTRIBUTE_JUDGE_COUNT_VERY_GOOD + ") VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
 
 
         int id = map.getId();
@@ -72,7 +73,7 @@ public class MapWrapper implements Wrapper{
         Map map = (Map) e;
 
         String stmt = "UPDATE " + TABLE_NAME + " SET " + ATTRIBUTE_NAME + "=?, " + ATTRIBUTE_ITEM_MAT + "=?, " + ATTRIBUTE_JUDGE_COUNT_VERY_BAD + "=?, " + ATTRIBUTE_JUDGE_COUNT_BAD + "=?, "
-                + ATTRIBUTE_JUDGE_COUNT_NEUTRAL + "=?, " + ATTRIBUTE_JUDGE_COUNT_GOOD + "=?, " + ATTRIBUTE_JUDGE_COUNT_VERY_GOOD + "=? WHERE " + ATTRIBUTE_ID + "=?";
+                + ATTRIBUTE_JUDGE_COUNT_NEUTRAL + "=?, " + ATTRIBUTE_JUDGE_COUNT_GOOD + "=?, " + ATTRIBUTE_JUDGE_COUNT_VERY_GOOD + "=? WHERE " + ATTRIBUTE_ID + "=?;";
 
 
         int id = map.getId();
@@ -97,7 +98,7 @@ public class MapWrapper implements Wrapper{
 
         Map map = (Map) e;
 
-        String stmt = "DELETE * FROM " + TABLE_NAME + " WHERE " + ATTRIBUTE_ID + "=?";
+        String stmt = "DELETE * FROM " + TABLE_NAME + " WHERE " + ATTRIBUTE_ID + "=?;";
 
         int id = map.getId();
 
@@ -113,10 +114,10 @@ public class MapWrapper implements Wrapper{
 
         if( e instanceof Integer) {
             attribute = (Integer) e;
-            stmt = stmt  + ATTRIBUTE_ID + "=?";
+            stmt = stmt  + ATTRIBUTE_ID + "=?;";
         } else if(e instanceof String) {
             attribute = (String) e;
-            stmt = stmt  + ATTRIBUTE_NAME + "=?";
+            stmt = stmt  + ATTRIBUTE_NAME + "=?;";
         }
 
         ResultSet rs = sql.getResult(stmt, Arrays.asList(attribute));
@@ -152,7 +153,7 @@ public class MapWrapper implements Wrapper{
     }
 
     public ArrayList<Map> getRandomMaps() {
-        String stmt = "SELECT * FROM " + TABLE_NAME + " ORDER BY RAND() LIMIT 3";
+        String stmt = "SELECT * FROM " + TABLE_NAME + " ORDER BY RAND() LIMIT 3;";
 
         ResultSet rs = sql.getResult(stmt, null);
 
@@ -184,5 +185,24 @@ public class MapWrapper implements Wrapper{
             return createID();
         }
         return id;
+    }
+
+    public ArrayList<Map> getPossibleMaps() {
+        String stmt = "SELECT * FROM " + TABLE_NAME;
+
+        ResultSet rs = sql.getResult(stmt, null);
+
+        ArrayList<Map> maps = new ArrayList<>();
+
+        try {
+            while (rs.next()){
+                int id = rs.getInt(ATTRIBUTE_ID);
+                Map map = (Map) get(id);
+                maps.add(map);
+            }
+        } catch (SQLException throwables) {
+            throwables.printStackTrace();
+        }
+        return maps;
     }
 }
