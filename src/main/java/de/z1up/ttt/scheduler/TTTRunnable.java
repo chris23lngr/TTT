@@ -1,16 +1,15 @@
 package de.z1up.ttt.scheduler;
 
 import de.z1up.ttt.TTT;
-import de.z1up.ttt.event.CountdownFinishEvent;
-import de.z1up.ttt.event.CountdownTimeChangeEvent;
+import de.z1up.ttt.event.TimerFinishEvent;
+import de.z1up.ttt.event.TimerStartEvent;
+import de.z1up.ttt.event.TimerTimeChangeEvent;
 import de.z1up.ttt.manager.GameManager;
-import de.z1up.ttt.core.Core;
-import de.z1up.ttt.util.Messages;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
 import org.bukkit.scheduler.BukkitRunnable;
 
-import java.lang.reflect.Method;
+import java.util.Timer;
 
 public class TTTRunnable extends BukkitRunnable {
 
@@ -19,7 +18,6 @@ public class TTTRunnable extends BukkitRunnable {
     private GameManager.GameState gameState;
     private String timerMessage;
     private boolean active;
-    Method onStop;
 
     public TTTRunnable(int time, boolean forced, GameManager.GameState gameState, String timerMessage) {
         this.time = time;
@@ -32,6 +30,11 @@ public class TTTRunnable extends BukkitRunnable {
     public void runAsync() {
         active = true;
         runTaskTimerAsynchronously(TTT.getInstance(), 0, 20);
+
+        // call the TimerStartEvent
+        // when the timer is started
+        TimerStartEvent event = new TimerStartEvent(this, false);
+        Bukkit.getPluginManager().callEvent(event);
     }
 
     @Override
@@ -48,32 +51,32 @@ public class TTTRunnable extends BukkitRunnable {
 
         if(active) {
 
-            if(time == 60) {
-
-            } else if(time == 30) {
+            if(timerMessage != null && !timerMessage.equalsIgnoreCase(" ")) {
                 sendTimerMessage();
-            } else if(time == 15) {
-                sendTimerMessage();
-            } else if(time == 10) {
-                sendTimerMessage();
-            } else if((time < 6) && (time != 0)) {
-                sendTimerMessage();
-            } else if(time == 0) {
-                CountdownFinishEvent event = new CountdownFinishEvent(this, false);
-                if(!event.isCancelled()) {
-                    Bukkit.getPluginManager().callEvent(event);
-                }
-                cancel();
             }
+
+          if(time == 0) {
+
+              // call the TimerFinishEvent
+              TimerFinishEvent event = new TimerFinishEvent(this, false);
+              Bukkit.getPluginManager().callEvent(event);
+
+            }
+
         } else {
-            cancel();
+
+            // call the TimerFinishEvent
+            TimerFinishEvent event = new TimerFinishEvent(this, false);
+            Bukkit.getPluginManager().callEvent(event);
+
         }
-        Bukkit.getOnlinePlayers().forEach(player -> {
-            player.setLevel(time);
-        });
+
+        // lower the time and call the
+        // CountDownTimeChangeEvent
         time--;
-        Event event = new CountdownTimeChangeEvent(this, time, false);
+        Event event = new TimerTimeChangeEvent(this, time, false);
         Bukkit.getPluginManager().callEvent(event);
+
     }
 
     public int getTime() {
@@ -102,13 +105,26 @@ public class TTTRunnable extends BukkitRunnable {
     }
 
     void sendTimerMessage() {
-        Bukkit.getServer().broadcastMessage(timerMessage.replaceAll("%time%", String.valueOf(time)));
+
+        String msg = timerMessage.replaceAll("%time%", String.valueOf(time));
+
+        if(time == 60) {
+            Bukkit.broadcastMessage(msg);
+        } else if(time == 30) {
+            Bukkit.broadcastMessage(msg);
+        } else if(time == 15) {
+            Bukkit.broadcastMessage(msg);
+        } else if(time == 10) {
+            Bukkit.broadcastMessage(msg);
+        } else if((time < 6) && (time != 0)) {
+            Bukkit.broadcastMessage(msg);
+        }
+
     }
 
     @Override
     public synchronized void cancel() throws IllegalStateException {
         super.cancel();
-        Bukkit.getServer().broadcastMessage(Messages.PREFIX + "§7Der Countdown wurde beendet!");
         active = false;
     }
 

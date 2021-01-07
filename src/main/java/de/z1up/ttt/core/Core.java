@@ -70,6 +70,7 @@ public class Core {
         invManager = new InventoryManager();
         timerManager = new TimerManager();
         voteManager = new VoteManager();
+        spawnManager = new ManagerSpawn();
     }
 
 

@@ -11,36 +11,42 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
+ * The ItemBuilder can create new ItemStacks that can
+ * be submitted via the build method.
+ *
  * @author chris23lngr
  * @since 1.0
- * @implNote From https://github.com/chris23lngr/UtilAPI/blob/master/src/main/java/de/z1up/utilapi/builder/ItemBuilder.java
+ * @see org.bukkit.inventory.ItemStack
+ * @see org.bukkit.Material
  */
-
 public class ItemBuilder {
 
     private ItemStack itemStack;
     private ItemMeta itemMeta;
     private SkullMeta skullMeta;
 
-    public ItemBuilder(Material material, Short id)
-    {
-        this.itemStack = new ItemStack(material, 1, id); this.itemMeta = this.itemStack.getItemMeta();
+    public ItemBuilder(Material material, int id) {
+        this.itemStack = new ItemStack(material, 1, (short) id);
+        this.itemMeta = this.itemStack.getItemMeta();
     }
 
-    @SuppressWarnings("deprecation")
+    public ItemBuilder(Material material, Short id)
+    {
+        this.itemStack = new ItemStack(material, 1, id);
+        this.itemMeta = this.itemStack.getItemMeta();
+    }
+
     public ItemBuilder(String skullOwner) {
         this.itemStack = new ItemStack(Material.SKULL_ITEM, 1, (short) 3);
         this.skullMeta = (SkullMeta) this.itemStack.getItemMeta();
         this.skullMeta.setOwner(skullOwner);
     }
 
-    @SuppressWarnings("deprecation")
     public ItemBuilder(Integer id, Short subId)
     {
         this.itemStack = new ItemStack(id, 1, subId); this.itemMeta = this.itemStack.getItemMeta();
     }
 
-    // methods
 
     /**
      * add a Enchantment to the ItemStack

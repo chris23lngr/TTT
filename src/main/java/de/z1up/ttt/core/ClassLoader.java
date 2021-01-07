@@ -34,8 +34,9 @@ public class ClassLoader {
         new ListenerBlockPlace();
         new ListenerBreakBlock();
 
-        new ListenerCountdownFinish();
-        new ListenerCountdownTimeChange();
+        new ListenerTimerStart();
+        new ListenerTimerFinish();
+        new ListenerTimerTimeChange();
 
         new ListenerEntityDamage();
         new ListenerEntityDamageByEntity();

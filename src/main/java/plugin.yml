@@ -9,6 +9,7 @@ commands:
   build:
   start:
   setspawn:
+    usage: /setspawn <Map>
   forcemap:
   removespawn:
   map:

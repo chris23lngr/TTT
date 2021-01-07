@@ -28,6 +28,8 @@ public class ListenerGameStateChange implements Listener {
 
         if((from == GameManager.GameState.LOBBYPHASE) && (to == GameManager.GameState.SCHUTZPHASE)) {
 
+            // teleport all the players who aren't
+            // specs to a Spawnpoint
             Iterator iterator = Bukkit.getOnlinePlayers().iterator();
             ArrayList<Player> players = new ArrayList<>();
 
@@ -46,6 +48,10 @@ public class ListenerGameStateChange implements Listener {
                 Spawn spawn = spawns.get(i);
                 player.teleport(spawn.getLocation());
             }
+
+            // Start the Savephase timer
+            TTT.core.getTimerManager().getLobbyTimer().runAsync();
+
         }
 
     }

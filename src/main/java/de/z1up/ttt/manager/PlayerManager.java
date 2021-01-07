@@ -73,4 +73,16 @@ public class PlayerManager extends WrapperPlayer implements Manager {
     public ArrayList<Player> getSpecs() {
         return specs;
     }
+
+    public ArrayList<Player> getTraitors() {
+        return traitors;
+    }
+
+    public ArrayList<Player> getDetectives() {
+        return detectives;
+    }
+
+    public ArrayList<Player> getInnos() {
+        return innos;
+    }
 }

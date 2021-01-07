@@ -10,7 +10,7 @@ import org.bukkit.entity.Player;
 
 public class CommandRemoveSpawn implements CommandExecutor {
 
-    private final String NAME = "removespawm";
+    private final String NAME = "removespawn";
 
     public CommandRemoveSpawn() {
         TTT.getInstance().getCommand(NAME).setExecutor(this::onCommand);
@@ -28,7 +28,7 @@ public class CommandRemoveSpawn implements CommandExecutor {
         Player player = (Player) sender;
 
         if (!TTT.core.getGameManager().inLobby() ||
-                TTT.core.getTimerManager().getLobbyCountdown().isActive()) {
+                TTT.core.getTimerManager().getLobbyTimer().isActive()) {
             player.sendMessage(Messages.CMD_NOT_EXECUTABLE_ATM);
             return true;
         }

@@ -26,17 +26,31 @@ public class TTT extends JavaPlugin {
     private static TTT instance;
 
     /**
-     * The static {@core core} is used to access the core class.
+     * The static {@code core} is used to access the core class.
      * This then refers to the managers and wrappers. The MySQL
      * connection is also accessed via the core.
      */
     public static Core core;
 
+
+    /**
+     * The {@code onLoad()} method is called, when the plugin is
+     * being loaded.
+     *
+     * @see org.bukkit.plugin.java.JavaPlugin
+     */
     @Override
     public void onLoad() {
         super.onLoad();
     }
 
+    /**
+     * The {@code onEnable()} method is called, when the plugin is
+     * being enabled. This is where the {@code init()} and the
+     * {@code load()} method are called.
+     *
+     * @see org.bukkit.plugin.java.JavaPlugin
+     */
     @Override
     public void onEnable() {
         super.onEnable();
@@ -44,16 +58,40 @@ public class TTT extends JavaPlugin {
         load();
     }
 
+    /**
+     * The {@code onLoad()} method is called, when the plugin is
+     * being disabled.
+     *
+     * @see org.bukkit.plugin.java.JavaPlugin
+     */
     @Override
     public void onDisable() {
         super.onDisable();
     }
 
+    /**
+     * The {@code init()} method initialises the two class attributes
+     * {@code instance} and {@code core}. A new, suitable instance
+     * is created for each. For the instance attribute, this is this
+     * TTT class. For the core attribute, it is a new instance of the
+     * core class.
+     */
     void init() {
-        instance = this;
-        core = new Core();
+        if(instance == null) {
+            instance = this;
+        }
+        if(core == null) {
+            core = new Core();
+        }
     }
 
+    /**
+     * The load() method loads the core using the Core.load() method.
+     * If the core does not exit, the init() method is executed again
+     * to ensure that the plugin is running correctly. If the core is
+     * still not initialised, the server is stopped to avoid further
+     * errors.
+     */
     void load() {
         if(core != null) {
             core.load();
@@ -65,11 +103,15 @@ public class TTT extends JavaPlugin {
             // shut server down. Plugin won't be able to
             // work properly.
             if(core == null) {
-                String err = "§4FATAL ERROR: Core cannot be loaded. Please contact developer!";
+                String err = "§4FATAL ERROR: Core cannot be loaded. "
+                        + "Please contact developer!";
                 Bukkit.getConsoleSender().sendMessage(err);
                 Bukkit.shutdown();
+                return;
             }
 
+            // Load the core again
+            core.load();
         }
     }
 

@@ -5,17 +5,15 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
-public class CountdownTimeChangeEvent extends Event implements Cancellable {
+public class TimerFinishEvent extends Event implements Cancellable {
 
     private static final HandlerList HANDLERS_LIST = new HandlerList();
 
     private TTTRunnable runnable;
-    private int time;
     private boolean isCancelled;
 
-    public CountdownTimeChangeEvent(TTTRunnable runnable, int time, boolean isCancelled) {
+    public TimerFinishEvent(TTTRunnable runnable, boolean isCancelled) {
         this.runnable = runnable;
-        this.time = time;
         this.isCancelled = isCancelled;
     }
 
@@ -36,10 +34,6 @@ public class CountdownTimeChangeEvent extends Event implements Cancellable {
 
     public TTTRunnable getRunnable() {
         return runnable;
-    }
-
-    public int getTime() {
-        return time;
     }
 
     public static HandlerList getHandlerList() {

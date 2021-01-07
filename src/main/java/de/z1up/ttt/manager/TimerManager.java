@@ -3,16 +3,15 @@ package de.z1up.ttt.manager;
 import de.z1up.ttt.TTT;
 import de.z1up.ttt.interfaces.Manager;
 import de.z1up.ttt.scheduler.TTTRunnable;
-import de.z1up.ttt.core.Core;
 import de.z1up.ttt.util.MessageAPI;
 import de.z1up.ttt.util.Messages;
-import org.apache.logging.log4j.message.Message;
 import org.bukkit.Bukkit;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class TimerManager implements Manager {
 
-    private TTTRunnable lobbyCountdown;
+    private TTTRunnable lobbyTimer;
+    private TTTRunnable savePhaseTimer;
 
     public TimerManager() {
         load();
@@ -26,27 +25,30 @@ public class TimerManager implements Manager {
 
     @Override
     public void init() {
-        lobbyCountdown = new TTTRunnable(60, false, GameManager.GameState.LOBBYPHASE,
-                Messages.PREFIX + "§7Das Spiel startet in §a"
-                        + (Integer.parseInt("2") == 1 ? "einer Sekunde" : "%time% Sekunden") + "§8!");
+        initLobbyTimer();
+        initSavePhaseTimer();
     }
 
-    public TTTRunnable getLobbyCountdown() {
-        return lobbyCountdown;
+    public TTTRunnable getLobbyTimer() {
+        return lobbyTimer;
+    }
+
+    public TTTRunnable getSavePhaseTimer() {
+        return savePhaseTimer;
     }
 
     public void checkPlayersForStart() {
 
-        if(!lobbyCountdown.isForced()) {
+        if(!lobbyTimer.isForced()) {
             if(Bukkit.getOnlinePlayers().size() < Bukkit.getMaxPlayers()) {
                 return;
             }
         }
 
         if (TTT.core.getGameManager().inLobby()) {
-            if(!lobbyCountdown.isActive()) {
-                if((lobbyCountdown.getTime() != 0) && (lobbyCountdown.getTime() != -1)) {
-                    lobbyCountdown.runAsync();
+            if(!lobbyTimer.isActive()) {
+                if((lobbyTimer.getTime() != 0) && (lobbyTimer.getTime() != -1)) {
+                    lobbyTimer.runAsync();
                 }
             }
         }
@@ -58,8 +60,8 @@ public class TimerManager implements Manager {
             return;
         }
 
-        if(!lobbyCountdown.isForced()) {
-            if(lobbyCountdown.isActive()) {
+        if(!lobbyTimer.isForced()) {
+            if(lobbyTimer.isActive()) {
                 return;
             }
         }
@@ -74,7 +76,7 @@ public class TimerManager implements Manager {
                     return;
                 }
 
-                if(lobbyCountdown.isActive()) {
+                if(lobbyTimer.isActive()) {
                     cancel();
                     return;
                 }
@@ -89,6 +91,18 @@ public class TimerManager implements Manager {
             }
         }.runTaskTimerAsynchronously(TTT.getInstance(), 0, 40);
 
+    }
+
+    public void initLobbyTimer() {
+        this.lobbyTimer = new TTTRunnable(60, false, GameManager.GameState.LOBBYPHASE,
+                Messages.PREFIX + "§7Das Spiel startet in §a"
+                        + (Integer.parseInt("2") == 1 ? "einer Sekunde" : "%time% Sekunden") + "§8!");
+    }
+
+    public void initSavePhaseTimer() {
+        this.lobbyTimer = new TTTRunnable(60, false, GameManager.GameState.SCHUTZPHASE,
+                Messages.PREFIX + "§7Die Schutzzeit endet in §a"
+                        + (Integer.parseInt("2") == 1 ? "einer Sekunde" : "%time% Sekunden") + "§8!");
     }
 
 }

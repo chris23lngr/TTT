@@ -1,5 +1,13 @@
 package de.z1up.ttt.util;
 
+/**
+ * All messages that can be used globally are
+ * stored in the Messages class. User or context
+ * specific messages should not be stored here.
+ *
+ * @author chris23lngr
+ * @since 1.0
+ */
 public final class Messages {
 
     public static final String PREFIX
@@ -79,6 +87,15 @@ public final class Messages {
 
     public static final String KICKED_BY_PREMIUM
             = PREFIX + "§cDu wurdest von einem §6Premium §c-Spieler gekickt§8.";
+
+    public static final String WIN_TRAITOR
+            = PREFIX + "§aDie §4Traitor §agewinnen diese Runde§8!";
+
+    public static final String WIN_INNO
+            = PREFIX + "§aDie Innocents gewinnen diese Runde§8!";
+
+    public static final String WIN_DRAW
+            = PREFIX + "§7Diese Runde ist unentschieden asugegangen§8!";
 
     public final class ErrorMessages {
 

@@ -117,7 +117,6 @@ public class WrapperAchievements implements Wrapper {
         int id = 0;
         while (id < 15) {
             id = id + 1;
-            System.out.println(id);
             //if(!existsAchievement(id)) insertAchievement(getNewAchievement(id));
         }
     }
