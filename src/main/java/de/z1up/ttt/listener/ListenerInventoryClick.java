@@ -2,6 +2,7 @@ package de.z1up.ttt.listener;
 
 import de.z1up.ttt.TTT;
 import de.z1up.ttt.core.Core;
+import de.z1up.ttt.util.Messages;
 import de.z1up.ttt.util.o.Map;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
@@ -25,60 +26,89 @@ public class ListenerInventoryClick implements Listener {
 
         Player whoClicked = (Player) event.getWhoClicked();
 
-        if(Core.buildManager.canBuild(whoClicked)) {
+        if(TTT.core.getBuildManager().canBuild(whoClicked)) {
             event.setCancelled(false);
             return;
         }
 
-        if (Core.playerManager.isSpec(whoClicked)) {
+        if (TTT.core.getPlayerManager().isSpec(whoClicked)) {
             event.setCancelled(true);
             return;
         }
 
-        if(Core.gameManager.inGame()) {
+        if(TTT.core.getGameManager().inGame()) {
             event.setCancelled(false);
             return;
         }
 
         event.setCancelled(true);
 
-        if(event.getCurrentItem() == null) return;
-        if(event.getCurrentItem().getItemMeta() == null) return;
-        if(event.getCurrentItem().getItemMeta().getDisplayName() == null) return;
-        if(event.getCurrentItem().getItemMeta().getDisplayName().equals(" ")) return;
-        if(event.getInventory() == null) return;
-        if(event.getSlotType() == null) return;
-        if(event.getSlot() == -1 ) return;
-        if(event.getClickedInventory() == null) return;
-        if(!(event.getWhoClicked() instanceof Player)) return;
+        if(this.contextInvalid(event)) {
+            return;
+        }
 
         if(event.getClickedInventory().getTitle().equals("§bMapvoting")) {
-            onMapVote(event);
+            this.onMapClick(event);
         }
 
     }
 
-    private void onMapVote(InventoryClickEvent context) {
+    private boolean contextInvalid(final InventoryClickEvent context) {
+        if(context.getSlot() == -1 ) {
+            return true;
+        }
+        if(context.getSlotType() == null) {
+            return true;
+        }
+        if(context.getInventory() == null) {
+            return true;
+        }
+        if(context.getCurrentItem() == null) {
+            return true;
+        }
+        if(context.getClickedInventory() == null) {
+            return true;
+        }
+        if(!(context.getWhoClicked() instanceof Player)) {
+            return true;
+        }
+        if(context.getCurrentItem().getItemMeta() == null) {
+            return true;
+        }
+        if(context.getCurrentItem().getItemMeta().getDisplayName() == null) {
+            return true;
+        }
+        if(context.getCurrentItem().getItemMeta().getDisplayName().equals(" ")) {
+            return true;
+        }
+        return false;
+    }
+
+    private void onMapClick(final InventoryClickEvent context) {
 
         ItemStack itemStack = context.getCurrentItem();
         String display = itemStack.getItemMeta().getDisplayName();
 
         String mapName = display.replaceAll("§a", "");
 
-        if(!Core.mapWrapper.existsName(mapName)) {
+        if(!TTT.core.getMapManager().existsName(mapName)) {
             return;
         }
 
         Player player = (Player) context.getWhoClicked();
-        Map map = (Map) Core.mapWrapper.get(mapName);
+        Map map = TTT.core.getMapManager().getMap(mapName);
 
-        if(Core.voteManager.isVotePeriodActive()) {
+        if(TTT.core.getVoteManager().isVotePeriodActive()) {
 
-            if(Core.voteManager.hasVoted(player)) {
-                Core.voteManager.unvote(player);
+            // Check if the player has voted already
+            if(TTT.core.getVoteManager().hasVoted(player)) {
+                // If so, unvote from old map
+                TTT.core.getVoteManager().unvote(player);
             }
 
-            Core.voteManager.vote(player, map);
+            // Vote for new map and send success message
+            TTT.core.getVoteManager().vote(player, map);
+            player.sendMessage(Messages.MAPS_YOU_VOTED_FOR + map.getName());
             player.closeInventory();
         }
 

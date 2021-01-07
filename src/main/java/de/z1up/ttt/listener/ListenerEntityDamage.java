@@ -23,7 +23,7 @@ public class ListenerEntityDamage implements Listener {
             return;
         }
 
-        if(Core.gameManager.inGame()) {
+        if(TTT.core.getGameManager().inGame()) {
             event.setCancelled(false);
         } else {
             event.setCancelled(true);

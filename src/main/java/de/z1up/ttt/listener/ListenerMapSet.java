@@ -3,6 +3,7 @@ package de.z1up.ttt.listener;
 import de.z1up.ttt.TTT;
 import de.z1up.ttt.event.MapSetEvent;
 import de.z1up.ttt.core.Core;
+import de.z1up.ttt.util.Messages;
 import de.z1up.ttt.util.o.Map;
 import de.z1up.ttt.util.o.Spawn;
 import org.bukkit.Bukkit;
@@ -21,12 +22,12 @@ public class ListenerMapSet implements Listener {
     public void onCall(final MapSetEvent event) {
 
         Map map = event.getMap();
-        ArrayList<Spawn> spawns = Core.spawnManager.getSpawns(map.getId());
+        ArrayList<Spawn> spawns = TTT.core.getSpawnManager().getSpawns(map.getId());
 
         map.setSpawns(spawns);
-        Core.mapManager.setMapToPlay(map);
+        TTT.core.getMapManager().setMapToPlay(map);
 
-        Bukkit.broadcastMessage(Core.getPrefix() + "§7Es wird gespielt auf: §a" + map.getName());
+        Bukkit.broadcastMessage(Messages.PLAYING_ON + map.getName());
 
         //Bukkit.getOnlinePlayers().forEach(player -> Data.sbManager.updateLobbySB(player));
 

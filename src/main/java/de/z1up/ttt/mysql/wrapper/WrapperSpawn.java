@@ -1,5 +1,6 @@
 package de.z1up.ttt.mysql.wrapper;
 
+import de.z1up.ttt.TTT;
 import de.z1up.ttt.interfaces.Wrapper;
 import de.z1up.ttt.mysql.SQL;
 import de.z1up.ttt.core.Core;
@@ -127,7 +128,7 @@ public class WrapperSpawn implements Wrapper {
                 float pitch = rs.getFloat(ATTRIBUTE_PITCH);
 
                 Location location = new Location(Bukkit.getWorld(worldName), x, y, z, yaw, pitch);
-                Map map = Core.mapManager.getMap(mapId);
+                Map map = TTT.core.getMapManager().getMap(mapId);
 
                 Spawn spawn = new Spawn(id, location, map);
                 return spawn;

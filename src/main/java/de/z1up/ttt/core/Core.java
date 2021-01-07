@@ -18,15 +18,15 @@ public class Core {
 
     public static SQL sql;
 
-    public ManagerMap mapManager;
-    public GameManager gameManager;
-    public PlayerManager playerManager;
-    public BuildManager buildManager;
-    public ScoreboardManager sbManager;
-    public InventoryManager invManager;
-    public TimerManager timerManager;
-    public VoteManager voteManager;
-    public ManagerSpawn spawnManager;
+    private ManagerMap mapManager;
+    private GameManager gameManager;
+    private PlayerManager playerManager;
+    private BuildManager buildManager;
+    private ScoreboardManager sbManager;
+    private InventoryManager invManager;
+    private TimerManager timerManager;
+    private VoteManager voteManager;
+    private ManagerSpawn spawnManager;
 
     public ReplayFile replayFile;
     public RuleBook ruleBook;
@@ -98,4 +98,45 @@ public class Core {
         ClassLoader loader = new ClassLoader();
         loader.load();
     }
+
+    public GameManager getGameManager() {
+        return gameManager;
+    }
+
+    public ManagerMap getMapManager() {
+        return mapManager;
+    }
+
+    public PlayerManager getPlayerManager() {
+        return playerManager;
+    }
+
+    public BuildManager getBuildManager() {
+        return buildManager;
+    }
+
+    public ScoreboardManager getSbManager() {
+        return sbManager;
+    }
+
+    public InventoryManager getInvManager() {
+        return invManager;
+    }
+
+    public TimerManager getTimerManager() {
+        return timerManager;
+    }
+
+    public VoteManager getVoteManager() {
+        return voteManager;
+    }
+
+    public ManagerSpawn getSpawnManager() {
+        return spawnManager;
+    }
+
+    public RuleBook getRuleBook() {
+        return ruleBook;
+    }
 }
+

@@ -3,6 +3,7 @@ package de.z1up.ttt.manager;
 import de.z1up.ttt.TTT;
 import de.z1up.ttt.interfaces.Manager;
 import de.z1up.ttt.core.Core;
+import de.z1up.ttt.mysql.wrapper.WrapperPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
@@ -11,7 +12,7 @@ import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
 
-public class PlayerManager implements Manager {
+public class PlayerManager extends WrapperPlayer implements Manager {
 
     private ArrayList<Player> alives;
     private ArrayList<Player> traitors;
@@ -20,6 +21,7 @@ public class PlayerManager implements Manager {
     private ArrayList<Player> specs;
 
     public PlayerManager() {
+        super(Core.sql);
         load();
     }
 
@@ -60,21 +62,7 @@ public class PlayerManager implements Manager {
     public void enterSpecMode(Player player) {
         hideSpecFromPlayers(player);
 
-        Bukkit.getScheduler().runTaskLaterAsynchronously(TTT.getInstance(), () -> {
 
-            //player.teleport(Spawns.getLobby());
-            Core.invManager.setSpecInv(player);
-            player.setGameMode(GameMode.ADVENTURE);
-            player.getInventory().clear();
-            player.getInventory().setArmorContents(null);
-            player.setFoodLevel(20);
-            player.setHealth(20.0D);
-            player.setAllowFlight(true);
-            player.setFlying(true);
-            player.addPotionEffect(new PotionEffect(PotionEffectType.INVISIBILITY,
-                    99999999, 1, false, false));
-
-        }, 10L);
 
     }
 

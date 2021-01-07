@@ -1,5 +1,6 @@
 package de.z1up.ttt.manager;
 
+import de.z1up.ttt.TTT;
 import de.z1up.ttt.interfaces.Manager;
 import de.z1up.ttt.core.Core;
 import de.z1up.ttt.util.o.Map;
@@ -29,7 +30,7 @@ public class VoteManager implements Manager {
 
     public void vote(Player player, Map voted) {
         votes.put(player, voted);
-        for(Map map : Core.mapManager.getMaps()) {
+        for(Map map : TTT.core.getMapManager().getMaps()) {
             if (map.getName().equals(voted.getName())) {
                 map.addVote();
             }
@@ -39,7 +40,7 @@ public class VoteManager implements Manager {
     public void unvote(Player player) {
         Map voted = votes.get(player);
         votes.remove(player);
-        for(Map map : Core.mapManager.getMaps()) {
+        for(Map map : TTT.core.getMapManager().getMaps()) {
             if (map.getName().equals(voted.getName())) {
                 map.removeVote();
             }

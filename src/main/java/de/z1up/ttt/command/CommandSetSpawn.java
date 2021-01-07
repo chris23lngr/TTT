@@ -1,7 +1,6 @@
 package de.z1up.ttt.command;
 
 import de.z1up.ttt.TTT;
-import de.z1up.ttt.core.Core;
 import de.z1up.ttt.util.Messages;
 import de.z1up.ttt.util.o.Map;
 import de.z1up.ttt.util.o.Spawn;
@@ -34,29 +33,29 @@ public class CommandSetSpawn implements CommandExecutor, TabCompleter {
 
         Player player = (Player) sender;
 
-        if (!TTT.core.gameManager.inLobby()) {
+        if (!TTT.core.getGameManager().inLobby()) {
             player.sendMessage(Messages.CMD_NOT_EXECUTABLE_ATM);
             return true;
         }
 
         if(args.length < 1) {
-            player.sendMessage(Messages.WRON_USAGE + command.getUsage());
+            player.sendMessage(Messages.WRONG_USAGE + command.getUsage());
             return true;
         }
 
         String mapName = args[0];
 
-        if(!TTT.core.mapManager.existsName(mapName)) {
+        if(!TTT.core.getMapManager().existsName(mapName)) {
             player.sendMessage(Messages.MAP_NOT_EXIST);
             return true;
         }
 
         Location location = player.getLocation();
-        int id = TTT.core.spawnManager.createID();
-        Map map = TTT.core.mapManager.getMap(mapName);
+        int id = TTT.core.getSpawnManager().createID();
+        Map map = TTT.core.getMapManager().getMap(mapName);
 
         Spawn spawn = new Spawn(id, location, map);
-        TTT.core.spawnManager.insert(spawn);
+        TTT.core.getSpawnManager().insert(spawn);
 
         player.sendMessage(Messages.SPAWN_SET + map.getName());
 
@@ -66,7 +65,7 @@ public class CommandSetSpawn implements CommandExecutor, TabCompleter {
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
 
-        ArrayList<Map> playableMaps = TTT.core.mapManager.getPossibleMaps();
+        ArrayList<Map> playableMaps = TTT.core.getMapManager().getPossibleMaps();
 
         List<String> completes = new ArrayList<>();
         playableMaps.forEach(map -> completes.add(map.getName()));

@@ -1,7 +1,6 @@
 package de.z1up.ttt.command;
 
 import de.z1up.ttt.TTT;
-import de.z1up.ttt.core.Core;
 import de.z1up.ttt.util.Messages;
 import de.z1up.ttt.util.o.Spawn;
 import org.bukkit.command.Command;
@@ -28,14 +27,14 @@ public class CommandRemoveSpawn implements CommandExecutor {
 
         Player player = (Player) sender;
 
-        if (!TTT.core.gameManager.inLobby() ||
-                TTT.core.timerManager.getLobbyCountdown().isActive()) {
+        if (!TTT.core.getGameManager().inLobby() ||
+                TTT.core.getTimerManager().getLobbyCountdown().isActive()) {
             player.sendMessage(Messages.CMD_NOT_EXECUTABLE_ATM);
             return true;
         }
 
         if(args.length < 1) {
-            player.sendMessage(Messages.WRON_USAGE + command.getUsage());
+            player.sendMessage(Messages.WRONG_USAGE + command.getUsage());
             return true;
         }
 
@@ -48,13 +47,13 @@ public class CommandRemoveSpawn implements CommandExecutor {
 
         int id = Integer.parseInt(idArg);
 
-        if(!TTT.core.spawnManager.existsID(id)) {
+        if(!TTT.core.getSpawnManager().existsID(id)) {
             player.sendMessage(Messages.ID_NOT_EXISTS);
             return true;
         }
 
-        Spawn spawn = TTT.core.spawnManager.getSpawn(id);
-        TTT.core.spawnManager.delete(spawn);
+        Spawn spawn = TTT.core.getSpawnManager().getSpawn(id);
+        TTT.core.getSpawnManager().delete(spawn);
 
         player.sendMessage(Messages.SPAWN_DELETED + id);
 

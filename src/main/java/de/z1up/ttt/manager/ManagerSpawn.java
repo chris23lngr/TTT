@@ -1,5 +1,6 @@
 package de.z1up.ttt.manager;
 
+import de.z1up.ttt.TTT;
 import de.z1up.ttt.interfaces.Manager;
 import de.z1up.ttt.mysql.wrapper.WrapperSpawn;
 import de.z1up.ttt.core.Core;
@@ -28,7 +29,7 @@ public class ManagerSpawn extends WrapperSpawn implements Manager {
     public Spawn getSpawn(int id) {
 
         if(!existsID(id)) {
-            Bukkit.getConsoleSender().sendMessage(Messages.ID_NOT_FOUND_EXC);
+            Bukkit.getConsoleSender().sendMessage(Messages.ErrorMessages.ID_NOT_FOUND_EXC);
             return null;
         }
 
@@ -43,10 +44,10 @@ public class ManagerSpawn extends WrapperSpawn implements Manager {
     public ArrayList<Spawn> getSpawns(int id) {
 
         if(!existsID(id)) {
-            Bukkit.getConsoleSender().sendMessage(Messages.ID_NOT_FOUND_EXC);
+            Bukkit.getConsoleSender().sendMessage(Messages.ErrorMessages.ID_NOT_FOUND_EXC);
             return null;
         }
-        return getSpawnsFor(Core.mapManager.getMap(id));
+        return getSpawnsFor(TTT.core.getMapManager().getMap(id));
     }
 
 }

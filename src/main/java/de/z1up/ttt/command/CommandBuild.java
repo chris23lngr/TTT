@@ -30,10 +30,10 @@ public class CommandBuild implements CommandExecutor {
 
         Player player = (Player) sender;
 
-        if(TTT.core.buildManager.canBuild(player)) {
-            TTT.core.buildManager.disallowBuilding(player);
+        if(TTT.core.getBuildManager().canBuild(player)) {
+            TTT.core.getBuildManager().disallowBuilding(player);
         } else {
-            TTT.core.buildManager.allowBuilding(player);
+            TTT.core.getBuildManager().allowBuilding(player);
         }
 
         return false;

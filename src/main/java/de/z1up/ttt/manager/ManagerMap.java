@@ -37,11 +37,11 @@ public class ManagerMap extends WrapperMap implements Manager {
 
     public void registerMap(Map map) {
         if(existsID(map.getId())) {
-            Bukkit.getConsoleSender().sendMessage(Messages.ID_ALREADY_EXIST_EXC);
+            Bukkit.getConsoleSender().sendMessage(Messages.ErrorMessages.ID_ALREADY_EXIST_EXC);
             return;
         }
         if(existsName(map.getName())) {
-            Bukkit.getConsoleSender().sendMessage(Messages.NAME_ALREADY_EXIST_EXC);
+            Bukkit.getConsoleSender().sendMessage(Messages.ErrorMessages.NAME_ALREADY_EXIST_EXC);
             return;
         }
         insert(map);
@@ -49,7 +49,7 @@ public class ManagerMap extends WrapperMap implements Manager {
 
     public void removeMap(Map map) {
         if(!existsID(map.getId())) {
-            Bukkit.getConsoleSender().sendMessage(Messages.ID_NOT_FOUND_EXC);
+            Bukkit.getConsoleSender().sendMessage(Messages.ErrorMessages.ID_NOT_FOUND_EXC);
             return;
         }
         delete(map);
@@ -57,7 +57,7 @@ public class ManagerMap extends WrapperMap implements Manager {
 
     public void updateMap(Map map) {
         if(!existsID(map.getId())) {
-            Bukkit.getConsoleSender().sendMessage(Messages.ID_NOT_FOUND_EXC);
+            Bukkit.getConsoleSender().sendMessage(Messages.ErrorMessages.ID_NOT_FOUND_EXC);
             return;
         }
         update(map);
@@ -65,7 +65,7 @@ public class ManagerMap extends WrapperMap implements Manager {
 
     public Map getMap(String name) {
         if(existsName(name)) {
-            Bukkit.getConsoleSender().sendMessage(Messages.NAME_NOT_FOUND_EXC);
+            Bukkit.getConsoleSender().sendMessage(Messages.ErrorMessages.NAME_NOT_FOUND_EXC);
             return null;
         }
         Map map = (Map) get(name);
@@ -74,7 +74,7 @@ public class ManagerMap extends WrapperMap implements Manager {
 
     public Map getMap(int id) {
         if(!existsID(id)) {
-            Bukkit.getConsoleSender().sendMessage(Messages.ID_NOT_FOUND_EXC);
+            Bukkit.getConsoleSender().sendMessage(Messages.ErrorMessages.NAME_NOT_FOUND_EXC);
             return null;
         }
         return (Map) get(id);

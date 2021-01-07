@@ -26,16 +26,16 @@ public class ListenerCountdownTimeChange implements Listener {
         if(task.getGameState() == GameManager.GameState.LOBBYPHASE) {
 
             if(task.getTime() == 59) {
-                Core.voteManager.setVotePeriodActive(true);
+                TTT.core.getVoteManager().setVotePeriodActive(true);
             } else if(task.getTime() == 5) {
-                Core.voteManager.setVotePeriodActive(false);
+                TTT.core.getVoteManager().setVotePeriodActive(false);
                 Bukkit.getOnlinePlayers().forEach(player -> {
                     player.closeInventory();
                 });
 
-                if(!Core.mapManager.isMapSet()) {
-                    Map map = Core.mapManager.getVotedMap();
-                    Core.mapManager.setMapToPlay(map);
+                if(!TTT.core.getMapManager().isMapSet()) {
+                    Map map = TTT.core.getMapManager().getVotedMap();
+                    TTT.core.getMapManager().setMapToPlay(map);
                     Event mapSetEvent = new MapSetEvent(map, false);
                     Bukkit.getPluginManager().callEvent(mapSetEvent);
                 }

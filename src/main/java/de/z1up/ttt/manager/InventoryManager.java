@@ -99,7 +99,7 @@ public class InventoryManager implements Manager {
                     inventory.setItem(i, filler);
                 }
 
-                Collection<Map> maps = Core.mapManager.getMaps();
+                Collection<Map> maps = TTT.core.getMapManager().getMaps();
 
                 int pos = 9;
 
@@ -125,7 +125,7 @@ public class InventoryManager implements Manager {
         player.getInventory().setItem(2, new ItemBuilder(Material.REDSTONE_TORCH_ON, (short) 0)
                 .setDisplayName("§4Einstellungen").build());
 
-        player.getInventory().setItem(4, Core.ruleBook.getBook());
+        player.getInventory().setItem(4, TTT.core.getRuleBook().getBook());
 
         player.getInventory().setItem(6, new ItemBuilder(Material.MAP, (short) 0)
                 .setDisplayName("§bMap voting").build());

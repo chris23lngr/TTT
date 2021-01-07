@@ -5,6 +5,7 @@ import de.z1up.ttt.event.CountdownFinishEvent;
 import de.z1up.ttt.event.CountdownTimeChangeEvent;
 import de.z1up.ttt.manager.GameManager;
 import de.z1up.ttt.core.Core;
+import de.z1up.ttt.util.Messages;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
 import org.bukkit.scheduler.BukkitRunnable;
@@ -107,7 +108,7 @@ public class TTTRunnable extends BukkitRunnable {
     @Override
     public synchronized void cancel() throws IllegalStateException {
         super.cancel();
-        Bukkit.getServer().broadcastMessage(Core.getPrefix() + "§7Der Countdown wurde beendet!");
+        Bukkit.getServer().broadcastMessage(Messages.PREFIX + "§7Der Countdown wurde beendet!");
         active = false;
     }
 

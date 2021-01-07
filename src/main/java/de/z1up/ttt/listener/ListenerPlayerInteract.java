@@ -2,6 +2,8 @@ package de.z1up.ttt.listener;
 
 import de.z1up.ttt.TTT;
 import de.z1up.ttt.core.Core;
+import de.z1up.ttt.util.Messages;
+import org.apache.logging.log4j.message.Message;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
@@ -21,7 +23,7 @@ public class ListenerPlayerInteract implements Listener {
 
         Player player = event.getPlayer();
 
-        if(Core.buildManager.canBuild(player)) {
+        if(TTT.core.getBuildManager().canBuild(player)) {
             event.setCancelled(false);
             return;
         }
@@ -32,46 +34,47 @@ public class ListenerPlayerInteract implements Listener {
             return;
         }
 
-        if(Core.playerManager.isSpec(player)
+        if(TTT.core.getPlayerManager().isSpec(player)
                 && (event.getAction().equals(Action.RIGHT_CLICK_BLOCK)
                 || event.getAction().equals(Action.PHYSICAL))) {
             event.setCancelled(true);
             return;
         }
 
-        if(event.getAction().equals(Action.RIGHT_CLICK_AIR) || event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+        if(event.getAction().equals(Action.RIGHT_CLICK_AIR)
+                || event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
 
-            if(Core.gameManager.inLobby()) {
+            if(TTT.core.getGameManager().inLobby()) {
 
                 if(event.getItem() == null) return;
                 if(event.getItem().getItemMeta() == null) return;
+                if(event.getItem().getType().equals(Material.BOOK)) return;
                 if(event.getItem().getItemMeta().getDisplayName() == null) return;
                 if(event.getItem().getItemMeta().getDisplayName().equalsIgnoreCase("")) return;
-                if(event.getItem().getType().equals(Material.BOOK)) return;
 
                 String display = event.getItem().getItemMeta().getDisplayName();
 
                 if(display.equals("§eErfolge")) {
-                    Core.invManager.openAchievementsInv(player);
+                    TTT.core.getInvManager().openAchievementsInv(player);
                     return;
                 }
 
                 if(display.equals("§4Einstellungen")) {
-                    Core.invManager.openSettingsInv(player);
+                    TTT.core.getInvManager().openSettingsInv(player);
                     return;
                 }
 
                 if(display.equals("§bMap voting")) {
-                    if(Core.voteManager.isVotePeriodActive()) {
-                        Core.invManager.openVotingInv(player);
+                    if(TTT.core.getVoteManager().isVotePeriodActive()) {
+                        TTT.core.getInvManager().openVotingInv(player);
                     } else {
-                        player.sendMessage(Core.getPrefix() + "§cDie Votephase ist bereits beendet.");
+                        player.sendMessage(Messages.VOTE_PERIOD_NOT_ACTIVE);
                     }
                     return;
                 }
 
                 if(display.equals("§8Spiel verlassen")) {
-                    player.kickPlayer(Core.getPrefix() + "§cDu hast das Spiel verlassen!");
+                    player.kickPlayer(Messages.PREFIX + "§cDu hast das Spiel verlassen!");
                     return;
                 }
 

@@ -1,7 +1,6 @@
 package de.z1up.ttt.command;
 
 import de.z1up.ttt.TTT;
-import de.z1up.ttt.core.Core;
 import de.z1up.ttt.util.Messages;
 import de.z1up.ttt.util.o.Map;
 import org.bukkit.command.Command;
@@ -33,25 +32,25 @@ public class CommandForceMap implements CommandExecutor, TabCompleter {
         Player player = (Player) sender;
 
         if(args.length < 1) {
-            player.sendMessage(Messages.WRON_USAGE + command.getUsage());
+            player.sendMessage(Messages.WRONG_USAGE + command.getUsage());
             return true;
         }
 
         String mapName = args[0];
 
-        if(!TTT.core.mapManager.existsName(mapName)) {
+        if(!TTT.core.getMapManager().existsName(mapName)) {
             player.sendMessage(Messages.MAP_NOT_EXIST);
             return true;
         }
 
-        if (!TTT.core.gameManager.inLobby() || TTT.core.mapManager.isMapSet()) {
+        if (!TTT.core.getGameManager().inLobby() || TTT.core.getMapManager().isMapSet()) {
             player.sendMessage(Messages.CMD_NOT_EXECUTABLE_ATM);
             return true;
         }
 
         // Set the forced map
-        Map map = TTT.core.mapManager.getMap(mapName);
-        TTT.core.mapManager.setMapToPlay(map);
+        Map map = TTT.core.getMapManager().getMap(mapName);
+        TTT.core.getMapManager().setMapToPlay(map);
 
         // Send a success message
         player.sendMessage(Messages.FM_SUCCESS);
@@ -61,7 +60,7 @@ public class CommandForceMap implements CommandExecutor, TabCompleter {
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String label, String[] args) {
 
-        ArrayList<Map> playableMaps = TTT.core.mapManager.getPossibleMaps();
+        ArrayList<Map> playableMaps = TTT.core.getMapManager().getPossibleMaps();
 
         List<String> completes = new ArrayList<>();
         playableMaps.forEach(map -> completes.add(map.getName()));

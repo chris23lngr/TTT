@@ -28,13 +28,13 @@ public class CommandMap implements CommandExecutor {
 
         Player player = (Player) sender;
 
-        if(TTT.core.gameManager.inLobby() || !TTT.core.mapManager.isMapSet()) {
+        if(TTT.core.getGameManager().inLobby() || !TTT.core.getMapManager().isMapSet()) {
             player.sendMessage(Messages.MAP_NOT_SET);
             return true;
         }
 
 
-        Map map = TTT.core.mapManager.getMapToPlay();
+        Map map = TTT.core.getMapManager().getMapToPlay();
         player.sendMessage(Messages.PLAYING_ON + map.getName());
 
         return true;

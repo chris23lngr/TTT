@@ -2,6 +2,7 @@ package de.z1up.ttt.listener;
 
 import de.z1up.ttt.TTT;
 import de.z1up.ttt.core.Core;
+import de.z1up.ttt.util.Messages;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -19,11 +20,13 @@ public class ListenerPlayerQuit implements Listener {
 
         Player player = event.getPlayer();
 
-        event.setQuitMessage(Core.getPrefix() + "§c" + player.getName() + " §7hat das Spiel verlassen.");
+        String quit = Messages.PREFIX + "§c" + player.getName()
+                + " §7hat das Spiel verlassen.";
+        event.setQuitMessage(quit);
 
-        if(Core.voteManager.hasVoted(player)) {
-            if(Core.voteManager.isVotePeriodActive()) {
-                Core.voteManager.unvote(player);
+        if(TTT.core.getVoteManager().hasVoted(player)) {
+            if(TTT.core.getVoteManager().isVotePeriodActive()) {
+                TTT.core.getVoteManager().unvote(player);
             }
         }
 

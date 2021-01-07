@@ -33,22 +33,18 @@ public class ListenerGameStateChange implements Listener {
 
             while (iterator.hasNext()) {
                 Player player = (Player) iterator.next();
-                if(!Core.playerManager.isSpec(player)) {
+                if(!TTT.core.getPlayerManager().isSpec(player)) {
                     players.add(player);
                 }
             }
 
-            Map map = Core.mapManager.getMapToPlay();
-            Bukkit.getConsoleSender().sendMessage("MAP ID: " + map.getId());
+            Map map = TTT.core.getMapManager().getMapToPlay();
             ArrayList<Spawn> spawns = map.getSpawns();
-            spawns.forEach(spawn -> System.out.println("SPAWN ID" + spawn.getId()));
 
             for(int i = 0; i < players.size(); i++) {
                 Player player = players.get(i);
                 Spawn spawn = spawns.get(i);
                 player.teleport(spawn.getLocation());
-                player.sendMessage("pictch" + spawn.getLocation().getPitch());
-                player.sendMessage("yaw" + spawn.getLocation().getYaw());
             }
         }
 

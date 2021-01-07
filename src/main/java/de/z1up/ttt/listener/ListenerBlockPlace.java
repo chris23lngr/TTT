@@ -21,13 +21,13 @@ public class ListenerBlockPlace implements Listener {
 
         final Player player = event.getPlayer();
 
-        if(Core.buildManager.canBuild(player)) {
+        if(TTT.core.getBuildManager().canBuild(player)) {
             event.setCancelled(false);
             event.setBuild(true);
             return;
         }
 
-        if(Core.gameManager.inGame()) {
+        if(TTT.core.getGameManager().inGame()) {
 
             Block block = event.getBlock();
 

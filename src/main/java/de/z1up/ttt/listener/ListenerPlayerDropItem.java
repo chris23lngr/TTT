@@ -23,12 +23,12 @@ public class ListenerPlayerDropItem implements Listener {
         final Player player = event.getPlayer();
         final ItemStack droppedItemStack = event.getItemDrop().getItemStack();
 
-        if(Core.playerManager.isSpec(player)) {
+        if(TTT.core.getPlayerManager().isSpec(player)) {
             event.setCancelled(true);
             return;
         }
 
-        if(Core.gameManager.inGame()) {
+        if(TTT.core.getGameManager().inGame()) {
 
             if(!canItemBeDropped(droppedItemStack)) {
                 event.setCancelled(true);

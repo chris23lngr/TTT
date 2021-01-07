@@ -20,7 +20,7 @@ public class ListenerBreakBlock implements Listener {
 
         final Player player = event.getPlayer();
 
-        if(Core.buildManager.canBuild(player)) {
+        if(TTT.core.getBuildManager().canBuild(player)) {
             event.setCancelled(false);
         } else {
             event.setCancelled(true);

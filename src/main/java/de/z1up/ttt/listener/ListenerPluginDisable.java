@@ -6,9 +6,9 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.server.PluginDisableEvent;
 
-public class ListenerServer implements Listener {
+public class ListenerPluginDisable implements Listener {
 
-    public ListenerServer() {
+    public ListenerPluginDisable() {
         Bukkit.getPluginManager().registerEvents(this, TTT.getInstance());
     }
 

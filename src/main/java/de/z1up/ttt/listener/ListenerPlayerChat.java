@@ -32,8 +32,8 @@ public class ListenerPlayerChat implements Listener {
          */
 
 
-        if(Core.playerManager.isSpec(player)) {
-            if(Core.gameManager.inRestart()) {
+        if(TTT.core.getPlayerManager().isSpec(player)) {
+            if(TTT.core.getGameManager().inRestart()) {
                 event.setCancelled(false);
             } else {
                 event.setCancelled(true);
@@ -41,21 +41,33 @@ public class ListenerPlayerChat implements Listener {
             return;
         }
 
+        String format = "§7█ §8● §7" + player.getName() + " §8» §7" + message;
+
+        if(TTT.core.getGameManager().inSavePhase()
+                || TTT.core.getGameManager().inLobby()
+                || TTT.core.getGameManager().inRestart()) {
+            event.setFormat(format);
+            return;
+        }
+
         message = event.getMessage().replaceAll("%", "%%");
 
-        if(Core.gameManager.inGame()) {
+        if(TTT.core.getGameManager().inGame()) {
 
-            if(Core.playerManager.isInno(player)) {
-                event.setFormat("§2█ §8● §7" + player.getName() + " §8» §7" + message);
+            if(TTT.core.getPlayerManager().isInno(player)) {
+                format = "§2█ §8● §7" + player.getName() + " §8» §7" + message;
+                event.setFormat(format);
                 return;
             }
 
-            if(Core.playerManager.isDetective(player)) {
-                event.setFormat("§9█ §8● §7" + player.getName() + " §8» §7" + message);
+            if(TTT.core.getPlayerManager().isDetective(player)) {
+                format = "§9█ §8● §7" + player.getName() + " §8» §7" + message;
+                event.setFormat(format);
                 return;
             }
 
-            if(Core.playerManager.isTraitor(player)) {
+
+            if(TTT.core.getPlayerManager().isTraitor(player)) {
 
                 event.setCancelled(true);
 
@@ -64,9 +76,9 @@ public class ListenerPlayerChat implements Listener {
                 if(message.startsWith("@t")) {
                     while (targets.hasNext()) {
                         Player target = (Player) targets;
-                        if(Core.playerManager.isTraitor(target)) {
-                            target.sendMessage("§4█ Traitor §8● §7"
-                                    + player.getName() + " §8» §7" + message);
+                        if(TTT.core.getPlayerManager().isTraitor(target)) {
+                            format = "§4█ Traitor §8● §7" + player.getName() + " §8» §7" + message;
+                            target.sendMessage(format);
                         }
                     }
                     return;
@@ -74,19 +86,16 @@ public class ListenerPlayerChat implements Listener {
 
                 while (targets.hasNext()) {
                     Player target = (Player) targets;
-                    if(!Core.playerManager.isTraitor(target)) {
-                        target.sendMessage("§2█ §8● §7" + player.getName() + " §8» §7" + message);
+                    if(!TTT.core.getPlayerManager().isTraitor(target)) {
+                        format = "§2█ §8● §7" + player.getName() + " §8» §7" + message;
+                        target.sendMessage(format);
                     } else {
-                        target.sendMessage("§4█ §8● §7" + player.getName() + " §8» §7" + message);
+                        format = "§4█ §8● §7" + player.getName() + " §8» §7" + message;
+                        target.sendMessage(format);
                     }
                 }
 
             }
-            return;
-        }
-
-        if(Core.gameManager.inSavePhase() || Core.gameManager.inLobby() || Core.gameManager.inRestart()) {
-            event.setFormat("§7█ §8● §7" + player.getName() + " §8» §7" + message);
             return;
         }
 

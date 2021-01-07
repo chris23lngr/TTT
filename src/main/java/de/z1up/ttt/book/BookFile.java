@@ -9,6 +9,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 
 public class BookFile {
 
+    private final String FILE_NAME = "rulebook.yml";
     private final String ATTRIBUTE_TITLE = "Title";
     private final String ATTRIBUTE_AUTHOR = "Autor";
     private final String ATTRIBUTE_PAGES = "Seiten";
@@ -52,7 +53,7 @@ public class BookFile {
             TTT.getInstance().getDataFolder().mkdirs();
         }
 
-        File file = new File(TTT.getInstance().getDataFolder(), "regelbuch.yml");
+        File file = new File(TTT.getInstance().getDataFolder(), FILE_NAME);
 
         if(!file.exists()) {
             try {

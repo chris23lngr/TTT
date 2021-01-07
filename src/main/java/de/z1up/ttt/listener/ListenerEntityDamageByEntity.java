@@ -16,11 +16,9 @@ public class ListenerEntityDamageByEntity implements Listener {
     @EventHandler
     public void onCall(final EntityDamageByEntityEvent event) {
 
-        if(Core.gameManager.inGame()) {
+        if(TTT.core.getGameManager().inGame()) {
 
             event.setCancelled(false);
-
-
 
         } else {
             event.setCancelled(true);

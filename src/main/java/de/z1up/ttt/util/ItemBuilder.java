@@ -1,7 +1,5 @@
-// packages
 package de.z1up.ttt.util;
 
-// imports
 import org.bukkit.Material;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
@@ -13,18 +11,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * @author chris
+ * @author chris23lngr
+ * @since 1.0
  * @implNote From https://github.com/chris23lngr/UtilAPI/blob/master/src/main/java/de/z1up/utilapi/builder/ItemBuilder.java
  */
 
 public class ItemBuilder {
 
-    // variables
     private ItemStack itemStack;
     private ItemMeta itemMeta;
     private SkullMeta skullMeta;
 
-    // constructors
     public ItemBuilder(Material material, Short id)
     {
         this.itemStack = new ItemStack(material, 1, id); this.itemMeta = this.itemStack.getItemMeta();

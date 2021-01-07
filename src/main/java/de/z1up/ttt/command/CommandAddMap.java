@@ -28,7 +28,7 @@ public class CommandAddMap implements CommandExecutor {
         Player player = (Player) sender;
 
         if(args.length < 1) {
-            player.sendMessage(Messages.WRON_USAGE + command.getUsage());
+            player.sendMessage(Messages.WRONG_USAGE + command.getUsage());
             return true;
         }
 
@@ -46,16 +46,16 @@ public class CommandAddMap implements CommandExecutor {
 
         String mapName = args[0];
 
-        if(TTT.core.mapManager.existsName(mapName)) {
+        if(TTT.core.getMapManager().existsName(mapName)) {
             player.sendMessage(Messages.AM_MAP_ALREADY_EXIST);
             return true;
         }
 
         Material material = itemStack.getType();
-        int id = TTT.core.mapManager.createID();
+        int id = TTT.core.getMapManager().createID();
 
         Map map = new Map(id, mapName, material, null, null);
-        TTT.core.mapManager.registerMap(map);
+        TTT.core.getMapManager().registerMap(map);
 
         player.sendMessage(Messages.AM_SUCCESS + mapName);
 

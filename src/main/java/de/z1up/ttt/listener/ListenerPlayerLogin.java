@@ -2,6 +2,7 @@ package de.z1up.ttt.listener;
 
 import de.z1up.ttt.TTT;
 import de.z1up.ttt.core.Core;
+import de.z1up.ttt.util.Messages;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -19,24 +20,24 @@ public class ListenerPlayerLogin implements Listener {
     @EventHandler
     public void onCall(final PlayerLoginEvent event) {
 
-        if(Core.gameManager.notSet()) {
+        if(TTT.core.getGameManager().notSet()) {
             event.disallow(PlayerLoginEvent.Result.KICK_OTHER,
                     "§cEs ist ein Fehler aufgetreten!");
             return;
         }
 
-        if(Core.gameManager.inRestart()) {
+        if(TTT.core.getGameManager().inRestart()) {
             event.disallow(PlayerLoginEvent.Result.KICK_OTHER,
                     "§7Der Server restartet.");
             return;
         }
 
-        if(Core.gameManager.inGame() || Core.gameManager.inSavePhase()) {
+        if(TTT.core.getGameManager().inGame() || TTT.core.getGameManager().inSavePhase()) {
             event.allow();
             return;
         }
 
-        if(Core.gameManager.inLobby()) {
+        if(TTT.core.getGameManager().inLobby()) {
 
             final Player player = event.getPlayer();
 
@@ -52,8 +53,7 @@ public class ListenerPlayerLogin implements Listener {
 
                 if(!player.hasPermission("ttt.premium")) {
                     event.disallow(PlayerLoginEvent.Result.KICK_OTHER,
-                            "§cDu benötigst mindestens den §6Premium §cRang, " +
-                                    "um diesen Server betreten zu können!");
+                            Messages.PREMIUM_NEEDED);
                     return;
                 }
 
@@ -67,13 +67,13 @@ public class ListenerPlayerLogin implements Listener {
 
                 if(premiumCount.get() >= maxPlayerSize) {
                     event.disallow(PlayerLoginEvent.Result.KICK_OTHER,
-                            "§cKonnte keinen Spieler zum kicken finden!");
+                            Messages.NO_KICK_PLAYER_FOUND);
                     return;
                 }
 
                 Bukkit.getOnlinePlayers().forEach(selected -> {
                     if(!selected.hasPermission("ttt.premium")) {
-                        selected.kickPlayer("§7Du wurdest von einem §6Premium §7gekickt!");
+                        selected.kickPlayer(Messages.KICKED_BY_PREMIUM);
                     }
                 });
 

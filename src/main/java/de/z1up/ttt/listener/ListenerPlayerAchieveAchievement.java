@@ -2,7 +2,7 @@ package de.z1up.ttt.listener;
 
 import de.z1up.ttt.TTT;
 import de.z1up.ttt.event.PlayerAchieveAchievementEvent;
-import de.z1up.ttt.core.Core;
+import de.z1up.ttt.util.Messages;
 import de.z1up.ttt.util.o.Achievement;
 import de.z1up.ttt.util.o.DBPlayer;
 import org.bukkit.Bukkit;
@@ -22,17 +22,17 @@ public class ListenerPlayerAchieveAchievement implements Listener {
         Achievement achievement = event.getAchievement();
         Player player = event.getPlayer();
 
-        if(!Core.wrapperPlayer.existsPlayer(player.getUniqueId())){
+        if(!TTT.core.getPlayerManager().existsPlayer(player.getUniqueId())){
             return;
         }
 
-        DBPlayer dbPlayer = (DBPlayer) Core.wrapperPlayer.get(player);
+        DBPlayer dbPlayer = (DBPlayer) TTT.core.getPlayerManager().get(player.getUniqueId());
 
         if(dbPlayer.getAchievements().contains(achievement.getId())) {
             return;
         }
 
-        player.sendMessage(Core.getPrefix() + "§7Du hast den Erfolg §a" + achievement.getName() + " §7erzielt§8!");
+        player.sendMessage(Messages.ACHIEVEMENT_ACHIEVED + achievement.getName());
 
     }
 

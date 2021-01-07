@@ -31,8 +31,4 @@ public class Achievement extends Object {
     public int getAchievedBy() {
         return achievedBy;
     }
-
-    public void update() {
-        Core.wrapperAchievements.update(this);
-    }
 }

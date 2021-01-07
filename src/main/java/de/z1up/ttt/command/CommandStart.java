@@ -20,19 +20,19 @@ public class CommandStart implements CommandExecutor {
     @Override
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 
-        if (!TTT.core.gameManager.inLobby() ||
-                TTT.core.timerManager.getLobbyCountdown().getTime() <= 10) {
+        if (!TTT.core.getGameManager().inLobby() ||
+                TTT.core.getTimerManager().getLobbyCountdown().getTime() <= 10) {
             sender.sendMessage(Messages.CMD_NOT_EXECUTABLE_ATM);
             return true;
         }
 
-        if(TTT.core.timerManager.getLobbyCountdown().isForced()) {
+        if(TTT.core.getTimerManager().getLobbyCountdown().isForced()) {
             sender.sendMessage(Messages.FS_ALREADY_ACTIVATED);
             return true;
         }
 
-        TTT.core.timerManager.getLobbyCountdown().runForcedStart();
-        
+        TTT.core.getTimerManager().getLobbyCountdown().runForcedStart();
+
         sender.sendMessage(Messages.FS_SUCCESS);
 
         return false;
