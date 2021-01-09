@@ -1,82 +1,103 @@
 package de.z1up.ttt.mysql;
 
-// imports
 import java.io.File;
 import java.io.IOException;
 import java.util.HashMap;
 
+import de.z1up.ttt.TTT;
+import de.z1up.ttt.interfaces.Configuration;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-public class SQLConfig {
+/**
+ * The SQLConfig class is there to read out
+ * the access data to the SQL database from a
+ * file that is stored in the DataFolder of the
+ * plugin.
+ *
+ * @author chris23lngr
+ * @since 1.0
+ * @see de.z1up.ttt.mysql.SQL
+ */
+public class SQLConfig implements Configuration {
 
+    private String fileName;
 
-    // variables
-    private String path;
-    private String file;
+    private File file;
+    private YamlConfiguration configuration;
 
-
-    // constructor
-    public SQLConfig(String path, String file) {
-        this.path = path;
-        this.file = file;
-        this.setStandard();
+    public SQLConfig(String fileName) {
+        this.fileName = fileName;
+        loadFile();
+        loadConfig();
     }
 
+    @Override
+    public void loadFile() {
 
-    // methods
+        file = new File(TTT.getInstance().getDataFolder(), fileName);
 
-    /**
-     *  set the default config
-     */
-    public void setStandard() {
-        FileConfiguration cfg = getFileConfiguration();
-        cfg.options().copyDefaults(true);
-
-        cfg.addDefault("host", "localhost");
-        cfg.addDefault("port", "3306");
-        cfg.addDefault("database", "database");
-        cfg.addDefault("username", "username");
-        cfg.addDefault("password", "password");
-
-        try {
-            cfg.save(this.getFile());
-        } catch (IOException e) {
-            e.printStackTrace();
+        if(!file.exists()) {
+            try {
+                file.createNewFile();
+            } catch (IOException exception) {
+                exception.printStackTrace();
+            }
         }
     }
 
-    /**
-     * get the actual file
-     * @return
-     */
-    private File getFile() {
-        return new File(this.path, this.file);
+    @Override
+    public void loadConfig() {
+        if(file != null) {
+            configuration = YamlConfiguration.loadConfiguration(file);
+            save();
+        } else {
+            loadFile();
+        }
     }
 
-    /**
-     * get cfg
-     * @return
-     */
-    private FileConfiguration getFileConfiguration() {
-        return YamlConfiguration.loadConfiguration(getFile());
+    @Override
+    public void save() {
+        try {
+            configuration.save(file);
+        } catch (IOException exception) {
+            exception.printStackTrace();
+        }
     }
 
-    /**
-     * read data from cfg file
-     * @return
-     */
-    public HashMap<String, String> readData() {
+    @Override
+    public void setDefaults() {
 
-        FileConfiguration cfg = getFileConfiguration();
+        configuration.options().copyHeader(true);
+        configuration.options().header("Please enter your access data to the database below.");
 
-        HashMap<String, String> config = new HashMap<>();
-        config.put("host", cfg.getString("host"));
-        config.put("port", cfg.getString("port"));
-        config.put("database", cfg.getString("database"));
-        config.put("username", cfg.getString("username"));
-        config.put("password", cfg.getString("password"));
+        configuration.options().copyDefaults(true);
+        configuration.addDefault("host", "localhost");
+        configuration.addDefault("port", 3306);
+        configuration.addDefault("database", "db");
+        configuration.addDefault("username", "root");
+        configuration.addDefault("password", "password");
 
-        return config;
+        save();
+
+    }
+
+    @Override
+    public File getFile() {
+        return this.file;
+    }
+
+    @Override
+    public HashMap<String, Object> read() {
+
+        HashMap<String, Object> data = new HashMap<>();
+
+        data.put("host", configuration.getString("host"));
+        data.put("port", configuration.getInt("port"));
+        data.put("database", configuration.getString("database"));
+        data.put("username", configuration.getString("username"));
+        data.put("password", configuration.getString("password"));
+
+        return data;
     }
 }

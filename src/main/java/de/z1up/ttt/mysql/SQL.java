@@ -20,7 +20,7 @@ import org.bukkit.scheduler.BukkitScheduler;
 public class SQL {
 
     private String host;
-    private String port;
+    private int port;
     private String database;
     private String username;
     private String password;
@@ -29,17 +29,15 @@ public class SQL {
 
     private String prefix = "§8[§6MySQL§8]" + " ";
 
-    // construcotr
-
     /**
      * @param config
      */
-    public SQL(HashMap<String, String> config) {
-        this.host = config.get("host");
-        this.port = config.get("port");
-        this.database = config.get("database");
-        this.username = config.get("username");
-        this.password = config.get("password");
+    public SQL(HashMap<String, Object> config) {
+        this.host = (String) config.get("host");
+        this.port = (int) config.get("port");
+        this.database = (String) config.get("database");
+        this.username = (String) config.get("username");
+        this.password = (String) config.get("password");
     }
 
     // methods

@@ -5,6 +5,17 @@ import org.bukkit.event.Cancellable;
 import org.bukkit.event.Event;
 import org.bukkit.event.HandlerList;
 
+/**
+ * The GameEndEvent is called when there is a GameResult.
+ * A {@link de.z1up.ttt.manager.GameManager.GameResult}
+ * must be passed to determine which team has finally won.
+ *
+ * @author chris23lngr
+ * @since 1.0
+ * @see org.bukkit.event.Event
+ * @see org.bukkit.event.Cancellable
+ * @see de.z1up.ttt.manager.GameManager.GameResult
+ */
 public class GameEndEvent extends Event implements Cancellable {
 
     private static final HandlerList HANDLERS_LIST = new HandlerList();

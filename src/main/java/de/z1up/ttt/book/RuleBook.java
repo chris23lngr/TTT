@@ -13,13 +13,13 @@ public class RuleBook {
 
     private String title;
     private String author;
-    private List<String> seiten;
+    private List<String> pages;
 
     BookFile bookFile;
 
     public RuleBook() {
         bookFile = new BookFile(this);
-        bookFile.readData();
+        bookFile.read();
     }
 
     public ItemStack getBook() {
@@ -28,7 +28,7 @@ public class RuleBook {
         meta.setTitle("§6" + title);
         meta.setAuthor(author);
         List<String> red = new ArrayList();
-        Iterator var3 = seiten.iterator();
+        Iterator var3 = pages.iterator();
 
         while(var3.hasNext()) {
             String line = (String)var3.next();
@@ -44,8 +44,8 @@ public class RuleBook {
         this.author = author;
     }
 
-    public void setSeiten(List<String> seiten) {
-        this.seiten = seiten;
+    public void setPages(List<String> pages) {
+        this.pages = pages;
     }
 
     public void setTitle(String title) {

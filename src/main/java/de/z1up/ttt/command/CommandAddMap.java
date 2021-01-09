@@ -18,6 +18,7 @@ public class CommandAddMap implements CommandExecutor {
         TTT.getInstance().getCommand(NAME).setExecutor(this::onCommand);
         TTT.getInstance().getCommand(NAME).setPermissionMessage(Messages.NO_PERM);
         TTT.getInstance().getCommand(NAME).setPermission("ttt." + NAME);
+        TTT.getInstance().getCommand(NAME).setUsage("/" + NAME + " <Map>");
     }
     public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
 

@@ -82,9 +82,9 @@ public class Core {
      * is established.
      */
     void createSQLCon() {
-        SQLConfig config = new SQLConfig(TTT.getInstance().getDataFolder().getPath(), "mysql.yml");
+        SQLConfig config = new SQLConfig("mysql.yml");
         if(sql == null) {
-            sql = new SQL(config.readData());
+            sql = new SQL(config.read());
         }
         if(sql != null && !sql.isConnected()) {
             sql.connect();

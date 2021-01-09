@@ -3,83 +3,56 @@ package de.z1up.ttt.book;
 import java.io.File;
 import java.io.IOException;
 import java.util.Arrays;
+import java.util.HashMap;
 
 import de.z1up.ttt.TTT;
+import de.z1up.ttt.interfaces.Configuration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
-public class BookFile {
+public class BookFile implements Configuration {
 
     private final String FILE_NAME = "rulebook.yml";
     private final String ATTRIBUTE_TITLE = "Title";
     private final String ATTRIBUTE_AUTHOR = "Autor";
     private final String ATTRIBUTE_PAGES = "Seiten";
 
-    RuleBook ruleBook;
-    YamlConfiguration configuration;
-    File file;
+    private RuleBook ruleBook;
 
     public BookFile(RuleBook ruleBook) {
         this.ruleBook = ruleBook;
 
         loadFile();
         loadConfig();
-        setDefaultData();
+        setDefaults();
     }
 
-    public void setDefaultData() {
-
-        if(file == null) loadFile();
-        if(configuration == null) loadConfig();
-
-
-        configuration.options().copyDefaults(true);
-
-        configuration.addDefault(ATTRIBUTE_TITLE, "§6Spielregeln");
-        configuration.addDefault(ATTRIBUTE_AUTHOR, "Renixinside");
-        configuration.addDefault(ATTRIBUTE_PAGES, Arrays.asList("Test123", "Test123"));
-
-        save();
-    }
-
-    public void readData() {
-        ruleBook.setTitle(configuration.getString(ATTRIBUTE_TITLE));
-        ruleBook.setAuthor(configuration.getString(ATTRIBUTE_AUTHOR));
-        ruleBook.setSeiten(configuration.getStringList(ATTRIBUTE_PAGES));
-    }
-
-    void loadFile() {
-
-        if(!TTT.getInstance().getDataFolder().exists()) {
-            TTT.getInstance().getDataFolder().mkdirs();
-        }
-
-        File file = new File(TTT.getInstance().getDataFolder(), FILE_NAME);
-
-        if(!file.exists()) {
-            try {
-                file.createNewFile();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        this.file = file;
+    @Override
+    public void loadFile() {
 
     }
 
-    void loadConfig() {
-        configuration = YamlConfiguration.loadConfiguration(file);
+    @Override
+    public void loadConfig() {
+
     }
 
-    public YamlConfiguration getConfig() {
-        return configuration;
+    @Override
+    public void save() {
+
     }
 
-    void save() {
-        try {
-            configuration.save(file);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+    @Override
+    public void setDefaults() {
+
+    }
+
+    @Override
+    public File getFile() {
+        return null;
+    }
+
+    @Override
+    public HashMap<String, Object> read() {
+        return null;
     }
 }
