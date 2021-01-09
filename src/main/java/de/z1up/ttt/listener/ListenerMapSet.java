@@ -24,6 +24,10 @@ public class ListenerMapSet implements Listener {
         Map map = event.getMap();
         ArrayList<Spawn> spawns = TTT.core.getSpawnManager().getSpawns(map.getId());
 
+        System.out.println("SIZE " + spawns.size());
+
+        spawns.forEach(spawn -> System.out.println("ID " + spawn.getId()));
+
         map.setSpawns(spawns);
         TTT.core.getMapManager().setMapToPlay(map);
 

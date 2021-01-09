@@ -11,7 +11,9 @@ import org.bukkit.scheduler.BukkitRunnable;
 public class TimerManager implements Manager {
 
     private TTTRunnable lobbyTimer;
+    private TTTRunnable preSavePhaseTimer;
     private TTTRunnable savePhaseTimer;
+    private TTTRunnable gameTimer;
 
     public TimerManager() {
         load();
@@ -26,7 +28,9 @@ public class TimerManager implements Manager {
     @Override
     public void init() {
         initLobbyTimer();
+        initPreSavePhaseTimer();
         initSavePhaseTimer();
+        initGameTimer();
     }
 
     public TTTRunnable getLobbyTimer() {
@@ -35,6 +39,14 @@ public class TimerManager implements Manager {
 
     public TTTRunnable getSavePhaseTimer() {
         return savePhaseTimer;
+    }
+
+    public TTTRunnable getPreSavePhaseTimer() {
+        return preSavePhaseTimer;
+    }
+
+    public TTTRunnable getGameTimer() {
+        return gameTimer;
     }
 
     public void checkPlayersForStart() {
@@ -99,10 +111,21 @@ public class TimerManager implements Manager {
                         + (Integer.parseInt("2") == 1 ? "einer Sekunde" : "%time% Sekunden") + "§8!");
     }
 
+    public void initPreSavePhaseTimer() {
+        this.preSavePhaseTimer = new TTTRunnable(5, false, GameManager.GameState.PRE_SAVEPHASE,
+                null);
+    }
+
     public void initSavePhaseTimer() {
-        this.lobbyTimer = new TTTRunnable(60, false, GameManager.GameState.SCHUTZPHASE,
+        this.savePhaseTimer = new TTTRunnable(20, false, GameManager.GameState.SAVEPHASE,
                 Messages.PREFIX + "§7Die Schutzzeit endet in §a"
                         + (Integer.parseInt("2") == 1 ? "einer Sekunde" : "%time% Sekunden") + "§8!");
+    }
+
+    public void initGameTimer() {
+        this.gameTimer = new TTTRunnable(60, false, GameManager.GameState.INGAME,
+                Messages.PREFIX + "§7Die Spiel wird in §a"
+                        + (Integer.parseInt("2") == 1 ? "einer Sekunde" : "%time% Sekunden") + " gestoppt§8!");
     }
 
 }

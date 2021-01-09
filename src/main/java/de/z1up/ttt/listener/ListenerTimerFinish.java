@@ -24,7 +24,7 @@ public class ListenerTimerFinish implements Listener {
 
             task.cancel();
 
-            GameStateChangeEvent gameStateChangeEvent = new GameStateChangeEvent(GameManager.GameState.LOBBYPHASE, GameManager.GameState.SCHUTZPHASE, false);
+            GameStateChangeEvent gameStateChangeEvent = new GameStateChangeEvent(GameManager.GameState.LOBBYPHASE, GameManager.GameState.PRE_SAVEPHASE, false);
             if(Bukkit.getOnlinePlayers().size() < Bukkit.getMaxPlayers()) {
                 gameStateChangeEvent.setCancelled(true);
 
@@ -35,6 +35,7 @@ public class ListenerTimerFinish implements Listener {
                 TTT.core.getTimerManager().initLobbyTimer();
                 TTT.core.getTimerManager().startTimerWaitingForPlayers();
             }
+            TTT.core.getGameManager().setGameState(GameManager.GameState.PRE_SAVEPHASE);
             if(!gameStateChangeEvent.isCancelled()) {
                 Bukkit.getPluginManager().callEvent(gameStateChangeEvent);
             }
@@ -42,9 +43,19 @@ public class ListenerTimerFinish implements Listener {
             return;
         }
 
-        if(task.getGameState() == GameManager.GameState.SCHUTZPHASE) {
+        if(task.getGameState() == GameManager.GameState.PRE_SAVEPHASE) {
 
-            GameStateChangeEvent gameStateChangeEvent = new GameStateChangeEvent(GameManager.GameState.SCHUTZPHASE, GameManager.GameState.INGAME, false);
+            TTT.core.getGameManager().setGameState(GameManager.GameState.SAVEPHASE);
+            GameStateChangeEvent gameStateChangeEvent = new GameStateChangeEvent(GameManager.GameState.PRE_SAVEPHASE, GameManager.GameState.SAVEPHASE, false);
+            Bukkit.getPluginManager().callEvent(gameStateChangeEvent);
+
+            return;
+        }
+
+        if(task.getGameState() == GameManager.GameState.SAVEPHASE) {
+
+            TTT.core.getGameManager().setGameState(GameManager.GameState.INGAME);
+            GameStateChangeEvent gameStateChangeEvent = new GameStateChangeEvent(GameManager.GameState.SAVEPHASE, GameManager.GameState.INGAME, false);
             Bukkit.getPluginManager().callEvent(gameStateChangeEvent);
 
             return;

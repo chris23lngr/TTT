@@ -51,8 +51,8 @@ public class VoteManager implements Manager {
         return votes.containsKey(player);
     }
 
-    public void setVotePeriodActive(boolean votePeriodActive) {
-        this.votePeriodActive = votePeriodActive;
+    public void setVotePeriodActive(boolean b) {
+        this.votePeriodActive = b;
     }
 
     public boolean isVotePeriodActive() {

@@ -50,7 +50,7 @@ public final class Messages {
             = PREFIX + "§cFehler! Es wurde keine Map gefunden§8!";
 
     public static final String PLAYING_ON
-            = PREFIX + "§7Es wird gespielt auf §a";
+            = PREFIX + "§7Es wird gespielt auf §b";
 
     public static final String ID_NOT_EXISTS
             = PREFIX + "§cDiese ID exestiert nicht§8.";
@@ -71,7 +71,7 @@ public final class Messages {
             = PREFIX + "§aDer §bForce Start §awurde aktiviert§8!";
 
     public static final String MAPS_YOU_VOTED_FOR
-            = PREFIX + "§aAuswahl gespeichert§8. Du hast gevotet für §b";
+            = PREFIX + "§aAuswahl gespeichert§8. §aDu hast gevotet für §b";
 
     public static final String ACHIEVEMENT_ACHIEVED
             = PREFIX + "§aDu hast einen Erfolg erzielt§8: §b";

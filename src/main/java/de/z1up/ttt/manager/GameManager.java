@@ -25,7 +25,8 @@ public class GameManager implements Manager {
 
     public enum GameState {
         LOBBYPHASE,
-        SCHUTZPHASE,
+        PRE_SAVEPHASE,
+        SAVEPHASE,
         INGAME,
         RESTART
     }
@@ -54,7 +55,7 @@ public class GameManager implements Manager {
     }
 
     public boolean inSavePhase() {
-        return (gameState == GameState.SCHUTZPHASE);
+        return (gameState == GameState.SAVEPHASE);
     }
 
     public boolean inRestart() {

@@ -84,8 +84,8 @@ public class ManagerMap extends WrapperMap implements Manager {
         return mapToPlay != null;
     }
 
-    public void setMapToPlay(Map mapToPlay) {
-        this.mapToPlay = mapToPlay;
+    public void setMapToPlay(Map map) {
+        this.mapToPlay = map;
     }
 
     public Map getMapToPlay() {

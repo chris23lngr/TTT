@@ -3,6 +3,7 @@ package de.z1up.ttt.command;
 import de.z1up.ttt.TTT;
 import de.z1up.ttt.util.Messages;
 import de.z1up.ttt.util.o.Map;
+import de.z1up.ttt.util.o.Spawn;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
@@ -52,8 +53,11 @@ public class CommandForceMap implements CommandExecutor, TabCompleter {
         Map map = TTT.core.getMapManager().getMap(mapName);
         TTT.core.getMapManager().setMapToPlay(map);
 
+        // Deactivate vote period
+        TTT.core.getVoteManager().setVotePeriodActive(false);
+
         // Send a success message
-        player.sendMessage(Messages.FM_SUCCESS);
+        player.sendMessage(Messages.FM_SUCCESS + map.getName());
         return false;
     }
 

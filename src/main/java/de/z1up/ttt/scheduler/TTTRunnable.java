@@ -29,12 +29,13 @@ public class TTTRunnable extends BukkitRunnable {
 
     public void runAsync() {
         active = true;
-        runTaskTimerAsynchronously(TTT.getInstance(), 0, 20);
 
         // call the TimerStartEvent
         // when the timer is started
         TimerStartEvent event = new TimerStartEvent(this, false);
         Bukkit.getPluginManager().callEvent(event);
+
+        runTaskTimerAsynchronously(TTT.getInstance(), 0, 20);
     }
 
     @Override
@@ -61,6 +62,7 @@ public class TTTRunnable extends BukkitRunnable {
               TimerFinishEvent event = new TimerFinishEvent(this, false);
               Bukkit.getPluginManager().callEvent(event);
 
+              cancel();
             }
 
         } else {
@@ -69,13 +71,15 @@ public class TTTRunnable extends BukkitRunnable {
             TimerFinishEvent event = new TimerFinishEvent(this, false);
             Bukkit.getPluginManager().callEvent(event);
 
+            cancel();
         }
 
         // lower the time and call the
         // CountDownTimeChangeEvent
-        time--;
         Event event = new TimerTimeChangeEvent(this, time, false);
         Bukkit.getPluginManager().callEvent(event);
+
+        time--;
 
     }
 

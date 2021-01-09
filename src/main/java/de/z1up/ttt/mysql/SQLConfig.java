@@ -6,6 +6,7 @@ import java.util.HashMap;
 
 import de.z1up.ttt.TTT;
 import de.z1up.ttt.interfaces.Configuration;
+import org.bukkit.Bukkit;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.configuration.file.YamlConfiguration;
 
@@ -30,16 +31,24 @@ public class SQLConfig implements Configuration {
         this.fileName = fileName;
         loadFile();
         loadConfig();
+        setDefaults();
     }
 
     @Override
     public void loadFile() {
+
+        if(!TTT.getInstance().getDataFolder().exists()) {
+            TTT.getInstance().getDataFolder().mkdirs();
+        }
 
         file = new File(TTT.getInstance().getDataFolder(), fileName);
 
         if(!file.exists()) {
             try {
                 file.createNewFile();
+                Bukkit.getConsoleSender().sendMessage("§4Please enter your MySQL access data first, to use the plugin.");
+                Bukkit.shutdown();
+                return;
             } catch (IOException exception) {
                 exception.printStackTrace();
             }

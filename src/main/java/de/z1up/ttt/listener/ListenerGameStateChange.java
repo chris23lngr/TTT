@@ -3,7 +3,7 @@ package de.z1up.ttt.listener;
 import de.z1up.ttt.TTT;
 import de.z1up.ttt.event.GameStateChangeEvent;
 import de.z1up.ttt.manager.GameManager;
-import de.z1up.ttt.core.Core;
+import de.z1up.ttt.util.UserAPI;
 import de.z1up.ttt.util.o.Map;
 import de.z1up.ttt.util.o.Spawn;
 import org.bukkit.Bukkit;
@@ -26,7 +26,7 @@ public class ListenerGameStateChange implements Listener {
         GameManager.GameState from = event.getFrom();
         GameManager.GameState to = event.getTo();
 
-        if((from == GameManager.GameState.LOBBYPHASE) && (to == GameManager.GameState.SCHUTZPHASE)) {
+        if((from == GameManager.GameState.LOBBYPHASE) && (to == GameManager.GameState.PRE_SAVEPHASE)) {
 
             // teleport all the players who aren't
             // specs to a Spawnpoint
@@ -47,11 +47,27 @@ public class ListenerGameStateChange implements Listener {
                 Player player = players.get(i);
                 Spawn spawn = spawns.get(i);
                 player.teleport(spawn.getLocation());
+                UserAPI.resetPlayerAsync(player);
             }
 
-            // Start the Savephase timer
-            TTT.core.getTimerManager().getLobbyTimer().runAsync();
+            // Start the PreSavephase timer
+            TTT.core.getTimerManager().getPreSavePhaseTimer().runAsync();
 
+            return;
+        }
+
+        if((from == GameManager.GameState.PRE_SAVEPHASE) && (to == GameManager.GameState.SAVEPHASE)) {
+
+            TTT.core.getTimerManager().getSavePhaseTimer().runAsync();
+
+            return;
+        }
+
+        if((from == GameManager.GameState.SAVEPHASE) && (to == GameManager.GameState.INGAME)) {
+
+            TTT.core.getTimerManager().getGameTimer().runAsync();
+
+            return;
         }
 
     }

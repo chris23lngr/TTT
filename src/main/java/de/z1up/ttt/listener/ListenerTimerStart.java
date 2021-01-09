@@ -16,10 +16,12 @@ public class ListenerTimerStart implements Listener {
     @EventHandler
     public void onCall(final TimerStartEvent event) {
 
-        if(event.getRunnable().getGameState().equals(GameManager.GameState.LOBBYPHASE)) {
+        TTT.core.getVoteManager().setVotePeriodActive(true);
+
+        if(event.getRunnable().getGameState() == GameManager.GameState.LOBBYPHASE) {
 
             // activate the vote period
-            TTT.core.getVoteManager().setVotePeriodActive(true);
+            System.out.println("it ist the timer");
 
         }
 

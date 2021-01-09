@@ -65,6 +65,7 @@ public class ListenerPlayerInteract implements Listener {
                 }
 
                 if(display.equals("§bMap voting")) {
+
                     if(TTT.core.getVoteManager().isVotePeriodActive()) {
                         TTT.core.getInvManager().openVotingInv(player);
                     } else {

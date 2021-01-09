@@ -3,8 +3,10 @@ package de.z1up.ttt.listener;
 import de.z1up.ttt.TTT;
 import de.z1up.ttt.event.TimerTimeChangeEvent;
 import de.z1up.ttt.event.MapSetEvent;
+import de.z1up.ttt.interfaces.Manager;
 import de.z1up.ttt.manager.GameManager;
 import de.z1up.ttt.scheduler.TTTRunnable;
+import de.z1up.ttt.util.MessageAPI;
 import de.z1up.ttt.util.o.Map;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
@@ -41,14 +43,43 @@ public class ListenerTimerTimeChange implements Listener {
                     player.closeInventory();
                 });
 
+                Map map;
+
                 if(!TTT.core.getMapManager().isMapSet()) {
-                    Map map = TTT.core.getMapManager().getVotedMap();
-                    TTT.core.getMapManager().setMapToPlay(map);
-                    Event mapSetEvent = new MapSetEvent(map, false);
-                    Bukkit.getPluginManager().callEvent(mapSetEvent);
+                    map = TTT.core.getMapManager().getVotedMap();
+                } else {
+                    map = TTT.core.getMapManager().getMapToPlay();
                 }
+
+                Event mapSetEvent = new MapSetEvent(map, false);
+                Bukkit.getPluginManager().callEvent(mapSetEvent);
             }
 
+            return;
+        }
+
+        if(task.getGameState() == GameManager.GameState.PRE_SAVEPHASE) {
+
+            String msg = "§6Go!";
+
+            if(task.getTime() == 5) {
+                msg = "§45";
+            } else if(task.getTime() == 4) {
+                msg = "§c4";
+            } else if(task.getTime() == 3) {
+                msg = "§e3";
+            } else if(task.getTime() == 2) {
+                msg = "§a2";
+            } else if(task.getTime() == 1) {
+                msg = "§21";
+            }
+
+            String finalMsg = msg;
+            Bukkit.getOnlinePlayers().forEach(player -> {
+                MessageAPI.sendTitle(player, 2, 16, 2, finalMsg, "");
+            });
+
+            return;
         }
 
     }

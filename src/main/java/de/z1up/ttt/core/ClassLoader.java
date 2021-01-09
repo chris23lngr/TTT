@@ -61,6 +61,8 @@ public class ClassLoader {
 
         new ListenerThunderChange();
         new ListenerWeatherChange();
+
+        new ListenerPlayerMove();
     }
 
     /**

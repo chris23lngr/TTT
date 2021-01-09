@@ -43,7 +43,7 @@ public class ManagerSpawn extends WrapperSpawn implements Manager {
 
     public ArrayList<Spawn> getSpawns(int id) {
 
-        if(!existsID(id)) {
+        if(!TTT.core.getMapManager().existsID(id)) {
             Bukkit.getConsoleSender().sendMessage(Messages.ErrorMessages.ID_NOT_FOUND_EXC);
             return null;
         }
