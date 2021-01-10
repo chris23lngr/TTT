@@ -97,6 +97,15 @@ public final class Messages {
     public static final String WIN_DRAW
             = PREFIX + "§7Diese Runde ist unentschieden asugegangen§8!";
 
+    public static final String TEAM_PLAYING_AS_TRAITOR
+            = PREFIX + "§7Du bist jetzt im Team der §4Traitor§8.";
+
+    public static final String TEAM_PLAYING_AS_DETECTIVE
+            = PREFIX + "§7Du bist jetzt im Team der §9Detectives§8.";
+
+    public static final String TEAM_PLAYING_AS_INNOCENT
+            = PREFIX + "§7Du bist jetzt im Team der §aInncoents§8.";
+
     public final class ErrorMessages {
 
         public static final String PREFIX

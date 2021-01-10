@@ -1,4 +1,4 @@
-package de.z1up.ttt.listener;
+package de.z1up.ttt.listener.custom;
 
 import de.z1up.ttt.TTT;
 import de.z1up.ttt.event.MapSetEvent;
@@ -23,10 +23,6 @@ public class ListenerMapSet implements Listener {
 
         Map map = event.getMap();
         ArrayList<Spawn> spawns = TTT.core.getSpawnManager().getSpawns(map.getId());
-
-        System.out.println("SIZE " + spawns.size());
-
-        spawns.forEach(spawn -> System.out.println("ID " + spawn.getId()));
 
         map.setSpawns(spawns);
         TTT.core.getMapManager().setMapToPlay(map);

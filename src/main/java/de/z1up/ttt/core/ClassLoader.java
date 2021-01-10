@@ -2,6 +2,7 @@ package de.z1up.ttt.core;
 
 import de.z1up.ttt.command.*;
 import de.z1up.ttt.listener.*;
+import de.z1up.ttt.listener.custom.*;
 
 /**
  * The ClassLoader class is there to register the event listeners 
@@ -63,13 +64,14 @@ public class ClassLoader {
         new ListenerWeatherChange();
 
         new ListenerPlayerMove();
+        new ListenerPlayerTeamSet();
     }
 
     /**
      * With this method, the commands are registered. Only
      * one constructor needs to be called, as the predefined
      * constructors of the individual commands specify how
-     * they are to be registered.
+     * they have to be registered.
      */
     private void registerCommands() {
 
@@ -84,6 +86,8 @@ public class ClassLoader {
 
         new CommandShop();
         new CommandStart();
+
+        new CommandStats();
     }
 
 }

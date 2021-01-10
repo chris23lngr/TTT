@@ -4,6 +4,7 @@ import de.z1up.ttt.TTT;
 import de.z1up.ttt.interfaces.Manager;
 import de.z1up.ttt.core.Core;
 import de.z1up.ttt.mysql.wrapper.WrapperPlayer;
+import de.z1up.ttt.util.o.TTTPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
 import org.bukkit.entity.Player;
@@ -11,14 +12,15 @@ import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.UUID;
 
 public class PlayerManager extends WrapperPlayer implements Manager {
 
     private ArrayList<Player> alives;
-    private ArrayList<Player> traitors;
-    private ArrayList<Player> detectives;
-    private ArrayList<Player> innos;
     private ArrayList<Player> specs;
+
+    private HashMap<UUID, TTTPlayer> players;
 
     public PlayerManager() {
         super(Core.sql);
@@ -32,23 +34,11 @@ public class PlayerManager extends WrapperPlayer implements Manager {
 
     @Override
     public void init() {
+
+        players = new HashMap<>();
+
         alives = new ArrayList<>();
-        traitors = new ArrayList<>();
-        detectives = new ArrayList<>();
-        innos = new ArrayList<>();
         specs = new ArrayList<>();
-    }
-
-    public boolean isInno(Player player) {
-        return innos.contains(player);
-    }
-
-    public boolean isDetective(Player player) {
-        return detectives.contains(player);
-    }
-
-    public boolean isTraitor(Player player) {
-        return traitors.contains(player);
     }
 
     public boolean isSpec(Player player) {
@@ -61,10 +51,7 @@ public class PlayerManager extends WrapperPlayer implements Manager {
 
     public void enterSpecMode(Player player) {
         hideSpecFromPlayers(player);
-
-
-
-    }
+   }
 
     public void hideSpecFromPlayers(Player player) {
         alives.forEach(alive -> alive.hidePlayer(player));
@@ -74,15 +61,27 @@ public class PlayerManager extends WrapperPlayer implements Manager {
         return specs;
     }
 
-    public ArrayList<Player> getTraitors() {
-        return traitors;
+    public ArrayList<Player> getAlives() {
+        return alives;
     }
 
-    public ArrayList<Player> getDetectives() {
-        return detectives;
+    public TTTPlayer getTTTPlayer(Player player) {
+        return players.get(player.getUniqueId());
     }
 
-    public ArrayList<Player> getInnos() {
-        return innos;
+    public void registerPlayer(TTTPlayer player) {
+        players.put(player.getUuid(), player);
     }
+
+    public boolean existsPlayer(UUID uuid) {
+        return players.containsKey(uuid);
+    }
+
+    public void updatePlayer(TTTPlayer tttPlayer) {
+        players.remove(tttPlayer.getUuid());
+        players.put(tttPlayer.getUuid(), tttPlayer);
+    }
+
 }
+
+

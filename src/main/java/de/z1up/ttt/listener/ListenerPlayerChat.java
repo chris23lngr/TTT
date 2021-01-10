@@ -2,6 +2,8 @@ package de.z1up.ttt.listener;
 
 import de.z1up.ttt.TTT;
 import de.z1up.ttt.core.Core;
+import de.z1up.ttt.manager.ManagerTeam;
+import de.z1up.ttt.util.o.TTTPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -21,16 +23,6 @@ public class ListenerPlayerChat implements Listener {
 
         final Player player = event.getPlayer();
         String message = event.getMessage();
-
-        /*
-        String text = "[%time%] %playername% >> %message%";
-        text = text.replaceAll("%time%", Data.replayFile.getTime());
-        text = text.replaceAll("%playername%", player.getName());
-        text = text.replaceAll("%message%", message);
-        Data.replayFile.addLine(text);
-
-         */
-
 
         if(TTT.core.getPlayerManager().isSpec(player)) {
             if(TTT.core.getGameManager().inRestart()) {
@@ -52,31 +44,40 @@ public class ListenerPlayerChat implements Listener {
 
         message = event.getMessage().replaceAll("%", "%%");
 
+        TTTPlayer tttPlayer = TTT.core.getPlayerManager().getTTTPlayer(player);
+
+        if(!tttPlayer.hasTeam()) {
+            event.setFormat(format);
+            return;
+        }
+
         if(TTT.core.getGameManager().inGame()) {
 
-            if(TTT.core.getPlayerManager().isInno(player)) {
-                format = "§2█ §8● §7" + player.getName() + " §8» §7" + message;
+            if(tttPlayer.getTeam() == ManagerTeam.Team.DETECTIVE) {
+                format = "§9█ §8● §9" + player.getName() + " §8» §7" + message;
                 event.setFormat(format);
                 return;
             }
 
-            if(TTT.core.getPlayerManager().isDetective(player)) {
-                format = "§9█ §8● §7" + player.getName() + " §8» §7" + message;
+            if(tttPlayer.getTeam() == ManagerTeam.Team.INNOCENT) {
+                format = "§a█ §8● §a" + player.getName() + " §8» §7" + message;
                 event.setFormat(format);
                 return;
             }
 
 
-            if(TTT.core.getPlayerManager().isTraitor(player)) {
+            if(tttPlayer.getTeam() == ManagerTeam.Team.TRAITOR) {
 
                 event.setCancelled(true);
 
                 Iterator targets = Bukkit.getOnlinePlayers().iterator();
 
                 if(message.startsWith("@t")) {
+                    message = message.replaceAll("@t", "");
                     while (targets.hasNext()) {
-                        Player target = (Player) targets;
-                        if(TTT.core.getPlayerManager().isTraitor(target)) {
+                        Player target = (Player) targets.next();
+                        TTTPlayer tttTarget = TTT.core.getPlayerManager().getTTTPlayer(target);
+                        if(tttTarget.getTeam() == ManagerTeam.Team.TRAITOR) {
                             format = "§4█ Traitor §8● §7" + player.getName() + " §8» §7" + message;
                             target.sendMessage(format);
                         }
@@ -85,17 +86,23 @@ public class ListenerPlayerChat implements Listener {
                 }
 
                 while (targets.hasNext()) {
-                    Player target = (Player) targets;
-                    if(!TTT.core.getPlayerManager().isTraitor(target)) {
-                        format = "§2█ §8● §7" + player.getName() + " §8» §7" + message;
-                        target.sendMessage(format);
-                    } else {
-                        format = "§4█ §8● §7" + player.getName() + " §8» §7" + message;
-                        target.sendMessage(format);
+                    Player target = (Player) targets.next();
+                    TTTPlayer tttTarget = TTT.core.getPlayerManager().getTTTPlayer(target);
+                        if(tttTarget.hasTeam()) {
+                            if(tttTarget.getTeam() == ManagerTeam.Team.TRAITOR) {
+                                format = "§4█ §8● §4" + player.getName() + " §8» §7" + message;
+                                target.sendMessage(format);
+                            } else {
+                                format = "§a█ §8● §a" + player.getName() + " §8» §7" + message;
+                                target.sendMessage(format);
+                            }
+                        } else {
+                            format = "§a█ §8● §a" + player.getName() + " §8» §7" + message;
+                            target.sendMessage(format);
+                        }
                     }
                 }
 
-            }
             return;
         }
 

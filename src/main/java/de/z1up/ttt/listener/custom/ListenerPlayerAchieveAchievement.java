@@ -1,4 +1,4 @@
-package de.z1up.ttt.listener;
+package de.z1up.ttt.listener.custom;
 
 import de.z1up.ttt.TTT;
 import de.z1up.ttt.event.PlayerAchieveAchievementEvent;
@@ -22,7 +22,7 @@ public class ListenerPlayerAchieveAchievement implements Listener {
         Achievement achievement = event.getAchievement();
         Player player = event.getPlayer();
 
-        if(!TTT.core.getPlayerManager().existsPlayer(player.getUniqueId())){
+        if(!TTT.core.getPlayerManager().exists(player)){
             return;
         }
 

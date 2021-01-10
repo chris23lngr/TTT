@@ -1,7 +1,6 @@
 package de.z1up.ttt.listener;
 
 import de.z1up.ttt.TTT;
-import de.z1up.ttt.core.Core;
 import de.z1up.ttt.util.Messages;
 import de.z1up.ttt.util.UserAPI;
 import de.z1up.ttt.util.o.DBPlayer;
@@ -24,7 +23,7 @@ public class ListenerPlayerJoin implements Listener {
 
         UserAPI.resetPlayer(player);
 
-        if(!TTT.core.getPlayerManager().existsPlayer(player.getUniqueId())) {
+        if(!TTT.core.getPlayerManager().exists(player)) {
             DBPlayer dbPlayer = new DBPlayer(player.getUniqueId(), 0,
                     0, 5, 5, 0, 1000, 0,
                     0, null, 0, 0);

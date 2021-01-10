@@ -3,6 +3,7 @@ package de.z1up.ttt.mysql.wrapper;
 import de.z1up.ttt.interfaces.Wrapper;
 import de.z1up.ttt.mysql.SQL;
 import de.z1up.ttt.util.o.DBPlayer;
+import org.bukkit.entity.Player;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
@@ -126,8 +127,8 @@ public class WrapperPlayer implements Wrapper {
         String stmt = "SELECT * FROM " + TABLE_NAME + " WHERE " + ATTRIBUTE_UUID + "=?;";
         Object attribute = null;
 
-        if(e instanceof DBPlayer) {
-            attribute = ((DBPlayer) e).getUuid();
+        if(e instanceof Player) {
+            attribute = ((Player) e).getUniqueId();
         } else if((e instanceof String) || (e instanceof UUID)) {
             attribute = e;
         }
@@ -159,11 +160,16 @@ public class WrapperPlayer implements Wrapper {
         return null;
     }
 
-    public boolean existsPlayer(UUID uuid) {
-        return sql.existResult(TABLE_NAME, ATTRIBUTE_UUID, uuid);
+    public boolean exists(Player player) {
+        return sql.existResult(TABLE_NAME, ATTRIBUTE_UUID, player.getUniqueId());
     }
 
     public String form(Collection<Integer> achievements) {
+
+        if(achievements == null) {
+            return "/";
+        }
+
         String achievementsString = "";
         for (Integer achievementID : achievements) {
             achievementsString = achievementsString + achievementID + ";";
@@ -172,6 +178,11 @@ public class WrapperPlayer implements Wrapper {
     }
 
     public Collection<Integer> form(String achievementsString) {
+
+        if(achievementsString == null || achievementsString.equals("")) {
+            return new ArrayList<>();
+        }
+
         Collection<Integer> achievements = new ArrayList<>();
         String[] achieved = achievementsString.split(";");
         for (String s : achieved) {

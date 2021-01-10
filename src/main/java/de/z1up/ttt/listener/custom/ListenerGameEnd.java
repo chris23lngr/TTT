@@ -1,4 +1,4 @@
-package de.z1up.ttt.listener;
+package de.z1up.ttt.listener.custom;
 
 import de.z1up.ttt.TTT;
 import de.z1up.ttt.event.GameEndEvent;

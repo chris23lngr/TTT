@@ -1,6 +1,7 @@
 package de.z1up.ttt.manager;
 
 import de.z1up.ttt.TTT;
+import de.z1up.ttt.event.GameEndEvent;
 import de.z1up.ttt.interfaces.Manager;
 import org.bukkit.Bukkit;
 
@@ -72,21 +73,24 @@ public class GameManager implements Manager {
         int onlineSize = Bukkit.getOnlinePlayers().size();
         int actualSize = onlineSize - specSize;
 
-        if(TTT.core.getPlayerManager().getTraitors().size() == actualSize
-                && TTT.core.getPlayerManager().getDetectives().isEmpty()
-                && TTT.core.getPlayerManager().getInnos().isEmpty()) {
+
+        if(TTT.core.getTeamManager().getTraitorCounter() == actualSize
+                && TTT.core.getTeamManager().getInnocentCounter() == 0
+                && TTT.core.getTeamManager().getDetectiveCounter() == 0) {
 
             this.gameResult = GameResult.TRAITOR_WIN;
+
             return true;
         }
 
-        int innoSize = TTT.core.getPlayerManager().getInnos().size();
-        int detSize = TTT.core.getPlayerManager().getDetectives().size();
+        int innoSize = TTT.core.getTeamManager().getInnocentCounter();
+        int detSize = TTT.core.getTeamManager().getDetectiveCounter();
 
-        if(TTT.core.getPlayerManager().getTraitors().isEmpty()
+        if(TTT.core.getTeamManager().getTraitorCounter() == 0
                 && actualSize == (innoSize + detSize)) {
 
             this.gameResult = GameResult.INNOCENT_WIN;
+
             return true;
         }
 

@@ -1,11 +1,14 @@
-package de.z1up.ttt.listener;
+package de.z1up.ttt.listener.custom;
 
 import de.z1up.ttt.TTT;
 import de.z1up.ttt.event.GameStateChangeEvent;
+import de.z1up.ttt.event.PlayerTeamSetEvent;
 import de.z1up.ttt.manager.GameManager;
 import de.z1up.ttt.util.UserAPI;
+import de.z1up.ttt.util.o.DBPlayer;
 import de.z1up.ttt.util.o.Map;
 import de.z1up.ttt.util.o.Spawn;
+import de.z1up.ttt.util.o.TTTPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -64,6 +67,39 @@ public class ListenerGameStateChange implements Listener {
         }
 
         if((from == GameManager.GameState.SAVEPHASE) && (to == GameManager.GameState.INGAME)) {
+
+            TTT.core.getTeamManager().calcTeamSizes();
+
+            Iterator players = Bukkit.getOnlinePlayers().iterator();
+
+            while (players.hasNext()) {
+
+                Player player = (Player) players.next();
+
+                if(!TTT.core.getPlayerManager().isSpec(player)) {
+
+                    TTTPlayer tttPlayer;
+
+                    if(!TTT.core.getPlayerManager().existsPlayer(player.getUniqueId())) {
+                        DBPlayer dbPlayer = (DBPlayer) TTT.core.getPlayerManager().get(player);
+                        tttPlayer = new TTTPlayer(dbPlayer, null, 0, true);
+                    } else {
+                        tttPlayer = TTT.core.getPlayerManager().getTTTPlayer(player);
+                    }
+
+                    if (!tttPlayer.hasTeam()) {
+
+                        TTT.core.getTeamManager().selectTeam(tttPlayer);
+                        TTT.core.getPlayerManager().updatePlayer(tttPlayer);
+
+                    }
+
+                    PlayerTeamSetEvent teamSetEvent = new PlayerTeamSetEvent(tttPlayer, tttPlayer.getTeam(), false);
+                    Bukkit.getPluginManager().callEvent(teamSetEvent);
+
+                }
+
+            }
 
             TTT.core.getTimerManager().getGameTimer().runAsync();
 

@@ -9,6 +9,8 @@ import de.z1up.ttt.mysql.SQL;
 import de.z1up.ttt.mysql.SQLConfig;
 import de.z1up.ttt.replay.ReplayFile;
 
+import java.time.temporal.Temporal;
+
 /**
  * The Core class is used to access the
  * individual managers and modules. Furthermore,
@@ -27,6 +29,7 @@ public class Core {
     private TimerManager timerManager;
     private VoteManager voteManager;
     private ManagerSpawn spawnManager;
+    private ManagerTeam teamManager;
 
     public ReplayFile replayFile;
     public RuleBook ruleBook;
@@ -42,15 +45,17 @@ public class Core {
 
         // Create the SQL connection
         createSQLCon();
-
         wrapperPlayer = new WrapperPlayer(sql);
         wrapperAchievements = new WrapperAchievements(sql);
+
 
         // initialize the manager
         initManager();
 
+
         replayFile = new ReplayFile();
         ruleBook = new RuleBook();
+
 
         loadClassLoader();
     }
@@ -71,6 +76,7 @@ public class Core {
         timerManager = new TimerManager();
         voteManager = new VoteManager();
         spawnManager = new ManagerSpawn();
+        teamManager = new ManagerTeam();
     }
 
 
@@ -134,6 +140,10 @@ public class Core {
 
     public ManagerSpawn getSpawnManager() {
         return spawnManager;
+    }
+
+    public ManagerTeam getTeamManager() {
+        return teamManager;
     }
 
     public RuleBook getRuleBook() {
