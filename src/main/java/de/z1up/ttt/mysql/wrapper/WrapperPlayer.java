@@ -164,6 +164,10 @@ public class WrapperPlayer implements Wrapper {
         return sql.existResult(TABLE_NAME, ATTRIBUTE_UUID, player.getUniqueId());
     }
 
+    public boolean exists(UUID uuid) {
+        return sql.existResult(TABLE_NAME, ATTRIBUTE_UUID, uuid);
+    }
+
     public String form(Collection<Integer> achievements) {
 
         if(achievements == null) {

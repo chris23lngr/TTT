@@ -101,11 +101,19 @@ public class SQLConfig implements Configuration {
 
         HashMap<String, Object> data = new HashMap<>();
 
+        /*
         data.put("host", configuration.getString("host"));
         data.put("port", configuration.getInt("port"));
         data.put("database", configuration.getString("database"));
         data.put("username", configuration.getString("username"));
         data.put("password", configuration.getString("password"));
+         */
+
+        data.put("host", "localhost");
+        data.put("port", 3306);
+        data.put("database", "ttt");
+        data.put("username", "root");
+        data.put("password", "#CWsgMc!strt999");
 
         return data;
     }

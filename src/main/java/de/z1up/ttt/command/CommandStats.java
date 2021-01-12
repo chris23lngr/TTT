@@ -3,10 +3,13 @@ package de.z1up.ttt.command;
 import de.z1up.ttt.TTT;
 import de.z1up.ttt.util.Messages;
 import de.z1up.ttt.util.o.DBPlayer;
+import de.z1up.ttt.util.uuid.UUIDFetcher;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
+
+import java.util.UUID;
 
 public class CommandStats implements CommandExecutor {
 
@@ -31,9 +34,30 @@ public class CommandStats implements CommandExecutor {
             return true;
         }
 
-        DBPlayer dbPlayer = (DBPlayer) TTT.core.getPlayerManager().get(player);
+        UUID targetUUID = player.getUniqueId();
 
-        player.sendMessage(Messages.PREFIX + "§7Deine Stats:");
+        if(args.length > 0) {
+
+            String targetName = args[0];
+
+            if(!UUIDFetcher.existsPlayer(targetName)) {
+                player.sendMessage(Messages.PLAYER_NOT_EXISTS);
+                return true;
+            }
+
+            if(!TTT.core.getPlayerManager().exists(targetUUID)) {
+                player.sendMessage(Messages.PLAYER_NOT_EXISTS);
+                return true;
+            }
+
+            targetUUID = UUIDFetcher.getUUID(targetName);
+
+
+        }
+
+        DBPlayer dbPlayer = (DBPlayer) TTT.core.getPlayerManager().get(targetUUID);
+
+        player.sendMessage(Messages.PREFIX + "§7Stats von §e" + UUIDFetcher.getName(targetUUID));
 
         int kills = dbPlayer.getKills();
         int wins = dbPlayer.getWins();

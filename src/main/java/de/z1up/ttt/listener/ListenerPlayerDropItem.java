@@ -44,6 +44,14 @@ public class ListenerPlayerDropItem implements Listener {
 
     boolean canItemBeDropped(ItemStack itemStack) {
 
+        if(itemStack.getItemMeta() == null) {
+            return false;
+        }
+
+        if(itemStack.getItemMeta().getDisplayName() == null) {
+            return false;
+        }
+
         ArrayList<String> forbiddenItemNames = new ArrayList<String>();
         forbiddenItemNames.add("§4Creeper §7Pfeile");
         forbiddenItemNames.add("§4Innocent §7Ticket");

@@ -3,6 +3,7 @@ package de.z1up.ttt.core;
 import de.z1up.ttt.command.*;
 import de.z1up.ttt.listener.*;
 import de.z1up.ttt.listener.custom.*;
+import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 
 /**
  * The ClassLoader class is there to register the event listeners 
@@ -65,6 +66,9 @@ public class ClassLoader {
 
         new ListenerPlayerMove();
         new ListenerPlayerTeamSet();
+
+        new ListenerPlayerInteractAtEntity();
+        new ListenerPlayerDeath();
     }
 
     /**

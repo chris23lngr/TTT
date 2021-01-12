@@ -106,6 +106,24 @@ public final class Messages {
     public static final String TEAM_PLAYING_AS_INNOCENT
             = PREFIX + "§7Du bist jetzt im Team der §aInncoents§8.";
 
+    public static final String EC_NOT_OPEN_ATM
+            = PREFIX + "§cDie Enderchest kann erst nach der Schutzphase geöffnet werden§8.";
+
+    public static final String DEAD_BODY_NOT_PROCESSED
+            = PREFIX + "§cDiese Leiche wurde noch nicht bearbeitet.";
+
+    public static final String DEAD_BODY_OF
+            = PREFIX + "§7Das ist die Leiche von §e";
+
+    public static final String DEAD_BODY_WAS
+            = PREFIX + "§7Er/Sie war ein §e";
+
+    public static final String NOT_MIN_PLAYERS
+            = PREFIX + "§cEs müssen mindestens 2 Spieler online sein um Spielen zu können§8.";
+
+    public static final String PLAYER_NOT_EXISTS
+            = PREFIX + "§cDieser Spieler exestriert nicht§8.";
+
     public final class ErrorMessages {
 
         public static final String PREFIX

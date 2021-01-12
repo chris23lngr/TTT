@@ -4,6 +4,7 @@ import de.z1up.ttt.TTT;
 import de.z1up.ttt.interfaces.Manager;
 import de.z1up.ttt.core.Core;
 import de.z1up.ttt.mysql.wrapper.WrapperPlayer;
+import de.z1up.ttt.util.o.DeadBody;
 import de.z1up.ttt.util.o.TTTPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.GameMode;
@@ -22,6 +23,8 @@ public class PlayerManager extends WrapperPlayer implements Manager {
 
     private HashMap<UUID, TTTPlayer> players;
 
+    private ArrayList<DeadBody> deadBodies;
+
     public PlayerManager() {
         super(Core.sql);
         load();
@@ -36,6 +39,7 @@ public class PlayerManager extends WrapperPlayer implements Manager {
     public void init() {
 
         players = new HashMap<>();
+        deadBodies = new ArrayList<>();
 
         alives = new ArrayList<>();
         specs = new ArrayList<>();
@@ -82,6 +86,13 @@ public class PlayerManager extends WrapperPlayer implements Manager {
         players.put(tttPlayer.getUuid(), tttPlayer);
     }
 
+    public ArrayList<DeadBody> getDeadBodies() {
+        return deadBodies;
+    }
+
+    public void addDeadBody(DeadBody deadBody) {
+        deadBodies.add(deadBody);
+    }
 }
 
 
