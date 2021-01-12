@@ -25,7 +25,7 @@ public class ListenerPlayerChat implements Listener {
         String message = event.getMessage();
 
         if(TTT.core.getPlayerManager().isSpec(player)) {
-            if(TTT.core.getGameManager().inRestart()) {
+            if (TTT.core.getGameManager().inRestart()) {
                 event.setCancelled(false);
             } else {
                 event.setCancelled(true);

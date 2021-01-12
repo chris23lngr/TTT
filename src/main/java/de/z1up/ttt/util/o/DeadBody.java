@@ -20,6 +20,7 @@ public class DeadBody {
     private Location location;
     private Entity entity;
     private boolean processed;
+    private EntityModifier modifier;
 
     public DeadBody(UUID uuid, ManagerTeam.Team team, UUID killedBy, Location location, boolean processed) {
         this.uuid = uuid;
@@ -32,12 +33,12 @@ public class DeadBody {
     public void spawn() {
 
         entity = location.getWorld().spawn(location, Zombie.class);
-        EntityModifier modifier = new EntityModifier(entity, TTT.getInstance());
+        modifier = new EntityModifier(entity, TTT.getInstance());
         modifier.modify().setDisplayName("§4Nicht identifiziert")
                 .setNoAI(true).setCanDespawn(false)
                 .setFireTicks(0)
                 .setCanPickUpLoot(false)
-                .setInvulnerable(true).build();
+                .setInvulnerable(true);
     }
 
     public boolean isProcessed() {
@@ -46,27 +47,18 @@ public class DeadBody {
 
     public void update() {
 
-        despawn();
-
         String name = UUIDFetcher.getName(uuid);
 
-        entity = location.getWorld().spawn(location, Zombie.class);
-        EntityModifier modifier = new EntityModifier(entity, TTT.getInstance());
-        modifier.modify().setDisplayName("§eName:" + name)
-                .setNoAI(true).setCanDespawn(false)
-                .setFireTicks(0)
-                .setCanPickUpLoot(false)
-                .setInvulnerable(true).build();
-
-        Zombie zombie = location.getWorld().spawn(location, Zombie.class);
-
         ItemStack head = new ItemBuilder(name).build();
-        zombie.getEquipment().setHelmet(head);
+        ((Zombie) entity).getEquipment().setHelmet(head);
+
+        modifier.modify().setDisplayName("§e" + name);
 
     }
 
     public void despawn() {
         entity.remove();
+
     }
 
     public void process() {
@@ -87,5 +79,9 @@ public class DeadBody {
 
     public ManagerTeam.Team getTeam() {
         return team;
+    }
+
+    public Location getLocation() {
+        return location;
     }
 }

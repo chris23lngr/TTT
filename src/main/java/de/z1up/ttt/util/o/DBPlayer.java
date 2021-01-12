@@ -120,6 +120,15 @@ public class DBPlayer extends Object {
         return kills;
     }
 
+    public void addKill() {
+        this.kills = kills + 1;
+    }
+
+    public void addDeath() {
+        this.deaths = deaths + 1;
+    }
+
+
     public int getTesterEntered() {
         return testerEntered;
     }
@@ -139,4 +148,5 @@ public class DBPlayer extends Object {
     public void update() {
         TTT.core.getPlayerManager().update(this);
     }
+
 }
