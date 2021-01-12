@@ -44,6 +44,14 @@ public class ListenerPlayerTeamSet implements Listener {
 
         }
 
+        TTT.core.getInvManager().setGameItems(Bukkit.getPlayer(tttPlayer.getUuid()));
+
+        if(team != null) {
+
+            if(team == ManagerTeam.Team.DETECTIVE || team == ManagerTeam.Team.TRAITOR);
+                TTT.core.getInvManager().setGameItemsShop(Bukkit.getPlayer(tttPlayer.getUuid()));
+        }
+
     }
 
 }

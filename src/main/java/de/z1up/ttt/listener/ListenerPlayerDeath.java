@@ -1,6 +1,7 @@
 package de.z1up.ttt.listener;
 
 import de.z1up.ttt.TTT;
+import de.z1up.ttt.event.PlayerBecomeSpecEvent;
 import de.z1up.ttt.event.PlayerKillEnemyEvent;
 import de.z1up.ttt.event.PlayerKillMateEvent;
 import de.z1up.ttt.manager.ManagerTeam;
@@ -31,7 +32,8 @@ public class ListenerPlayerDeath implements Listener {
 
         Player target = event.getEntity();
 
-        // Call the player
+        // clear the drops
+        event.getDrops().clear();
 
         // Respawn the player after he died
         new BukkitRunnable() {
@@ -57,8 +59,6 @@ public class ListenerPlayerDeath implements Listener {
             callKillEvent(event);
 
         }
-
-
     }
 
     private void callSpecModeEvent(PlayerDeathEvent context) {

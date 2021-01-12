@@ -53,14 +53,6 @@ public class PlayerManager extends WrapperPlayer implements Manager {
         specs.add(player);
     }
 
-    public void enterSpecMode(Player player) {
-        hideSpecFromPlayers(player);
-   }
-
-    public void hideSpecFromPlayers(Player player) {
-        alives.forEach(alive -> alive.hidePlayer(player));
-    }
-
     public ArrayList<Player> getSpecs() {
         return specs;
     }

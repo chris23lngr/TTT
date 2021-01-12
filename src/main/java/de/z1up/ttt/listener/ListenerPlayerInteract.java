@@ -1,12 +1,10 @@
 package de.z1up.ttt.listener;
 
 import de.z1up.ttt.TTT;
-import de.z1up.ttt.manager.GameManager;
-import de.z1up.ttt.util.ItemBuilder;
+import de.z1up.ttt.event.PlayerOpenChestEvent;
 import de.z1up.ttt.util.Messages;
 import org.bukkit.Bukkit;
 import org.bukkit.Material;
-import org.bukkit.block.Block;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -14,7 +12,6 @@ import org.bukkit.event.block.Action;
 import org.bukkit.event.player.PlayerInteractEvent;
 import org.bukkit.inventory.ItemStack;
 
-import java.util.Random;
 
 public class ListenerPlayerInteract implements Listener {
 
@@ -27,151 +24,128 @@ public class ListenerPlayerInteract implements Listener {
 
         Player player = event.getPlayer();
 
+        // cancel everything if the
+        // player is in build mode
         if(TTT.core.getBuildManager().canBuild(player)) {
             event.setCancelled(false);
             return;
         }
 
-        if(event.getAction() == Action.PHYSICAL
-                && event.getClickedBlock().getType().equals(Material.SOIL)) {
-            event.setCancelled(true);
-            return;
-        }
+        // chek if a chest was clicked
+        // if so -> call
+        // PlayerOpenChestEvent
+        if(event.getAction() == Action.RIGHT_CLICK_BLOCK || event.getAction() == Action.PHYSICAL) {
+            Material mat = event.getClickedBlock().getType();
 
-        if(TTT.core.getPlayerManager().isSpec(player)
-                && (event.getAction().equals(Action.RIGHT_CLICK_BLOCK)
-                || event.getAction().equals(Action.PHYSICAL))) {
-            event.setCancelled(true);
-            return;
-        }
+            // check material, just to be
+            // on the safe side
+            if(mat != null) {
 
-        if(event.getClickedBlock() != null) {
-            onChest(event);
-            return;
-        }
+                // check if block is of
+                // right material
+                if(mat == Material.CHEST || mat == Material.ENDER_CHEST) {
 
-        if(event.getAction().equals(Action.RIGHT_CLICK_AIR)
-                || event.getAction().equals(Action.RIGHT_CLICK_BLOCK)) {
+                    // cancel event
+                    event.setCancelled(true);
 
-            if(TTT.core.getGameManager().inLobby()) {
+                    // Call the openChestEvent
+                    PlayerOpenChestEvent openChestEvent
+                            = new PlayerOpenChestEvent(player, event.getClickedBlock(), false);
+                    Bukkit.getPluginManager().callEvent(openChestEvent);
 
-                if(event.getItem() == null) return;
-                if(event.getItem().getItemMeta() == null) return;
-                if(event.getItem().getType().equals(Material.BOOK)) return;
-                if(event.getItem().getItemMeta().getDisplayName() == null) return;
-                if(event.getItem().getItemMeta().getDisplayName().equalsIgnoreCase("")) return;
-
-                String display = event.getItem().getItemMeta().getDisplayName();
-
-                if(display.equals("§eErfolge")) {
-                    TTT.core.getInvManager().openAchievementsInv(player);
                     return;
                 }
-
-                if(display.equals("§4Einstellungen")) {
-                    TTT.core.getInvManager().openSettingsInv(player);
-                    return;
-                }
-
-                if(display.equals("§bMap voting")) {
-
-                    if(TTT.core.getVoteManager().isVotePeriodActive()) {
-                        TTT.core.getInvManager().openVotingInv(player);
-                    } else {
-                        player.sendMessage(Messages.VOTE_PERIOD_NOT_ACTIVE);
-                    }
-                    return;
-                }
-
-                if(display.equals("§8Spiel verlassen")) {
-                    player.kickPlayer(Messages.PREFIX + "§cDu hast das Spiel verlassen!");
-                    return;
-                }
-
-                return;
             }
+        }
 
+        // check if event action was
+        // a right click
+        if((event.getAction() != Action.RIGHT_CLICK_BLOCK) && (event.getAction() != Action.RIGHT_CLICK_AIR) && (event.getAction() != Action.PHYSICAL)) {
+            System.out.println("WRONG ACTION");
+            return;
+        }
+
+        if(event.getItem() == null) return;
+        if(event.getItem().getItemMeta() == null) return;
+        if(event.getItem().getType().equals(Material.BOOK)) return;
+        if(event.getItem().getItemMeta().getDisplayName() == null) return;
+        if(event.getItem().getItemMeta().getDisplayName().equalsIgnoreCase("")) return;
+
+        // check if player is a spec
+        if(TTT.core.getPlayerManager().isSpec(player)) {
+
+            // cancel the event
+            //            event.setCancelled(true);
+
+            // run the onSpec method
+            onSpec(event);
+            return;
+        }
+
+        // check if players are still
+        // in the lobby
+        if(TTT.core.getGameManager().inLobby()) {
+
+            // cancel the event
+            event.setCancelled(true);
+
+            // run the onLobby method
+            onLobby(event);
+            return;
+        }
+    }
+
+    private void onLobby(PlayerInteractEvent context) {
+
+        Player player = context.getPlayer();
+        String display = context.getItem().getItemMeta().getDisplayName();
+
+        if(display.equals(Messages.ItemNames.ACHIEVEMENTS)) {
+            TTT.core.getInvManager().openAchievementsInv(player);
+            return;
+        }
+
+        if(display.equals(Messages.ItemNames.SETTINGS)) {
+            TTT.core.getInvManager().openSettingsInv(player);
+            return;
+        }
+
+        if(display.equals(Messages.ItemNames.MAP_VOTING)) {
+
+            if(TTT.core.getVoteManager().isVotePeriodActive()) {
+                TTT.core.getInvManager().openVotingInv(player);
+            } else {
+                player.sendMessage(Messages.VOTE_PERIOD_NOT_ACTIVE);
+            }
+            return;
+        }
+
+        if(display.equals(Messages.ItemNames.QUIT_GAME)) {
+            player.kickPlayer(Messages.GAME_LEFT);
+            return;
         }
 
     }
 
-    public void onChest(PlayerInteractEvent event) {
+    private void onSpec(PlayerInteractEvent context) {
 
-        if(event.getAction().equals(Action.RIGHT_CLICK_BLOCK) && event.getAction().equals(Action.PHYSICAL)) {
+        ItemStack itemStack = context.getItem();
+        String display = itemStack.getItemMeta().getDisplayName();
+        System.out.println("CLICKED " + itemStack.getItemMeta().getDisplayName());
 
-            if(event.getClickedBlock() == null) {
-                return;
-            }
-
-            Block block = event.getClickedBlock();
-            Player player = event.getPlayer();
-
-            if(block.getType().equals(Material.CHEST)) {
-
-                if(addRandomItem(event.getPlayer())) {
-
-                    event.setCancelled(true);
-                    event.getClickedBlock().setType(Material.AIR);
-
-                } else {
-                    event.setCancelled(true);
-                    player.closeInventory();
-                }
-
-                return;
-            }
-
-            if(block.getType().equals(Material.ENDER_CHEST)) {
-
-                if(TTT.core.getGameManager().getGameState() != GameManager.GameState.INGAME) {
-                    player.sendMessage(Messages.EC_NOT_OPEN_ATM);
-                    return;
-                }
-
-                event.getClickedBlock().setType(Material.AIR);
-
-                event.setCancelled(true);
-                player.closeInventory();
-
-                ItemStack sword = new ItemBuilder(Material.IRON_SWORD, 0).setDisplayName("§eEisenschwert").build();
-                player.getInventory().addItem(sword);
-
-
-            }
-
+        if(display.equals(Messages.ItemNames.NAVIGATOR)) {
+            TTT.core.getInvManager().openNavigator(context.getPlayer());
+            return;
         }
 
-    }
+        if(display.equals(Messages.ItemNames.QUIT_GAME)) {
 
-    public boolean addRandomItem(Player player) {
+            Player player = context.getPlayer();
+            player.kickPlayer(Messages.GAME_LEFT);
 
-        int i = new Random().nextInt(3);
-
-        ItemStack itemStack = null;
-
-        switch (i) {
-            case 0: itemStack = new ItemBuilder(Material.WOOD_SWORD, 0).setDisplayName("§fHolzschwert").build();
-                break;
-            case 1: itemStack = new ItemBuilder(Material.STONE_SWORD, 0).setDisplayName("§fSteinsschwert").build();
-                break;
-            case 2: itemStack = new ItemBuilder(Material.BOW, 0).setDisplayName("§fBogen").build();
-                break;
+            return;
         }
 
-        if(!player.getInventory().contains(itemStack)) {
-            addRandomItem(player);
-
-            if(itemStack.getType().equals(Material.BOW)) {
-                ItemStack arrow = new ItemBuilder(Material.ARROW, 0).setDisplayName("§fPfeil").build();
-                for(int x = 0; x < 32; i++) {
-                    player.getInventory().addItem(arrow);
-                }
-            }
-            return true;
-        }
-
-        addRandomItem(player);
-        return false;
     }
 
 }

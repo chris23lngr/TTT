@@ -3,6 +3,7 @@ package de.z1up.ttt.listener;
 import de.z1up.ttt.TTT;
 import de.z1up.ttt.core.Core;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.entity.Zombie;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -20,6 +21,27 @@ public class ListenerEntityDamageByEntity implements Listener {
         if(event.getEntity() instanceof Zombie) {
             event.setCancelled(true);
             return;
+        }
+
+        if(event.getDamager() instanceof Player) {
+
+            Player player = (Player) event.getDamager();
+
+            if(TTT.core.getPlayerManager().isSpec(player)) {
+                event.setCancelled(true);
+                return;
+            }
+        }
+
+        if(event.getEntity() instanceof Player) {
+
+            Player player = (Player) event.getEntity();
+
+            if(TTT.core.getPlayerManager().isSpec(player)) {
+                event.setCancelled(true);
+                return;
+            }
+
         }
 
         if(TTT.core.getGameManager().inGame()) {

@@ -33,6 +33,7 @@ public class DeadBody {
     public void spawn() {
 
         entity = location.getWorld().spawn(location, Zombie.class);
+        ((Zombie) entity).setBaby(false);
         modifier = new EntityModifier(entity, TTT.getInstance());
         modifier.modify().setDisplayName("§4Nicht identifiziert")
                 .setNoAI(true).setCanDespawn(false)

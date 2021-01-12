@@ -47,8 +47,14 @@ public class ListenerInventoryClick implements Listener {
             return;
         }
 
-        if(event.getClickedInventory().getTitle().equals("§bMapvoting")) {
+        if(event.getClickedInventory().getTitle().equals(Messages.ItemNames.MAP_VOTING)) {
             this.onMapClick(event);
+            return;
+        }
+
+        if(event.getClickedInventory().getTitle().equals(Messages.ItemNames.NAVIGATOR)) {
+            this.onNavigatorClick(event);
+            return;
         }
 
     }
@@ -78,7 +84,7 @@ public class ListenerInventoryClick implements Listener {
         if(context.getCurrentItem().getItemMeta().getDisplayName() == null) {
             return true;
         }
-        if(context.getCurrentItem().getItemMeta().getDisplayName().equals(" ")) {
+        if(context.getCurrentItem().getItemMeta().getDisplayName().equals("")) {
             return true;
         }
         return false;
@@ -101,7 +107,7 @@ public class ListenerInventoryClick implements Listener {
         if(TTT.core.getVoteManager().isVotePeriodActive()) {
 
             // Check if the player has voted already
-            if(TTT.core.getVoteManager().hasVoted(player)) {
+            if (TTT.core.getVoteManager().hasVoted(player)) {
                 // If so, unvote from old map
                 TTT.core.getVoteManager().unvote(player);
             }
@@ -112,6 +118,24 @@ public class ListenerInventoryClick implements Listener {
             player.closeInventory();
         }
 
+    }
+
+    private void onNavigatorClick(final InventoryClickEvent context) {
+
+        ItemStack itemStack = context.getCurrentItem();
+        String display = itemStack.getItemMeta().getDisplayName();
+
+        String targetName = display.replaceAll("§e", "");
+
+        if(Bukkit.getPlayer(targetName) == null) {
+            context.getWhoClicked().closeInventory();
+            return;
+        }
+
+        Player target = Bukkit.getPlayer(targetName);
+
+        context.getWhoClicked().teleport(target.getLocation());
+        context.getWhoClicked().closeInventory();
 
     }
 

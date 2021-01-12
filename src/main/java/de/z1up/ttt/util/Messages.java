@@ -124,6 +124,12 @@ public final class Messages {
     public static final String PLAYER_NOT_EXISTS
             = PREFIX + "§cDieser Spieler exestriert nicht§8.";
 
+    public static final String PLAYING_AS_SPEC
+            = PREFIX + "§7Du bist jetzt ein Zuschauer§8.";
+
+    public static final String GAME_LEFT
+            = PREFIX + "§cDu hast das Spiel verlassen§8.";
+
     public final class ErrorMessages {
 
         public static final String PREFIX
@@ -143,6 +149,31 @@ public final class Messages {
 
         public static final String OBJ_OF_WRONG_TYPE_EXC
                 = PREFIX + "This type of object doesn't fit right here.";
+    }
+
+    public final class ItemNames {
+
+        public static final String NAVIGATOR
+                = "§6Navigator";
+
+        public static final String MAP_VOTING
+                = "§bMap Voting";
+
+        public static final String QUIT_GAME
+                = "§cSpiel verlassen";
+
+        public static final String SETTINGS
+                = "§aEinstellungen";
+
+        public static final String ACHIEVEMENTS
+                = "§eErfolge";
+
+        public static final String IDENTIFIER
+                = "§fPersonen Identifizierer";
+
+        public static final String SHOP
+                = "§4Shop";
+
     }
 
 }

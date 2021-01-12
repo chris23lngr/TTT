@@ -1,7 +1,6 @@
 package de.z1up.ttt.listener;
 
 import de.z1up.ttt.TTT;
-import de.z1up.ttt.core.Core;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -30,10 +29,11 @@ public class ListenerPlayerDropItem implements Listener {
 
         if(TTT.core.getGameManager().inGame()) {
 
-            if(!canItemBeDropped(droppedItemStack)) {
+            if(itemCanntBeDropped(droppedItemStack)) {
                 event.setCancelled(true);
                 return;
             }
+
             event.setCancelled(false);
             return;
         }
@@ -42,7 +42,7 @@ public class ListenerPlayerDropItem implements Listener {
 
     }
 
-    boolean canItemBeDropped(ItemStack itemStack) {
+    boolean itemCanntBeDropped(ItemStack itemStack) {
 
         if(itemStack.getItemMeta() == null) {
             return false;

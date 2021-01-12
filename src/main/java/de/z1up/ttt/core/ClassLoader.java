@@ -3,6 +3,7 @@ package de.z1up.ttt.core;
 import de.z1up.ttt.command.*;
 import de.z1up.ttt.listener.*;
 import de.z1up.ttt.listener.custom.*;
+import de.z1up.ttt.util.Messages;
 import org.bukkit.event.player.PlayerInteractAtEntityEvent;
 
 /**
@@ -33,42 +34,40 @@ public class ClassLoader {
      * TTT class is specified as the plugin parameter.
      */
     private void registerListener() {
-        new ListenerBlockPlace();
-        new ListenerBreakBlock();
-
-        new ListenerTimerStart();
+        new ListenerGameEnd();
+        new ListenerGameStateChange();
+        new ListenerMapSet();
+        new ListenerPlayerAchieveAchievement();
+        new ListenerPlayerBecomeSpec();
+        new ListenerPlayerKillEnemy();
+        new ListenerPlayerKillMate();
+        new ListenerPlayerOpenChest();
+        new ListenerPlayerTeamSet();
+        new ListenerReplay();
         new ListenerTimerFinish();
+        new ListenerTimerStart();
         new ListenerTimerTimeChange();
 
+        new ListenerBlockPlace();
+        new ListenerBlockBreak();
         new ListenerEntityDamage();
         new ListenerEntityDamageByEntity();
-
         new ListenerFoodLevelChange();
-        new ListenerGameStateChange();
-
         new ListenerInventoryClick();
-        new ListenerMapSet();
-
-        new ListenerPlayerAchieveAchievement();
         new ListenerPlayerChat();
-
+        new ListenerPlayerDeath();
         new ListenerPlayerDropItem();
         new ListenerPlayerInteract();
-
+        new ListenerPlayerInteractAtEntity();
         new ListenerPlayerJoin();
         new ListenerPlayerLogin();
-
+        new ListenerPlayerMove();
+        new ListenerPlayerPickUpItem();
         new ListenerPlayerQuit();
+        new ListenerPlayerRespawn();
         new ListenerPluginDisable();
-
         new ListenerThunderChange();
         new ListenerWeatherChange();
-
-        new ListenerPlayerMove();
-        new ListenerPlayerTeamSet();
-
-        new ListenerPlayerInteractAtEntity();
-        new ListenerPlayerDeath();
     }
 
     /**

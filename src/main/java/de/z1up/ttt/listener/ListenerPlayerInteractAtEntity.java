@@ -34,6 +34,20 @@ public class ListenerPlayerInteractAtEntity implements Listener {
             return;
         }
 
+        if(TTT.core.getPlayerManager().isSpec(player)) {
+            event.setCancelled(true);
+            return;
+        }
+
+        if(entity instanceof Player) {
+
+            if(TTT.core.getPlayerManager().isSpec((Player) entity)) {
+                event.setCancelled(true);
+                return;
+            }
+
+        }
+
         if(player.getItemInHand() == null) {
             return;
         }

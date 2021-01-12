@@ -29,6 +29,13 @@ public class ListenerEntityDamage implements Listener {
             return;
         }
 
+        Player player = (Player) event.getEntity();
+
+        if(TTT.core.getPlayerManager().isSpec(player)) {
+            event.setCancelled(true);
+            return;
+        }
+
         if(TTT.core.getGameManager().inGame()) {
             event.setCancelled(false);
         } else {

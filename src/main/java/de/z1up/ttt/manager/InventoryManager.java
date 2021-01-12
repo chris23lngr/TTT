@@ -4,6 +4,7 @@ import de.z1up.ttt.TTT;
 import de.z1up.ttt.interfaces.Manager;
 import de.z1up.ttt.core.Core;
 import de.z1up.ttt.util.ItemBuilder;
+import de.z1up.ttt.util.Messages;
 import de.z1up.ttt.util.o.Achievement;
 import de.z1up.ttt.util.o.Map;
 import org.bukkit.Bukkit;
@@ -11,8 +12,10 @@ import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Collection;
+import java.util.Iterator;
 
 public class InventoryManager implements Manager {
 
@@ -31,7 +34,7 @@ public class InventoryManager implements Manager {
             @Override
             public void run() {
 
-                Inventory inventory = Bukkit.createInventory(player, 9 * 6, "§eAchievements");
+                Inventory inventory = Bukkit.createInventory(player, 9 * 6, Messages.ItemNames.ACHIEVEMENTS);
 
                 for(int i = 0; i < 50; i++) {
                     Achievement achievement = null;
@@ -58,7 +61,7 @@ public class InventoryManager implements Manager {
             @Override
             public void run() {
 
-                Inventory inventory = Bukkit.createInventory(player, 9 * 3, "§cEinstellungen");
+                Inventory inventory = Bukkit.createInventory(player, 9 * 3, Messages.ItemNames.SETTINGS);
 
                 ItemStack filler = new ItemBuilder(Material.STAINED_GLASS_PANE, (short) 14).setDisplayName("§c").build();
                 for(int i = 0; i < inventory.getSize(); i++) {
@@ -92,7 +95,7 @@ public class InventoryManager implements Manager {
             @Override
             public void run() {
 
-                Inventory inventory = Bukkit.createInventory(player, 9 * 3, "§bMapvoting");
+                Inventory inventory = Bukkit.createInventory(player, 9 * 3, Messages.ItemNames.MAP_VOTING);
 
                 ItemStack filler = new ItemBuilder(Material.STAINED_GLASS_PANE, (short) 8).setDisplayName("§c ").build();
                 for(int i = 0; i < inventory.getSize(); i++) {
@@ -120,28 +123,64 @@ public class InventoryManager implements Manager {
     public void setLobbyItems(Player player) {
 
         player.getInventory().setItem(0, new ItemBuilder(Material.NETHER_STAR, (short) 0)
-                .setDisplayName("§eErfolge").build());
+                .setDisplayName(Messages.ItemNames.ACHIEVEMENTS).build());
 
         player.getInventory().setItem(2, new ItemBuilder(Material.REDSTONE_TORCH_ON, (short) 0)
-                .setDisplayName("§4Einstellungen").build());
+                .setDisplayName(Messages.ItemNames.SETTINGS).build());
 
         player.getInventory().setItem(4, TTT.core.getRuleBook().getBook());
 
         player.getInventory().setItem(6, new ItemBuilder(Material.MAP, (short) 0)
-                .setDisplayName("§bMap voting").build());
+                .setDisplayName(Messages.ItemNames.MAP_VOTING).build());
 
         player.getInventory().setItem(8, new ItemBuilder(Material.MAGMA_CREAM, (short) 0)
-                .setDisplayName("§8Spiel verlassen").build());
+                .setDisplayName(Messages.ItemNames.QUIT_GAME).build());
 
     }
 
-    public void setSpecInv(Player player) {
-        player.getInventory().setItem(0,
-                new ItemBuilder(Material.COMPASS, (short) 0)
-                        .setDisplayName("§9Lebende Spieler").build());
-        player.getInventory().setItem(8,
-                new ItemBuilder(Material.MAGMA_CREAM, (short) 0)
-                        .setDisplayName("§8Spiel verlassen").build());
+    public void setGameItems(Player player) {
+
+        ItemStack identifier = new ItemBuilder(Material.STICK, 0).setDisplayName(Messages.ItemNames.IDENTIFIER).build();
+        player.getInventory().setItem(8, identifier);
+
+    }
+
+    public void setGameItemsShop(Player player) {
+
+        ItemStack shop = new ItemBuilder(Material.EMERALD, 0).setDisplayName(Messages.ItemNames.SHOP).build();
+        player.getInventory().setItem(7, shop);
+
+    }
+
+    public void openNavigator(Player player) {
+
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+
+                Inventory inventory = Bukkit.createInventory(player, 3 * 9,Messages.ItemNames.NAVIGATOR);
+
+                Iterator targets = Bukkit.getOnlinePlayers().iterator();
+
+                while (targets.hasNext()) {
+
+                    Player target = (Player) targets.next();
+
+                    if(TTT.core.getPlayerManager().existsPlayer(player.getUniqueId())) {
+
+                        if(!TTT.core.getPlayerManager().isSpec(target)) {
+                            ItemStack head = new ItemBuilder(target.getName()).setDisplayName("§e" + target.getName()).build();
+                            inventory.addItem(head);
+                        }
+                    }
+
+                }
+
+                player.openInventory(inventory);
+
+            }
+        }.runTaskAsynchronously(TTT.getInstance());
+
     }
 
 }

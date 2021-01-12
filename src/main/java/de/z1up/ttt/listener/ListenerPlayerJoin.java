@@ -1,6 +1,7 @@
 package de.z1up.ttt.listener;
 
 import de.z1up.ttt.TTT;
+import de.z1up.ttt.event.PlayerBecomeSpecEvent;
 import de.z1up.ttt.util.Messages;
 import de.z1up.ttt.util.UserAPI;
 import de.z1up.ttt.util.o.DBPlayer;
@@ -51,8 +52,8 @@ public class ListenerPlayerJoin implements Listener {
 
             event.setJoinMessage(null);
 
-            TTT.core.getPlayerManager().addSpectator(player);
-            TTT.core.getPlayerManager().enterSpecMode(player);
+            PlayerBecomeSpecEvent becomeSpecEvent = new PlayerBecomeSpecEvent(player, false);
+            Bukkit.getPluginManager().callEvent(becomeSpecEvent);
 
             return;
         }
