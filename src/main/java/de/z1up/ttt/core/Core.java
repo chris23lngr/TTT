@@ -8,6 +8,7 @@ import de.z1up.ttt.mysql.wrapper.WrapperPlayer;
 import de.z1up.ttt.mysql.SQL;
 import de.z1up.ttt.mysql.SQLConfig;
 import de.z1up.ttt.replay.ReplayFile;
+import de.z1up.ttt.util.MapResetter;
 
 import java.time.temporal.Temporal;
 
@@ -37,6 +38,8 @@ public class Core {
     public WrapperPlayer wrapperPlayer;
     public WrapperAchievements wrapperAchievements;
 
+    private MapResetter mapResetter;
+
     /**
      * The load method calls various other methods that
      * initialise attributes or load other classes.
@@ -56,6 +59,7 @@ public class Core {
         replayFile = new ReplayFile();
         ruleBook = new RuleBook();
 
+        loadMapResetter();
 
         loadClassLoader();
     }
@@ -77,6 +81,11 @@ public class Core {
         voteManager = new VoteManager();
         spawnManager = new ManagerSpawn();
         teamManager = new ManagerTeam();
+    }
+
+    void loadMapResetter() {
+        mapResetter = new MapResetter();
+        mapResetter.record();
     }
 
 
@@ -148,6 +157,10 @@ public class Core {
 
     public RuleBook getRuleBook() {
         return ruleBook;
+    }
+
+    public MapResetter getMapResetter() {
+        return mapResetter;
     }
 }
 

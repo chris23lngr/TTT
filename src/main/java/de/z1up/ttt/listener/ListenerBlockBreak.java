@@ -26,6 +26,8 @@ public class ListenerBlockBreak implements Listener {
             event.setCancelled(true);
         }
 
+        TTT.core.getMapResetter().onMapBlockBreak(event);
+
     }
 
 }

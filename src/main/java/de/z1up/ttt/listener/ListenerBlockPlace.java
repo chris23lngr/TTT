@@ -35,21 +35,24 @@ public class ListenerBlockPlace implements Listener {
                     && !block.getType().equals(Material.TRAPPED_CHEST)) {
                 event.setCancelled(true);
                 event.setBuild(false);
-                return;
+            } else {
+                event.setCancelled(false);
+                event.setBuild(true);
             }
-
-            event.setCancelled(false);
-            event.setBuild(true);
 
             if (block.getType().equals(Material.BEACON)) {
                 // Healstation.onHeal(e.getBlock());
             }
 
-            return;
+        } else {
+
+            event.setCancelled(true);
+            event.setBuild(false);
+
         }
 
-        event.setCancelled(true);
-        event.setBuild(false);
+
+        TTT.core.getMapResetter().onMapBlockPlace(event);
 
     }
 }

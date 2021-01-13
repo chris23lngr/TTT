@@ -27,6 +27,10 @@ public class ListenerPlayerOpenChest implements Listener {
             return;
         }
 
+        if(!TTT.core.getGameManager().inGame() && !TTT.core.getGameManager().inSavePhase()) {
+            return;
+        }
+
         Block block = event.getBlock();
 
         Material material = block.getType();
@@ -73,6 +77,9 @@ public class ListenerPlayerOpenChest implements Listener {
                 return;
             }
 
+            // Save the Block
+            TTT.core.getMapResetter().onMapBlockBreak(context.getBlock());
+
             context.getBlock().setType(Material.AIR);
 
             player.getInventory().addItem(itemStack);
@@ -98,6 +105,9 @@ public class ListenerPlayerOpenChest implements Listener {
             context.getPlayer().sendMessage(Messages.EC_NOT_OPEN_ATM);
             return;
         }
+
+        // Save the Block
+        TTT.core.getMapResetter().onMapBlockBreak(context.getBlock());
 
         context.getBlock().setType(Material.AIR);
 
