@@ -4,6 +4,7 @@ import de.z1up.ttt.TTT;
 import de.z1up.ttt.interfaces.Manager;
 import de.z1up.ttt.core.Core;
 import de.z1up.ttt.util.ItemBuilder;
+import de.z1up.ttt.util.MathUtils;
 import de.z1up.ttt.util.Messages;
 import de.z1up.ttt.util.o.Achievement;
 import de.z1up.ttt.util.o.Map;
@@ -158,7 +159,7 @@ public class InventoryManager implements Manager {
             @Override
             public void run() {
 
-                Inventory inventory = Bukkit.createInventory(player, 3 * 9,Messages.ItemNames.NAVIGATOR);
+                Inventory inventory = Bukkit.createInventory(player, calcSize(),Messages.ItemNames.NAVIGATOR);
 
                 Iterator targets = Bukkit.getOnlinePlayers().iterator();
 
@@ -173,7 +174,6 @@ public class InventoryManager implements Manager {
                             inventory.addItem(head);
                         }
                     }
-
                 }
 
                 player.openInventory(inventory);
@@ -181,6 +181,22 @@ public class InventoryManager implements Manager {
             }
         }.runTaskAsynchronously(TTT.getInstance());
 
+    }
+
+    private int calcSize() {
+
+        int size = Bukkit.getOnlinePlayers().size();
+        int actualSize = size - TTT.core.getPlayerManager().getSpecs().size();
+
+        double d = actualSize / 9;
+
+        if(MathUtils.isPointValue(d)) {
+            int after = MathUtils.getAfter(d);
+            d = d - after;
+        }
+
+        d = (d + 1) * 9;
+        return (int) d;
     }
 
 }

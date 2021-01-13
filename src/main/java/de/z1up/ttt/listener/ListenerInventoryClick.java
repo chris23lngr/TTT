@@ -10,6 +10,7 @@ import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
+import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
 
 public class ListenerInventoryClick implements Listener {
 
@@ -19,6 +20,9 @@ public class ListenerInventoryClick implements Listener {
 
     @EventHandler
     public void onCall(final InventoryClickEvent event) {
+
+
+        System.out.println("VERION 01");
 
         if(!(event.getWhoClicked() instanceof Player)) {
             return;
@@ -31,30 +35,25 @@ public class ListenerInventoryClick implements Listener {
             return;
         }
 
-        if (TTT.core.getPlayerManager().isSpec(whoClicked)) {
-            event.setCancelled(true);
-            return;
-        }
-
         if(TTT.core.getGameManager().inGame()) {
             event.setCancelled(false);
-            return;
         }
 
-        event.setCancelled(true);
+        if (TTT.core.getPlayerManager().isSpec(whoClicked)) {
+            event.setCancelled(true);
+        }
 
         if(this.contextInvalid(event)) {
+            System.out.println("CONTEXT INVALID");
             return;
         }
 
         if(event.getClickedInventory().getTitle().equals(Messages.ItemNames.MAP_VOTING)) {
             this.onMapClick(event);
-            return;
         }
 
         if(event.getClickedInventory().getTitle().equals(Messages.ItemNames.NAVIGATOR)) {
             this.onNavigatorClick(event);
-            return;
         }
 
     }
@@ -122,10 +121,13 @@ public class ListenerInventoryClick implements Listener {
 
     private void onNavigatorClick(final InventoryClickEvent context) {
 
+        System.out.println("CLICKED METHOD  " + "onNavigatorClick");
+
         ItemStack itemStack = context.getCurrentItem();
         String display = itemStack.getItemMeta().getDisplayName();
 
         String targetName = display.replaceAll("§e", "");
+        System.out.println("CLICKED PLAYER " + targetName);
 
         if(Bukkit.getPlayer(targetName) == null) {
             context.getWhoClicked().closeInventory();

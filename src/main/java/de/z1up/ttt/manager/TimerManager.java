@@ -123,7 +123,7 @@ public class TimerManager implements Manager {
     }
 
     public void initGameTimer() {
-        this.gameTimer = new TTTRunnable(60, false, GameManager.GameState.INGAME,
+        this.gameTimer = new TTTRunnable(60 * 5, false, GameManager.GameState.INGAME,
                 Messages.PREFIX + "§7Die Spiel wird in §a"
                         + (Integer.parseInt("2") == 1 ? "einer Sekunde" : "%time% Sekunden") + " gestoppt§8!");
     }
