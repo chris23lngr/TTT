@@ -1,6 +1,7 @@
 package de.z1up.ttt.listener.custom;
 
 import de.z1up.ttt.TTT;
+import de.z1up.ttt.event.GameEndEvent;
 import de.z1up.ttt.event.GameStateChangeEvent;
 import de.z1up.ttt.event.PlayerTeamSetEvent;
 import de.z1up.ttt.manager.GameManager;
@@ -13,6 +14,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
+import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -49,7 +51,13 @@ public class ListenerGameStateChange implements Listener {
             for(int i = 0; i < players.size(); i++) {
                 Player player = players.get(i);
                 Spawn spawn = spawns.get(i);
-                player.teleport(spawn.getLocation());
+
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+                        player.teleport(spawn.getLocation());
+                    }
+                }.runTask(TTT.getInstance());
                 UserAPI.resetPlayerAsync(player);
             }
 
@@ -102,6 +110,23 @@ public class ListenerGameStateChange implements Listener {
             }
 
             TTT.core.getTimerManager().getGameTimer().runAsync();
+
+            return;
+        }
+
+        if((from == GameManager.GameState.INGAME) && (to == GameManager.GameState.RESTART)) {
+
+
+            Iterator players = Bukkit.getOnlinePlayers().iterator();
+
+            while (players.hasNext()) {
+
+                ((Player) players.next()).teleport(TTT.core.getSpawnManager().getLobbySpawn().getLocation());
+
+            }
+
+            GameEndEvent endEvent = new GameEndEvent(TTT.core.getGameManager().getGameResult(), false);
+            Bukkit.getPluginManager().callEvent(endEvent);
 
             return;
         }

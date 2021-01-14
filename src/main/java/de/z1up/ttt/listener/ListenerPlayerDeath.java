@@ -1,9 +1,11 @@
 package de.z1up.ttt.listener;
 
 import de.z1up.ttt.TTT;
+import de.z1up.ttt.event.GameStateChangeEvent;
 import de.z1up.ttt.event.PlayerBecomeSpecEvent;
 import de.z1up.ttt.event.PlayerKillEnemyEvent;
 import de.z1up.ttt.event.PlayerKillMateEvent;
+import de.z1up.ttt.manager.GameManager;
 import de.z1up.ttt.manager.ManagerTeam;
 import de.z1up.ttt.util.Messages;
 import de.z1up.ttt.util.o.DBPlayer;
@@ -59,6 +61,22 @@ public class ListenerPlayerDeath implements Listener {
             callKillEvent(event);
 
         }
+
+        TTTPlayer tttPlayer = TTT.core.getPlayerManager().getTTTPlayer(target);
+
+        if(tttPlayer.getTeam() == ManagerTeam.Team.TRAITOR) {
+            TTT.core.getTeamManager().removeTraitor();
+        } else if(tttPlayer.getTeam() == ManagerTeam.Team.INNOCENT) {
+            TTT.core.getTeamManager().removeInnocent();
+        } else if(tttPlayer.getTeam() == ManagerTeam.Team.DETECTIVE) {
+            TTT.core.getTeamManager().removeDetective();
+        }
+
+        if(TTT.core.getGameManager().checkPossibleGameEnding()) {
+            GameStateChangeEvent changeEvent = new GameStateChangeEvent(GameManager.GameState.INGAME, GameManager.GameState.RESTART, false);
+            Bukkit.getPluginManager().callEvent(changeEvent);
+        }
+
     }
 
     private void callSpecModeEvent(PlayerDeathEvent context) {
@@ -88,7 +106,7 @@ public class ListenerPlayerDeath implements Listener {
             Bukkit.getPluginManager().callEvent(killMateEvent);
         } else if((killerTeam == ManagerTeam.Team.TRAITOR) && (targetTeam == ManagerTeam.Team.INNOCENT || targetTeam == ManagerTeam.Team.DETECTIVE)) {
             Bukkit.getPluginManager().callEvent(killEnemyEvent);
-        }  else if((targetTeam == ManagerTeam.Team.INNOCENT || targetTeam == ManagerTeam.Team.DETECTIVE) && (killerTeam == ManagerTeam.Team.TRAITOR)) {
+        }  else if((killerTeam == ManagerTeam.Team.INNOCENT || killerTeam == ManagerTeam.Team.DETECTIVE) && (targetTeam == ManagerTeam.Team.TRAITOR)) {
             Bukkit.getPluginManager().callEvent(killEnemyEvent);
         }
 

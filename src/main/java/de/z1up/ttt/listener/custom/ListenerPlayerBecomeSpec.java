@@ -31,7 +31,6 @@ public class ListenerPlayerBecomeSpec implements Listener {
         this.setSpecInv(player);
 
         player.sendMessage(Messages.PLAYING_AS_SPEC);
-
     }
 
     private void resetSpec(Player player) {

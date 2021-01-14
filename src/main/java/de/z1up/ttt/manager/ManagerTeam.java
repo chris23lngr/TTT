@@ -116,4 +116,16 @@ public class ManagerTeam implements Manager {
     public int getTraitorCounter() {
         return traitorCounter;
     }
+
+    public void removeDetective() {
+        this.detectiveCounter = detectiveCounter - 1;
+    }
+
+    public void removeInnocent() {
+        this.innocentCounter = innocentCounter - 1;
+    }
+
+    public void removeTraitor() {
+        this.traitorCounter = traitorCounter - 1;
+    }
 }

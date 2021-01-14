@@ -10,6 +10,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerJoinEvent;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public class ListenerPlayerJoin implements Listener {
 
@@ -43,6 +44,8 @@ public class ListenerPlayerJoin implements Listener {
 
             //Data.sbManager.setScoreBoard(player, Data.gameManager.getGameState());
 
+            player.teleport(TTT.core.getSpawnManager().getLobbySpawn().getLocation());
+
             TTT.core.getTimerManager().checkPlayersForStart();
 
             return;
@@ -54,6 +57,13 @@ public class ListenerPlayerJoin implements Listener {
 
             PlayerBecomeSpecEvent becomeSpecEvent = new PlayerBecomeSpecEvent(player, false);
             Bukkit.getPluginManager().callEvent(becomeSpecEvent);
+
+            new BukkitRunnable() {
+                @Override
+                public void run() {
+                    event.getPlayer().teleport(TTT.core.getSpawnManager().getSpecSpawn().getLocation());
+                }
+            }.runTaskLater(TTT.getInstance(), 15);
 
             return;
         }

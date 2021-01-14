@@ -71,11 +71,9 @@ public class GameManager implements Manager {
 
         int specSize = TTT.core.getPlayerManager().getSpecs().size();
         int onlineSize = Bukkit.getOnlinePlayers().size();
-        int actualSize = onlineSize - specSize;
 
 
-        if(TTT.core.getTeamManager().getTraitorCounter() == actualSize
-                && TTT.core.getTeamManager().getInnocentCounter() == 0
+        if(TTT.core.getTeamManager().getInnocentCounter() == 0
                 && TTT.core.getTeamManager().getDetectiveCounter() == 0) {
 
             this.gameResult = GameResult.TRAITOR_WIN;
@@ -83,11 +81,7 @@ public class GameManager implements Manager {
             return true;
         }
 
-        int innoSize = TTT.core.getTeamManager().getInnocentCounter();
-        int detSize = TTT.core.getTeamManager().getDetectiveCounter();
-
-        if(TTT.core.getTeamManager().getTraitorCounter() == 0
-                && actualSize == (innoSize + detSize)) {
+        if(TTT.core.getTeamManager().getTraitorCounter() == 0) {
 
             this.gameResult = GameResult.INNOCENT_WIN;
 
@@ -95,5 +89,9 @@ public class GameManager implements Manager {
         }
 
         return false;
+    }
+
+    public GameResult getGameResult() {
+        return gameResult;
     }
 }

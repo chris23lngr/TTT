@@ -54,7 +54,10 @@ public class WrapperSpawn implements Wrapper {
         Spawn spawn = (Spawn) e;
 
         int id = spawn.getId();
-        int mapId = spawn.getMap().getId();
+        int mapID = 0;
+        if(spawn.getMap() != null) {
+            mapID = spawn.getMap().getId();
+        }
         String worldName = spawn.getLocation().getWorld().getName();
         double x = spawn.getLocation().getX();
         double y = spawn.getLocation().getY();
@@ -62,7 +65,7 @@ public class WrapperSpawn implements Wrapper {
         float yaw = spawn.getLocation().getYaw();
         float pitch = spawn.getLocation().getPitch();
 
-        sql.executeUpdateAsync(stmt, Arrays.asList(id, mapId, worldName, x, y, z, yaw, pitch));
+        sql.executeUpdateAsync(stmt, Arrays.asList(id, mapID, worldName, x, y, z, yaw, pitch));
 
     }
 

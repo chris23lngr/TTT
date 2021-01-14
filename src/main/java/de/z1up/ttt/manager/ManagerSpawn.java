@@ -50,4 +50,12 @@ public class ManagerSpawn extends WrapperSpawn implements Manager {
         return getSpawnsFor(TTT.core.getMapManager().getMap(id));
     }
 
+    public Spawn getLobbySpawn() {
+        return (Spawn) get(0);
+    }
+
+    public Spawn getSpecSpawn() {
+        return (Spawn) get(1);
+    }
+
 }
