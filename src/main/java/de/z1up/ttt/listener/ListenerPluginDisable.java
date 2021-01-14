@@ -16,12 +16,12 @@ public class ListenerPluginDisable implements Listener {
     @EventHandler
     public void onCall(final PluginDisableEvent event) {
 
+        Bukkit.getOnlinePlayers().forEach(player -> player.kickPlayer("§cDer Server restartet jetzt."));
+
         TTT.core.getMapResetter().stop();
         TTT.core.getMapResetter().reset();
 
         TTT.core.getPlayerManager().getDeadBodies().forEach(body -> body.despawn());
-
-        //Bukkit.getOnlinePlayers().forEach(player -> player.kickPlayer("§cDer Server restartet jetzt."));
 
     }
 

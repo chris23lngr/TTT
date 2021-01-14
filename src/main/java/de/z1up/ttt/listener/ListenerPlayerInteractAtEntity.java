@@ -30,7 +30,6 @@ public class ListenerPlayerInteractAtEntity implements Listener {
         Entity entity = event.getRightClicked();
 
         if(!(entity instanceof Zombie)) {
-            System.out.println("NO ZOMBIE");
             return;
         }
 
@@ -70,7 +69,6 @@ public class ListenerPlayerInteractAtEntity implements Listener {
         }
 
         if(deadBody == null) {
-            System.out.println("DEAD BODY NOT FOUND");
             return;
         }
 

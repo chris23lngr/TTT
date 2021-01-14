@@ -65,7 +65,7 @@ public class ManagerMap extends WrapperMap implements Manager {
 
     public Map getMap(String name) {
         if(!existsName(name)) {
-            Bukkit.getConsoleSender().sendMessage(Messages.ErrorMessages.NAME_NOT_FOUND_EXC);
+            Bukkit.getConsoleSender().sendMessage(Messages.ErrorMessages.NAME_NOT_FOUND_EXC + " GET MAP BY NAME");
             return null;
         }
         Map map = (Map) get(name);
@@ -74,7 +74,7 @@ public class ManagerMap extends WrapperMap implements Manager {
 
     public Map getMap(int id) {
         if(!existsID(id)) {
-            Bukkit.getConsoleSender().sendMessage(Messages.ErrorMessages.NAME_NOT_FOUND_EXC);
+            Bukkit.getConsoleSender().sendMessage(Messages.ErrorMessages.ID_NOT_FOUND_EXC);
             return null;
         }
         return (Map) get(id);

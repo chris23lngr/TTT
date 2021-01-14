@@ -24,9 +24,17 @@ public class ListenerPlayerRespawn implements Listener {
         new BukkitRunnable() {
             @Override
             public void run() {
-                event.getPlayer().teleport(TTT.core.getSpawnManager().getSpecSpawn().getLocation());
+
+                if (TTT.core.getGameManager().inGame()) {
+                    event.getPlayer().teleport(
+                            TTT.core.getSpawnManager().getSpecSpawnFor(TTT.core.getMapManager().getMapToPlay()).getLocation());
+                } else {
+                    event.getPlayer().teleport(TTT.core.getSpawnManager().getLobbySpawn().getLocation());
+                }
             }
         }.runTaskLater(TTT.getInstance(), 15);
+
+
 
     }
 

@@ -61,7 +61,7 @@ public class ListenerPlayerJoin implements Listener {
             new BukkitRunnable() {
                 @Override
                 public void run() {
-                    event.getPlayer().teleport(TTT.core.getSpawnManager().getSpecSpawn().getLocation());
+                    event.getPlayer().teleport(TTT.core.getSpawnManager().getSpecSpawnFor(TTT.core.getMapManager().getMapToPlay()).getLocation());
                 }
             }.runTaskLater(TTT.getInstance(), 15);
 

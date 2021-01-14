@@ -116,15 +116,6 @@ public class ListenerGameStateChange implements Listener {
 
         if((from == GameManager.GameState.INGAME) && (to == GameManager.GameState.RESTART)) {
 
-
-            Iterator players = Bukkit.getOnlinePlayers().iterator();
-
-            while (players.hasNext()) {
-
-                ((Player) players.next()).teleport(TTT.core.getSpawnManager().getLobbySpawn().getLocation());
-
-            }
-
             GameEndEvent endEvent = new GameEndEvent(TTT.core.getGameManager().getGameResult(), false);
             Bukkit.getPluginManager().callEvent(endEvent);
 

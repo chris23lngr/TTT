@@ -60,6 +60,6 @@ public class CommandAddMap implements CommandExecutor {
 
         player.sendMessage(Messages.AM_SUCCESS + mapName);
 
-        return false;
+        return true;
     }
 }

@@ -13,4 +13,5 @@ commands:
   removespawn:
   map:
   stats:
-  setdefaultspawn:
+  setspecspawn:
+  setlobbyspawn:

@@ -91,7 +91,9 @@ public class ClassLoader {
         new CommandStart();
 
         new CommandStats();
-        new CommandSetDefaultSpawn();
+
+        new CommandSetLobbySpawn();
+        new CommandSetSpecSpawn();
     }
 
 }

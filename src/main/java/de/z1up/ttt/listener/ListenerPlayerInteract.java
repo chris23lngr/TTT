@@ -61,7 +61,6 @@ public class ListenerPlayerInteract implements Listener {
         // check if event action was
         // a right click
         if((event.getAction() != Action.RIGHT_CLICK_BLOCK) && (event.getAction() != Action.RIGHT_CLICK_AIR) && (event.getAction() != Action.PHYSICAL)) {
-            System.out.println("WRONG ACTION");
             return;
         }
 

@@ -2,21 +2,23 @@ package de.z1up.ttt.command;
 
 import de.z1up.ttt.TTT;
 import de.z1up.ttt.util.Messages;
+import de.z1up.ttt.util.o.Map;
 import de.z1up.ttt.util.o.Spawn;
-import org.bukkit.Location;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class CommandSetDefaultSpawn implements CommandExecutor {
+public class CommandSetSpecSpawn implements CommandExecutor {
 
-    private final String NAME = "setdefaultspawn";
+    private final String NAME = "setspecspawn";
 
-    public CommandSetDefaultSpawn() {
+    public CommandSetSpecSpawn() {
         TTT.getInstance().getCommand(NAME).setExecutor(this::onCommand);
         TTT.getInstance().getCommand(NAME).setPermissionMessage(Messages.NO_PERM);
         TTT.getInstance().getCommand(NAME).setPermission("ttt." + NAME);
+        TTT.getInstance().getCommand(NAME).setUsage("/" + NAME + " <Map>");
+
     }
 
     @Override
@@ -38,27 +40,23 @@ public class CommandSetDefaultSpawn implements CommandExecutor {
             return true;
         }
 
-        String spawnName = args[0];
+        String mapName = args[0];
 
-        if (!spawnName.equalsIgnoreCase("lobby") && !spawnName.equalsIgnoreCase("specs")) {
-            player.sendMessage(Messages.WRONG_USAGE + command.getUsage());
+        if(!TTT.core.getMapManager().existsName(mapName)) {
+            player.sendMessage(Messages.MAP_NOT_EXIST);
             return true;
         }
 
-        int id = 0;
+        Map map = TTT.core.getMapManager().getMap(mapName);
+        int id = map.getId();
 
-        if(spawnName.equalsIgnoreCase("specs")) {
-            id = 1;
-        }
+        Spawn specSpawn = new Spawn(id, player.getLocation(), map);
+        TTT.core.getSpawnManager().insertSpecSpawn(specSpawn);
 
-        Location location = player.getLocation();
+        player.sendMessage(Messages.PREFIX + "§aSpawn für Spectator auf Map §b" + map.getName() + " §agesetzt§8!");
 
-        Spawn spawn = new Spawn(id, location, null);
-        TTT.core.getSpawnManager().insert(spawn);
 
-        player.sendMessage(Messages.SPAWN_SET);
-
-        return false;
+        return true;
     }
 
 }

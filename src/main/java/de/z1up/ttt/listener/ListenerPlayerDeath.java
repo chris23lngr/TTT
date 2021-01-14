@@ -38,12 +38,13 @@ public class ListenerPlayerDeath implements Listener {
         event.getDrops().clear();
 
         // Respawn the player after he died
-        new BukkitRunnable() {
+        /*new BukkitRunnable() {
             @Override
             public void run() {
                 target.spigot().respawn();
             }
         }.runTaskLater(TTT.getInstance(), 10);
+         */
 
         // spawn a dead body for the target
         spawnDeadBody(event);
@@ -73,6 +74,7 @@ public class ListenerPlayerDeath implements Listener {
         }
 
         if(TTT.core.getGameManager().checkPossibleGameEnding()) {
+            TTT.core.getGameManager().setGameState(GameManager.GameState.RESTART);
             GameStateChangeEvent changeEvent = new GameStateChangeEvent(GameManager.GameState.INGAME, GameManager.GameState.RESTART, false);
             Bukkit.getPluginManager().callEvent(changeEvent);
         }
