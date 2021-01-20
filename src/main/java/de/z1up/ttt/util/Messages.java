@@ -130,6 +130,9 @@ public final class Messages {
     public static final String GAME_LEFT
             = PREFIX + "§cDu hast das Spiel verlassen§8.";
 
+    public static final String HOLO_SET
+            = PREFIX + "§7Das §cStats-Hologramm §7wurde gesetzt§8.";
+
     public final class ErrorMessages {
 
         public static final String PREFIX
@@ -173,6 +176,14 @@ public final class Messages {
 
         public static final String SHOP
                 = "§4Shop";
+
+    }
+
+    public final class Scoreboards {
+
+        public static final String SB_DISPLAY
+                = "§8« §crenixinside.de §8»";
+
 
     }
 

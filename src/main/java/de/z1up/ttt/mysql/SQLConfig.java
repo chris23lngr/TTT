@@ -47,7 +47,6 @@ public class SQLConfig implements Configuration {
             try {
                 file.createNewFile();
                 Bukkit.getConsoleSender().sendMessage("§4Please enter your MySQL access data first, to use the plugin.");
-                Bukkit.shutdown();
                 return;
             } catch (IOException exception) {
                 exception.printStackTrace();
@@ -109,11 +108,13 @@ public class SQLConfig implements Configuration {
         data.put("password", configuration.getString("password"));
          */
 
+
         data.put("host", "localhost");
         data.put("port", 3306);
         data.put("database", "ttt");
         data.put("username", "root");
         data.put("password", "#CWsgMc!strt999");
+        //data.put("password", "MeinPasswort12345");
 
         return data;
     }

@@ -7,6 +7,7 @@ import de.z1up.ttt.interfaces.Manager;
 import de.z1up.ttt.manager.GameManager;
 import de.z1up.ttt.scheduler.TTTRunnable;
 import de.z1up.ttt.util.MessageAPI;
+import de.z1up.ttt.util.Messages;
 import de.z1up.ttt.util.o.Map;
 import org.bukkit.Bukkit;
 import org.bukkit.event.Event;
@@ -77,6 +78,16 @@ public class ListenerTimerTimeChange implements Listener {
             String finalMsg = msg;
             Bukkit.getOnlinePlayers().forEach(player -> {
                 MessageAPI.sendTitle(player, 2, 16, 2, finalMsg, "");
+            });
+
+            return;
+        }
+
+        if(task.getGameState() == GameManager.GameState.SAVEPHASE) {
+
+            String msg = Messages.PREFIX + "§7Shutzphase endet in §c" + task.getTime() + " §7Sekunden...";
+            Bukkit.getOnlinePlayers().forEach(player -> {
+                MessageAPI.sendActionBar(player, msg);
             });
 
             return;

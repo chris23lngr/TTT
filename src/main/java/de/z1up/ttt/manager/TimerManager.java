@@ -49,10 +49,10 @@ public class TimerManager implements Manager {
         return gameTimer;
     }
 
-    public void checkPlayersForStart() {
+    public void checkPossibleGameStart() {
 
         if(!lobbyTimer.isForced()) {
-            if(Bukkit.getOnlinePlayers().size() < Bukkit.getMaxPlayers()) {
+            if(Bukkit.getOnlinePlayers().size() < 2) {
                 return;
             }
         }
@@ -118,8 +118,7 @@ public class TimerManager implements Manager {
 
     public void initSavePhaseTimer() {
         this.savePhaseTimer = new TTTRunnable(20, false, GameManager.GameState.SAVEPHASE,
-                Messages.PREFIX + "§7Die Schutzzeit endet in §a"
-                        + (Integer.parseInt("2") == 1 ? "einer Sekunde" : "%time% Sekunden") + "§8!");
+                null);
     }
 
     public void initGameTimer() {

@@ -3,9 +3,12 @@ package de.z1up.ttt.listener.custom;
 import de.z1up.ttt.TTT;
 import de.z1up.ttt.event.GameEndEvent;
 import de.z1up.ttt.manager.GameManager;
+import de.z1up.ttt.manager.ManagerTeam;
 import de.z1up.ttt.util.MessageAPI;
 import de.z1up.ttt.util.Messages;
 import de.z1up.ttt.util.UserAPI;
+import de.z1up.ttt.util.o.TTTPlayer;
+import de.z1up.ttt.util.uuid.UUIDFetcher;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -53,10 +56,30 @@ public class ListenerGameEnd implements Listener {
 
             Player player = (Player) players.next();
             MessageAPI.sendTitle(player, 10, 40, 10, finalTitle, finalSubtitle);
-            player.teleport(TTT.core.getSpawnManager().getLobbySpawn().getLocation());
+            player.teleport(TTT.core.getLocationManager().getLobbyLocation());
             UserAPI.resetPlayer(player);
 
         }
+
+        sendTraitorsMessage();
+
+    }
+
+    private void sendTraitorsMessage() {
+
+        String message = Messages.PREFIX + "§7Die §4Traitor §7waren§8: ";
+
+        for(TTTPlayer player : TTT.core.getPlayerManager().getTTTPlayers().values()) {
+
+            if(player.getTeam() == ManagerTeam.Team.TRAITOR) {
+
+                message = message + "§4" + UUIDFetcher.getName(player.getUuid()) + "§8, ";
+
+            }
+
+        }
+
+        Bukkit.broadcastMessage(message);
 
     }
 

@@ -53,6 +53,8 @@ public class ListenerPlayerBecomeSpec implements Listener {
         }
 
         player.setAllowFlight(true);
+        player.spigot().setCollidesWithEntities(false);
+        player.setPlayerListName("§7" + player.getName());
 
         TTT.core.getPlayerManager().addSpectator(player);
     }

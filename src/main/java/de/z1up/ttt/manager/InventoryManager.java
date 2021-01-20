@@ -9,10 +9,12 @@ import de.z1up.ttt.util.Messages;
 import de.z1up.ttt.util.o.Achievement;
 import de.z1up.ttt.util.o.Map;
 import org.bukkit.Bukkit;
+import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.Collection;
@@ -151,6 +153,22 @@ public class InventoryManager implements Manager {
         ItemStack shop = new ItemBuilder(Material.EMERALD, 0).setDisplayName(Messages.ItemNames.SHOP).build();
         player.getInventory().setItem(7, shop);
 
+    }
+
+    public void setDetectivePlate(Player player) {
+        ItemStack itemStack = new ItemStack(Material.LEATHER_CHESTPLATE, 1);
+        LeatherArmorMeta meta = (LeatherArmorMeta) itemStack.getItemMeta();
+        meta.setColor(Color.NAVY);
+        itemStack.setItemMeta(meta);
+        player.getInventory().setChestplate(itemStack);
+    }
+
+    public void setInnoPlate(Player player) {
+        ItemStack itemStack = new ItemStack(Material.LEATHER_CHESTPLATE, 1);
+        LeatherArmorMeta meta = (LeatherArmorMeta) itemStack.getItemMeta();
+        meta.setColor(Color.LIME);
+        itemStack.setItemMeta(meta);
+        player.getInventory().setChestplate(itemStack);
     }
 
     public void openNavigator(Player player) {

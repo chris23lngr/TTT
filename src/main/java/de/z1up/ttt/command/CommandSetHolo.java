@@ -10,16 +10,13 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.entity.Player;
 
-public class CommandSetLobbySpawn implements CommandExecutor {
+public class CommandSetHolo implements CommandExecutor {
 
-    private final String NAME = "setlobbyspawn";
+    private final String NAME = "setholo";
 
-    public CommandSetLobbySpawn() {
+    public CommandSetHolo() {
         TTT.getInstance().getCommand(NAME).setExecutor(this::onCommand);
         TTT.getInstance().getCommand(NAME).setPermissionMessage(Messages.NO_PERM);
-        TTT.getInstance().getCommand(NAME).setPermission("ttt." + NAME);
-        TTT.getInstance().getCommand(NAME).setUsage("/" + NAME);
-
     }
 
     @Override
@@ -37,11 +34,10 @@ public class CommandSetLobbySpawn implements CommandExecutor {
         }
 
         Location location = player.getLocation();
-        TTT.core.getLocationManager().setLobbyLocation(location);
+        TTT.core.getLocationManager().setHoloLocation(location);
 
-        player.sendMessage(Messages.PREFIX + "§aLobbyspawn gesetzt§8!");
+        player.sendMessage(Messages.HOLO_SET);
 
         return true;
     }
-
 }

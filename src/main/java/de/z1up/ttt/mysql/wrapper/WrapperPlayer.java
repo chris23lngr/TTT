@@ -3,18 +3,16 @@ package de.z1up.ttt.mysql.wrapper;
 import de.z1up.ttt.interfaces.Wrapper;
 import de.z1up.ttt.mysql.SQL;
 import de.z1up.ttt.util.o.DBPlayer;
+import de.z1up.ttt.util.uuid.UUIDFetcher;
 import org.bukkit.entity.Player;
 
 import java.sql.ResultSet;
 import java.sql.SQLException;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.UUID;
+import java.util.*;
 
 public class WrapperPlayer implements Wrapper {
 
-    private final String TABLE_NAME = "ttt_player";
+    private final String TABLE_NAME = "players";
     private final String ATTRIBUTE_UUID = "UUID";
     private final String ATTRIBUTE_WINS = "WINS";
     private final String ATTRIBUTE_LOOSES = "LOOSES";
@@ -194,6 +192,27 @@ public class WrapperPlayer implements Wrapper {
             achievements.add(id);
         }
         return achievements;
+    }
+
+    public ArrayList<DBPlayer> getTopPlayers() {
+
+        String stmt = "SELECT * FROM " + TABLE_NAME + " ORDER BY "+ ATTRIBUTE_KARMA + " DESC LIMIT 5;";
+        //String stmt = "SELECT * FROM " + TABLE_NAME + "";
+
+        ResultSet rs = sql.getResult(stmt, null);
+
+        ArrayList<DBPlayer> topPlayers = new ArrayList<>();
+
+        try {
+            while(rs.next()) {
+                DBPlayer player = (DBPlayer) get(UUID.fromString(rs.getString(ATTRIBUTE_UUID)));
+                System.out.println(UUIDFetcher.getName(player.getUuid()));
+                topPlayers.add(player);
+            }
+        } catch (SQLException throwable) {
+            throwable.printStackTrace();
+        }
+        return topPlayers;
     }
 
 }

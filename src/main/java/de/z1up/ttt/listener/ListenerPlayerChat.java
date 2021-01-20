@@ -1,10 +1,18 @@
 package de.z1up.ttt.listener;
 
+import de.dytanic.cloudnet.api.CloudAPI;
+import de.dytanic.cloudnet.bridge.CloudProxy;
+import de.dytanic.cloudnet.bridge.internal.command.proxied.CommandPermissions;
+import de.dytanic.cloudnet.lib.CloudNetwork;
+import de.dytanic.cloudnet.lib.player.CloudPlayer;
+import de.dytanic.cloudnet.lib.player.permission.PermissionGroup;
+import de.dytanic.cloudnet.lib.player.permission.PermissionPool;
 import de.z1up.ttt.TTT;
 import de.z1up.ttt.core.Core;
 import de.z1up.ttt.manager.ManagerTeam;
 import de.z1up.ttt.util.o.TTTPlayer;
 import org.bukkit.Bukkit;
+import org.bukkit.ChatColor;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -34,7 +42,12 @@ public class ListenerPlayerChat implements Listener {
             return;
         }
 
-        String format = "§7█ §8● §7" + player.getName() + " §8» §7" + message;
+        CloudPlayer cloudPlayer = CloudAPI.getInstance().getOnlinePlayer(player.getUniqueId());
+        PermissionPool pool = CloudAPI.getInstance().getPermissionPool();
+        PermissionGroup group = cloudPlayer.getPermissionEntity().getHighestPermissionGroup(pool);
+        String cc = ChatColor.translateAlternateColorCodes('&', group.getColor());
+
+        String format = "§7█ §8● " + cc + player.getName() + " §8» §7" + message;
 
         if(TTT.core.getGameManager().inSavePhase()
                 || TTT.core.getGameManager().inLobby()

@@ -8,7 +8,6 @@ import de.z1up.ttt.event.PlayerKillMateEvent;
 import de.z1up.ttt.manager.GameManager;
 import de.z1up.ttt.manager.ManagerTeam;
 import de.z1up.ttt.util.Messages;
-import de.z1up.ttt.util.o.DBPlayer;
 import de.z1up.ttt.util.o.DeadBody;
 import de.z1up.ttt.util.o.TTTPlayer;
 import org.bukkit.Bukkit;
@@ -73,15 +72,29 @@ public class ListenerPlayerDeath implements Listener {
             TTT.core.getTeamManager().removeDetective();
         }
 
+        target.spigot().respawn();
+
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+
+                if (TTT.core.getGameManager().inGame()) {
+                    target.teleport(
+                            TTT.core.getSpawnManager().getSpecSpawnFor(TTT.core.getMapManager().getMapToPlay()).getLocation());
+                } else {
+                    target.teleport(TTT.core.getLocationManager().getLobbyLocation());
+                }
+            }
+        }.runTaskLater(TTT.getInstance(), 15);
+
+        PlayerBecomeSpecEvent specEvent = new PlayerBecomeSpecEvent(target, false);
+        Bukkit.getPluginManager().callEvent(specEvent);
+
         if(TTT.core.getGameManager().checkPossibleGameEnding()) {
             TTT.core.getGameManager().setGameState(GameManager.GameState.RESTART);
             GameStateChangeEvent changeEvent = new GameStateChangeEvent(GameManager.GameState.INGAME, GameManager.GameState.RESTART, false);
             Bukkit.getPluginManager().callEvent(changeEvent);
         }
-
-    }
-
-    private void callSpecModeEvent(PlayerDeathEvent context) {
 
     }
 

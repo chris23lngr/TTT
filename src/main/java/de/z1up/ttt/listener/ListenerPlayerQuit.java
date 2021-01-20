@@ -9,6 +9,7 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.player.PlayerQuitEvent;
+import org.bukkit.scheduler.BukkitRunnable;
 
 public class ListenerPlayerQuit implements Listener {
 
@@ -26,8 +27,15 @@ public class ListenerPlayerQuit implements Listener {
             return;
         }
 
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                Bukkit.getOnlinePlayers().forEach(target -> TTT.core.getScoreboardAPI().updatePlayerCounter(target));
+            }
+        }.runTaskAsynchronously(TTT.getInstance());
+
         String quit = Messages.PREFIX + "§c" + player.getName()
-                + " §7hat das Spiel verlassen.";
+                + " §7hat das Spiel verlassen§8!";
         event.setQuitMessage(quit);
 
         if(TTT.core.getVoteManager().hasVoted(player)) {

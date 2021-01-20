@@ -55,6 +55,10 @@ public class GameManager implements Manager {
         return (gameState == GameState.INGAME);
     }
 
+    public boolean inPreSavePhase() {
+        return (gameState == GameState.PRE_SAVEPHASE);
+    }
+
     public boolean inSavePhase() {
         return (gameState == GameState.SAVEPHASE);
     }

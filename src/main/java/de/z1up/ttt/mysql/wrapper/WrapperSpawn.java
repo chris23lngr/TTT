@@ -206,72 +206,7 @@ public class WrapperSpawn implements Wrapper {
 
     }
 
-    public Spawn getLobbySpawn() {
-
-        String stmt = "SELECT * FROM " + TABLE_NAME + " WHERE " + ATTRIBUTE_ID + "=?;";
-
-        ResultSet rs = sql.getResult(stmt, Arrays.asList(0000));
-
-        try {
-            if(rs.next()) {
-
-                int id = rs.getInt(ATTRIBUTE_ID);
-                String worldName = rs.getString(ATTRIBUTE_WORLD_NAME);
-                double x = rs.getDouble(ATTRIBUTE_X);
-                double y = rs.getDouble(ATTRIBUTE_Y);
-                double z = rs.getDouble(ATTRIBUTE_Z);
-                float yaw = rs.getFloat(ATTRIBUTE_YAW);
-                float pitch = rs.getFloat(ATTRIBUTE_PITCH);
-
-                Location location = new Location(Bukkit.getWorld(worldName), x, y, z, yaw, pitch);
-
-                Spawn spawn = new Spawn(id, location, null);
-                return spawn;
-            }
-        } catch (SQLException throwable) {
-            throwable.printStackTrace();
-        }
-
-        return null;
-
-    }
-
-    public void insertLobbySpawn(Object e) {
-
-        /*
-        if(existsID(0000)) {
-            delete(get(0000));
-        }*/
-
-        if(!(e instanceof Spawn)) {
-            return;
-        }
-
-        String stmt = "INSERT INTO " + TABLE_NAME + "(" + ATTRIBUTE_ID + ", " + ATTRIBUTE_WORLD_NAME + ", " + ATTRIBUTE_X + ", " + ATTRIBUTE_Y + ", " + ATTRIBUTE_Z + ", " + ATTRIBUTE_YAW + ", " + ATTRIBUTE_PITCH + ") VALUES (?, ?, ?, ?, ?, ?, ?);";
-
-        Spawn spawn = (Spawn) e;
-
-        int id = spawn.getId();
-        int mapID = 0000;
-        if(spawn.getMap() != null) {
-            mapID = spawn.getMap().getId();
-        }
-        String worldName = spawn.getLocation().getWorld().getName();
-        double x = spawn.getLocation().getX();
-        double y = spawn.getLocation().getY();
-        double z = spawn.getLocation().getZ();
-        float yaw = spawn.getLocation().getYaw();
-        float pitch = spawn.getLocation().getPitch();
-
-        sql.executeUpdateAsync(stmt, Arrays.asList(id, worldName, x, y, z, yaw, pitch));
-
-    }
-
     public void insertSpecSpawn(Spawn spawn) {
-
-        if(existsID(spawn.getMap().getId())) {
-            delete(spawn.getMap().getId());
-        }
 
         String stmt = "INSERT INTO " + TABLE_NAME + "(" + ATTRIBUTE_ID + ", " + ATTRIBUTE_MAP + ", " + ATTRIBUTE_WORLD_NAME + ", " + ATTRIBUTE_X + ", " + ATTRIBUTE_Y + ", " + ATTRIBUTE_Z + ", " + ATTRIBUTE_YAW + ", " + ATTRIBUTE_PITCH + ") VALUES (?, ?, ?, ?, ?, ?, ?, ?);";
 

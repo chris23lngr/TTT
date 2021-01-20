@@ -5,6 +5,7 @@ import de.z1up.ttt.event.GameEndEvent;
 import de.z1up.ttt.event.GameStateChangeEvent;
 import de.z1up.ttt.event.PlayerTeamSetEvent;
 import de.z1up.ttt.manager.GameManager;
+import de.z1up.ttt.util.FakeEquipment;
 import de.z1up.ttt.util.UserAPI;
 import de.z1up.ttt.util.o.DBPlayer;
 import de.z1up.ttt.util.o.Map;
@@ -32,6 +33,11 @@ public class ListenerGameStateChange implements Listener {
         GameManager.GameState to = event.getTo();
 
         if((from == GameManager.GameState.LOBBYPHASE) && (to == GameManager.GameState.PRE_SAVEPHASE)) {
+
+            Bukkit.getOnlinePlayers().forEach(player -> {
+                TTT.core.getScoreboardAPI().updatePlayerScore(player);
+                TTT.core.getScoreboardAPI().updatePlayerCounter(player);
+            });
 
             // teleport all the players who aren't
             // specs to a Spawnpoint
@@ -106,6 +112,16 @@ public class ListenerGameStateChange implements Listener {
                     Bukkit.getPluginManager().callEvent(teamSetEvent);
 
                 }
+
+                new BukkitRunnable() {
+                    @Override
+                    public void run() {
+
+                        FakeEquipment.sendEquipment();
+                        Bukkit.getOnlinePlayers().forEach(target -> TTT.core.getScoreboardAPI().setTeamTeams(target));
+
+                    }
+                }.runTaskLaterAsynchronously(TTT.getInstance(), 20);
 
             }
 

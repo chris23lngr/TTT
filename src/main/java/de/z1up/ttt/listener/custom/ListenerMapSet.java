@@ -2,7 +2,6 @@ package de.z1up.ttt.listener.custom;
 
 import de.z1up.ttt.TTT;
 import de.z1up.ttt.event.MapSetEvent;
-import de.z1up.ttt.core.Core;
 import de.z1up.ttt.util.Messages;
 import de.z1up.ttt.util.o.Map;
 import de.z1up.ttt.util.o.Spawn;
@@ -29,7 +28,7 @@ public class ListenerMapSet implements Listener {
 
         Bukkit.broadcastMessage(Messages.PLAYING_ON + map.getName());
 
-        //Bukkit.getOnlinePlayers().forEach(player -> Data.sbManager.updateLobbySB(player));
+        Bukkit.getOnlinePlayers().forEach(target -> TTT.core.getScoreboardAPI().updateMapCounter(target));
 
     }
 

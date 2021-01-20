@@ -1,12 +1,22 @@
 package de.z1up.ttt.util;
 
+import de.dytanic.cloudnet.api.CloudAPI;
+import de.dytanic.cloudnet.lib.player.CloudPlayer;
+import de.dytanic.cloudnet.lib.player.permission.PermissionGroup;
+import de.dytanic.cloudnet.lib.player.permission.PermissionPool;
 import de.z1up.ttt.TTT;
+import de.z1up.ttt.util.o.DBPlayer;
+import de.z1up.ttt.util.o.StatsHologram;
+import org.bukkit.ChatColor;
 import org.bukkit.GameMode;
+import org.bukkit.Location;
 import org.bukkit.Sound;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
 import org.bukkit.scheduler.BukkitRunnable;
+
+import java.text.NumberFormat;
 
 /**
  * The UserAPI contains methods that generally occur
@@ -31,7 +41,8 @@ public class UserAPI {
         player.getInventory().setArmorContents(null);
 
         // set game mode
-        player.setGameMode( GameMode.SURVIVAL);
+        player.setGameMode(GameMode.SURVIVAL);
+        player.setAllowFlight(false);
 
         // set health
         player.setHealthScale(20.0D);
@@ -140,5 +151,22 @@ public class UserAPI {
 
     }
 
+    public static void setScoreboard(Player player) {
+        TTT.core.getScoreboardAPI().createScoreboard(player);
+    }
+
+    public static void setHolo(Player player) {
+        TTT.core.getStatsManager().setHolo(player);
+    }
+
+    public static void setTablistName(Player player) {
+        CloudPlayer cloudPlayer = CloudAPI.getInstance().getOnlinePlayer(player.getUniqueId());
+        PermissionPool pool = CloudAPI.getInstance().getPermissionPool();
+        PermissionGroup group = cloudPlayer.getPermissionEntity().getHighestPermissionGroup(pool);
+        String cc = ChatColor.translateAlternateColorCodes('&', group.getColor());
+        String prefix = group.getPrefix();
+        prefix = ChatColor.translateAlternateColorCodes('&', prefix);
+        player.setPlayerListName(prefix + cc + player.getName());
+    }
 
 }

@@ -1,6 +1,5 @@
 package de.z1up.ttt.core;
 
-import de.z1up.ttt.TTT;
 import de.z1up.ttt.book.RuleBook;
 import de.z1up.ttt.manager.*;
 import de.z1up.ttt.mysql.wrapper.WrapperAchievements;
@@ -9,8 +8,6 @@ import de.z1up.ttt.mysql.SQL;
 import de.z1up.ttt.mysql.SQLConfig;
 import de.z1up.ttt.replay.ReplayFile;
 import de.z1up.ttt.util.MapResetter;
-
-import java.time.temporal.Temporal;
 
 /**
  * The Core class is used to access the
@@ -25,12 +22,15 @@ public class Core {
     private GameManager gameManager;
     private PlayerManager playerManager;
     private BuildManager buildManager;
-    private ScoreboardManager sbManager;
+    private ScoreboardAPI sbApi;
     private InventoryManager invManager;
     private TimerManager timerManager;
     private VoteManager voteManager;
     private ManagerSpawn spawnManager;
     private ManagerTeam teamManager;
+    private StatsManager statsManager;
+    private LocationManager locationManager;
+
 
     public ReplayFile replayFile;
     public RuleBook ruleBook;
@@ -75,12 +75,14 @@ public class Core {
         gameManager = new GameManager();
         playerManager = new PlayerManager();
         buildManager = new BuildManager();
-        sbManager = new ScoreboardManager();
+        sbApi = new ScoreboardAPI();
         invManager = new InventoryManager();
         timerManager = new TimerManager();
         voteManager = new VoteManager();
         spawnManager = new ManagerSpawn();
         teamManager = new ManagerTeam();
+        statsManager = new StatsManager();
+        locationManager = new LocationManager();
     }
 
     void loadMapResetter() {
@@ -131,8 +133,8 @@ public class Core {
         return buildManager;
     }
 
-    public ScoreboardManager getSbManager() {
-        return sbManager;
+    public ScoreboardAPI getScoreboardAPI() {
+        return sbApi;
     }
 
     public InventoryManager getInvManager() {
@@ -162,5 +164,14 @@ public class Core {
     public MapResetter getMapResetter() {
         return mapResetter;
     }
+
+    public StatsManager getStatsManager() {
+        return statsManager;
+    }
+
+    public LocationManager getLocationManager() {
+        return locationManager;
+    }
+
 }
 

@@ -85,6 +85,10 @@ public class PlayerManager extends WrapperPlayer implements Manager {
     public void addDeadBody(DeadBody deadBody) {
         deadBodies.add(deadBody);
     }
+
+    public HashMap<UUID, TTTPlayer> getTTTPlayers() {
+        return players;
+    }
 }
 
 

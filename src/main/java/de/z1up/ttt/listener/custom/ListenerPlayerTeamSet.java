@@ -3,6 +3,7 @@ package de.z1up.ttt.listener.custom;
 import de.z1up.ttt.TTT;
 import de.z1up.ttt.event.PlayerTeamSetEvent;
 import de.z1up.ttt.manager.ManagerTeam;
+import de.z1up.ttt.util.FakeEquipment;
 import de.z1up.ttt.util.Messages;
 import de.z1up.ttt.util.o.TTTPlayer;
 import org.bukkit.Bukkit;
@@ -42,14 +43,29 @@ public class ListenerPlayerTeamSet implements Listener {
 
             player.sendMessage(msg);
 
+            TTT.core.getScoreboardAPI().updateTeamCounter(player);
+
         }
+
+        Player player = Bukkit.getPlayer(tttPlayer.getUuid());
 
         TTT.core.getInvManager().setGameItems(Bukkit.getPlayer(tttPlayer.getUuid()));
 
+        if(team == ManagerTeam.Team.INNOCENT) {
+            TTT.core.getInvManager().setInnoPlate(player);
+            player.setPlayerListName("§a" + player.getName());
+        }
+
         if(team != null) {
 
-            if(team == ManagerTeam.Team.DETECTIVE || team == ManagerTeam.Team.TRAITOR);
-                TTT.core.getInvManager().setGameItemsShop(Bukkit.getPlayer(tttPlayer.getUuid()));
+            if(team == ManagerTeam.Team.DETECTIVE) {
+                TTT.core.getInvManager().setGameItemsShop(player);
+                TTT.core.getInvManager().setDetectivePlate(player);
+                player.setPlayerListName("§9" + player.getName());
+            } else if(team == ManagerTeam.Team.TRAITOR) {
+                TTT.core.getInvManager().setGameItemsShop(player);
+                player.setPlayerListName("§a" + player.getName());
+            }
         }
 
     }

@@ -25,7 +25,7 @@ public class ListenerTimerFinish implements Listener {
             task.cancel();
 
             GameStateChangeEvent gameStateChangeEvent = new GameStateChangeEvent(GameManager.GameState.LOBBYPHASE, GameManager.GameState.PRE_SAVEPHASE, false);
-            if(Bukkit.getOnlinePlayers().size() < Bukkit.getMaxPlayers()) {
+            if(Bukkit.getOnlinePlayers().size() < 2) {
                 gameStateChangeEvent.setCancelled(true);
 
                 // if there are not enough players

@@ -8,6 +8,7 @@ import de.z1up.ttt.util.Messages;
 import de.z1up.ttt.util.o.Map;
 import de.z1up.ttt.util.o.Spawn;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 
 import java.util.ArrayList;
 
@@ -15,11 +16,12 @@ public class ManagerSpawn extends WrapperSpawn implements Manager {
 
     public ManagerSpawn() {
         super(Core.sql);
+        load();
     }
 
     @Override
     public void load() {
-
+        init();
     }
 
     @Override
@@ -49,4 +51,5 @@ public class ManagerSpawn extends WrapperSpawn implements Manager {
         }
         return getSpawnsFor(TTT.core.getMapManager().getMap(id));
     }
+
 }
