@@ -41,10 +41,6 @@ public class ListenerPlayerJoin implements Listener {
         } else {
             onSpecJoin(event);
         }
-
-        TTT.core.getScoreboardAPI().updatePlayerTeams();
-
-
     }
 
     private void setPlayerSettings(Player player) {
@@ -53,6 +49,7 @@ public class ListenerPlayerJoin implements Listener {
         UserAPI.setScoreboard(player);
         UserAPI.setHolo(player);
         UserAPI.setTablistName(player);
+        UserAPI.updatePlayerteams();
 
     }
 

@@ -1,7 +1,5 @@
 package de.z1up.ttt.util.o;
 
-import de.z1up.ttt.core.Core;
-
 public class Achievement extends Object {
 
     int id;

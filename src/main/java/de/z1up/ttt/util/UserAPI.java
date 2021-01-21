@@ -7,10 +7,7 @@ import de.dytanic.cloudnet.lib.player.permission.PermissionPool;
 import de.z1up.ttt.TTT;
 import de.z1up.ttt.util.o.DBPlayer;
 import de.z1up.ttt.util.o.StatsHologram;
-import org.bukkit.ChatColor;
-import org.bukkit.GameMode;
-import org.bukkit.Location;
-import org.bukkit.Sound;
+import org.bukkit.*;
 import org.bukkit.entity.Player;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -62,24 +59,6 @@ public class UserAPI {
     }
 
     /**
-     * Resets the player by running the {@code resetPlayer()}
-     * method in a new Thread.
-     *
-     * @param player The player which will be reset.
-     */
-    public static void resetPlayerAsync(final Player player) {
-
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-
-                resetPlayer(player);
-
-            }
-        }.runTaskAsynchronously(TTT.getInstance());
-    }
-
-    /**
      * Sends the given player effects that he should receive
      * when he joins the game.
      *
@@ -94,24 +73,6 @@ public class UserAPI {
         // play a sound
         player.playSound(player.getLocation(), Sound.LEVEL_UP, 3.0F, 2.0F);
 
-    }
-
-    /**
-     * Runs the {@code playJoinEffects()} method in a new
-     * Thread.
-     *
-     * @param player The player who will receive the effects.
-     */
-    public static void playJoinEffectsAsync(Player player) {
-
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-
-                playJoinEffects(player);
-
-            }
-        }.runTaskAsynchronously(TTT.getInstance());
     }
 
     /**
@@ -132,34 +93,21 @@ public class UserAPI {
 
     }
 
-    /**
-     * Runs the {@code setToSpec()} method in a new
-     * Thread.
-     *
-     * @param player The player that will be set to spec.
-     */
-    public static void setToSpecAsync(Player player) {
-
-        new BukkitRunnable() {
-            @Override
-            public void run() {
-
-                setToSpec(player);
-
-            }
-        }.runTaskAsynchronously(TTT.getInstance());
-
-    }
-
     public static void setScoreboard(Player player) {
         TTT.core.getScoreboardAPI().createScoreboard(player);
     }
 
     public static void setHolo(Player player) {
-        TTT.core.getStatsManager().setHolo(player);
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+                TTT.core.getStatsManager().setHolo(player);
+            }
+        }.runTaskLaterAsynchronously(TTT.getInstance(), 15);
     }
 
     public static void setTablistName(Player player) {
+
         CloudPlayer cloudPlayer = CloudAPI.getInstance().getOnlinePlayer(player.getUniqueId());
         PermissionPool pool = CloudAPI.getInstance().getPermissionPool();
         PermissionGroup group = cloudPlayer.getPermissionEntity().getHighestPermissionGroup(pool);
@@ -167,6 +115,13 @@ public class UserAPI {
         String prefix = group.getPrefix();
         prefix = ChatColor.translateAlternateColorCodes('&', prefix);
         player.setPlayerListName(prefix + cc + player.getName());
+
     }
+
+    public static void updatePlayerteams() {
+        TTT.core.getScoreboardAPI().updatePlayerTeams();
+    }
+
+    
 
 }

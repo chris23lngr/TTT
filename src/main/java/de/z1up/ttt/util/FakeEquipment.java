@@ -3,6 +3,7 @@ package de.z1up.ttt.util;
 import de.z1up.ttt.TTT;
 import de.z1up.ttt.manager.ManagerTeam;
 import de.z1up.ttt.util.o.TTTPlayer;
+import net.minecraft.server.v1_8_R3.Packet;
 import net.minecraft.server.v1_8_R3.PacketPlayOutEntityEquipment;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
@@ -15,7 +16,7 @@ import org.bukkit.inventory.meta.LeatherArmorMeta;
 
 public class FakeEquipment {
 
-    public static void sendTraitorEquipment(Player player, Player target) {
+    private static void sendTraitorEquipment(Player player, Player target) {
 
         int entityId = player.getEntityId();
         int slot = 2;
@@ -30,7 +31,7 @@ public class FakeEquipment {
 
     }
 
-    public static void sendInnoEquipment(Player player, Player target) {
+    private static void sendInnoEquipment(Player player, Player target) {
 
         int entityId = player.getEntityId();
         int slot = 3;
@@ -45,32 +46,76 @@ public class FakeEquipment {
 
     }
 
-    public static void sendEquipment() {
+    private static void sendDetectiveEquipment(Player player, Player target) {
 
-        for (Player player : Bukkit.getOnlinePlayers()) {
+        int entityId = player.getEntityId();
+        int slot = 3;
+
+        ItemStack itemStack = new ItemStack(Material.LEATHER_CHESTPLATE, 1);
+        LeatherArmorMeta meta = (LeatherArmorMeta) itemStack.getItemMeta();
+        meta.setColor(Color.NAVY);
+        itemStack.setItemMeta(meta);
+
+        PacketPlayOutEntityEquipment packet = new PacketPlayOutEntityEquipment(entityId, slot, CraftItemStack.asNMSCopy(itemStack));
+        ((CraftPlayer) target).getHandle().playerConnection.sendPacket(packet);
+
+    }
+
+    public static void sendFakeEquipment() {
+
+        for(Player player : Bukkit.getOnlinePlayers()) {
 
             if(TTT.core.getPlayerManager().existsPlayer(player.getUniqueId())) {
 
                 TTTPlayer tttPlayer = TTT.core.getPlayerManager().getTTTPlayer(player);
+                ManagerTeam.Team playerTeam = tttPlayer.getTeam();
 
-                if(tttPlayer.getTeam() == ManagerTeam.Team.TRAITOR) {
+                if(playerTeam == ManagerTeam.Team.TRAITOR) {
 
                     for(Player target : Bukkit.getOnlinePlayers()) {
 
-                        if(TTT.core.getPlayerManager().existsPlayer(target.getUniqueId())) {
+                        if (TTT.core.getPlayerManager().existsPlayer(target.getUniqueId())) {
 
                             TTTPlayer tttTarget = TTT.core.getPlayerManager().getTTTPlayer(target);
+                            ManagerTeam.Team targetTeam = tttTarget.getTeam();
 
-                            if (tttTarget.getTeam() == ManagerTeam.Team.TRAITOR) {
+                            if(targetTeam == ManagerTeam.Team.TRAITOR) {
+
                                 sendTraitorEquipment(player, target);
+
                             } else {
+
                                 sendInnoEquipment(player, target);
+
                             }
+
+                        } else {
+
+                            sendInnoEquipment(player, target);
+
                         }
 
                     }
 
+                } else if(playerTeam == ManagerTeam.Team.DETECTIVE) {
+
+                    for(Player target : Bukkit.getOnlinePlayers()) {
+
+                        sendDetectiveEquipment(player, target);
+
+                    }
+
+                } else {
+
+                    for(Player target : Bukkit.getOnlinePlayers()) {
+
+                        sendInnoEquipment(player, target);
+
+                    }
+
                 }
+
+
             }
 
         }

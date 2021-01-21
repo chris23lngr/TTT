@@ -59,7 +59,6 @@ public class DeadBody {
 
     public void despawn() {
         entity.remove();
-
     }
 
     public void process() {

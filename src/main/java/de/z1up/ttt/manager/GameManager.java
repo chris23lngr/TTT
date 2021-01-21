@@ -77,17 +77,17 @@ public class GameManager implements Manager {
         int onlineSize = Bukkit.getOnlinePlayers().size();
 
 
-        if(TTT.core.getTeamManager().getInnocentCounter() == 0
-                && TTT.core.getTeamManager().getDetectiveCounter() == 0) {
+        if(TTT.core.getTeamManager().getTraitorCounter() == 0) {
 
-            this.gameResult = GameResult.TRAITOR_WIN;
+            this.gameResult = GameResult.INNOCENT_WIN;
 
             return true;
         }
 
-        if(TTT.core.getTeamManager().getTraitorCounter() == 0) {
+        if(TTT.core.getTeamManager().getInnocentCounter() == 0
+                && TTT.core.getTeamManager().getDetectiveCounter() == 0) {
 
-            this.gameResult = GameResult.INNOCENT_WIN;
+            this.gameResult = GameResult.TRAITOR_WIN;
 
             return true;
         }

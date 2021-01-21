@@ -6,6 +6,7 @@ import de.z1up.ttt.event.GameStateChangeEvent;
 import de.z1up.ttt.event.PlayerTeamSetEvent;
 import de.z1up.ttt.manager.GameManager;
 import de.z1up.ttt.util.FakeEquipment;
+import de.z1up.ttt.util.FakeNameTags;
 import de.z1up.ttt.util.UserAPI;
 import de.z1up.ttt.util.o.DBPlayer;
 import de.z1up.ttt.util.o.Map;
@@ -64,7 +65,7 @@ public class ListenerGameStateChange implements Listener {
                         player.teleport(spawn.getLocation());
                     }
                 }.runTask(TTT.getInstance());
-                UserAPI.resetPlayerAsync(player);
+                UserAPI.resetPlayer(player);
             }
 
             // Start the PreSavephase timer
@@ -117,7 +118,8 @@ public class ListenerGameStateChange implements Listener {
                     @Override
                     public void run() {
 
-                        FakeEquipment.sendEquipment();
+                        FakeEquipment.sendFakeEquipment();
+                        FakeNameTags.sendNametags();
                         Bukkit.getOnlinePlayers().forEach(target -> TTT.core.getScoreboardAPI().setTeamTeams(target));
 
                     }

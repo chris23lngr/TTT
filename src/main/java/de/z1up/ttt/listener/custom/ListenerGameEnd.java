@@ -27,8 +27,8 @@ public class ListenerGameEnd implements Listener {
 
         GameManager.GameResult result = event.getGameResult();
 
-        String title = "§eDie ";
-        String subtitle = "§a haben gewonnen!";
+        String title = "§7Die ";
+        String subtitle = "§7haben gewonnen§8!";
 
         if(result.equals(GameManager.GameResult.TRAITOR_WIN)) {
 

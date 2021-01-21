@@ -155,22 +155,6 @@ public class InventoryManager implements Manager {
 
     }
 
-    public void setDetectivePlate(Player player) {
-        ItemStack itemStack = new ItemStack(Material.LEATHER_CHESTPLATE, 1);
-        LeatherArmorMeta meta = (LeatherArmorMeta) itemStack.getItemMeta();
-        meta.setColor(Color.NAVY);
-        itemStack.setItemMeta(meta);
-        player.getInventory().setChestplate(itemStack);
-    }
-
-    public void setInnoPlate(Player player) {
-        ItemStack itemStack = new ItemStack(Material.LEATHER_CHESTPLATE, 1);
-        LeatherArmorMeta meta = (LeatherArmorMeta) itemStack.getItemMeta();
-        meta.setColor(Color.LIME);
-        itemStack.setItemMeta(meta);
-        player.getInventory().setChestplate(itemStack);
-    }
-
     public void openNavigator(Player player) {
 
         new BukkitRunnable() {

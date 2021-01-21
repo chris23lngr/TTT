@@ -152,7 +152,7 @@ public class ListenerPlayerDeath implements Listener {
         String deathsMsg = "";
 
         if(target.getKiller() != null) {
-            deathsMsg = Messages.PREFIX + "§cDu wurdest von §4" + target.getKiller().getName() + " §cgetötet§8!";
+            deathsMsg = Messages.PREFIX + "§cDu wurdest von §c" + target.getKiller().getName() + " §cgetötet§8!";
         } else {
             deathsMsg = Messages.PREFIX + "§cDu bist gestorben§8!";
         }
