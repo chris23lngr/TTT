@@ -22,7 +22,6 @@ public class StatsAPI {
     public void onOponentKill(Player killer, Player target) {
 
         TTTPlayer tttKiller = TTT.core.getPlayerManager().getTTTPlayer(killer);
-        tttKiller.addGameKill();
         tttKiller.addKarma(20);
         tttKiller.addKill();
         tttKiller.update();
@@ -33,23 +32,4 @@ public class StatsAPI {
 
     }
 
-    public void addWin(Player player) {
-
-    }
-
-    public void addKill(Player player) {
-
-    }
-
-    public void addDeath(Player player) {
-
-    }
-
-    public void addKarma(Player player) {
-
-    }
-
-    public void removeKarma(Player player) {
-
-    }
 }

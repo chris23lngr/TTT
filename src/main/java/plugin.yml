@@ -3,6 +3,8 @@ authors:
   - z1up
 version: b1.0
 main: de.z1up.ttt.TTT
+depend:
+  - Multiverse-Core
 
 commands:
   addmap:
@@ -16,3 +18,4 @@ commands:
   setspecspawn:
   setlobbyspawn:
   setholo:
+  setstatswand:

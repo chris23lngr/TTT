@@ -71,7 +71,7 @@ public class ListenerTimerFinish implements Listener {
         }
 
         if(task.getGameState() == GameManager.GameState.RESTART) {
-            Bukkit.getServer().reload();
+            Bukkit.getServer().shutdown();
         }
 
     }

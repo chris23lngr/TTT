@@ -36,7 +36,7 @@ public class ListenerGameEnd implements Listener {
 
         } else if(result.equals(GameManager.GameResult.INNOCENT_WIN)) {
 
-            title = title + "§4Traitor";
+            title = title + "§aInnocents";
 
         } else {
 
@@ -62,6 +62,54 @@ public class ListenerGameEnd implements Listener {
         }
 
         sendTraitorsMessage();
+
+        for(Player player : Bukkit.getOnlinePlayers()) {
+
+            if(TTT.core.getPlayerManager().existsPlayer(player.getUniqueId())) {
+
+                TTTPlayer tttPlayer = TTT.core.getPlayerManager().getTTTPlayer(player);
+
+                boolean won = false;
+
+                if(result == GameManager.GameResult.INNOCENT_WIN) {
+
+                    if(tttPlayer.getTeam() == ManagerTeam.Team.TRAITOR) {
+                        won = false;
+                    } else {
+                        won = true;
+                    }
+
+                } else if(result == GameManager.GameResult.TRAITOR_WIN) {
+
+                    if(tttPlayer.getTeam() == ManagerTeam.Team.TRAITOR) {
+                        won = true;
+                    } else {
+                        won = false;
+                    }
+
+                }
+
+                if(won) {
+                    tttPlayer.addKarma(20);
+                    tttPlayer.addWin();
+                    tttPlayer.update();
+                } else {
+                    tttPlayer.removeKarma(20);
+                    tttPlayer.addLoose();
+                    tttPlayer.update();
+                }
+
+                player.sendMessage(Messages.PREFIX + "§8§m--------- §eRunden Stats §8§m---------");
+                player.sendMessage(Messages.PREFIX + "§7Kills: §c" + tttPlayer.getGameKills());
+                player.sendMessage(Messages.PREFIX + "§7Karma: §c" + tttPlayer.getGameKarma());
+                player.sendMessage(Messages.PREFIX + "§7Du hast " + (won ? "§aGewonnen§8!" : "§cVerloren§8!"));
+                player.sendMessage(Messages.PREFIX + "§8§m------------------------------------------");
+
+
+
+            }
+
+        }
 
     }
 

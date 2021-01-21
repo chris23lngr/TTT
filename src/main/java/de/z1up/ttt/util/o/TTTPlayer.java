@@ -9,18 +9,20 @@ public class TTTPlayer extends DBPlayer {
 
     private ManagerTeam.Team team;
     private int gameKills;
+    private int gameKarma;
     private boolean alive;
 
-    public TTTPlayer(DBPlayer dbPlayer, ManagerTeam.Team team, int gameKills, boolean alive) {
-        this(dbPlayer.getUuid(), dbPlayer.getWins(), dbPlayer.getLooses(), dbPlayer.getTPasses(), dbPlayer.getDPasses(), dbPlayer.getIPasses(), dbPlayer.getKarma(), dbPlayer.getKills(), dbPlayer.getDeaths(), dbPlayer.getAchievements(), dbPlayer.getTesterEntered(), dbPlayer.getPassesUsed(), team, gameKills, alive);
+    public TTTPlayer(DBPlayer dbPlayer, ManagerTeam.Team team, int gameKills, boolean alive, int gameKarma) {
+        this(dbPlayer.getUuid(), dbPlayer.getWins(), dbPlayer.getLooses(), dbPlayer.getTPasses(), dbPlayer.getDPasses(), dbPlayer.getIPasses(), dbPlayer.getKarma(), dbPlayer.getKills(), dbPlayer.getDeaths(), dbPlayer.getAchievements(), dbPlayer.getTesterEntered(), dbPlayer.getPassesUsed(), team, gameKills, alive, gameKarma);
     }
 
-    public TTTPlayer(UUID uuid, int wins, int looses, int tPasses, int dPasses, int iPasses, int karma, int kills, int deaths, Collection<Integer> achievements, int testerEntered, int passesUsed, ManagerTeam.Team team, int gameKills, boolean alive) {
+    public TTTPlayer(UUID uuid, int wins, int looses, int tPasses, int dPasses, int iPasses, int karma, int kills, int deaths, Collection<Integer> achievements, int testerEntered, int passesUsed, ManagerTeam.Team team, int gameKills, boolean alive, int gameKarma) {
         super(uuid, wins, looses, tPasses, dPasses, iPasses, karma, kills, deaths, achievements, testerEntered, passesUsed);
 
         this.team = team;
         this.gameKills = gameKills;
         this.alive = alive;
+        this.gameKarma = gameKarma;
     }
 
     public ManagerTeam.Team getTeam() {
@@ -43,7 +45,23 @@ public class TTTPlayer extends DBPlayer {
         this.alive = alive;
     }
 
-    public void addGameKill() {
-        this.kills = kills + 1;
+    @Override
+    public void addKill() {
+        super.addKill();
+        gameKills = gameKills + 1;
+    }
+
+    public int getGameKills() {
+        return gameKills;
+    }
+
+    @Override
+    public void addKarma(int karma) {
+        super.addKarma(karma);
+        gameKarma = gameKarma + 1;
+    }
+
+    public int getGameKarma() {
+        return gameKarma;
     }
 }

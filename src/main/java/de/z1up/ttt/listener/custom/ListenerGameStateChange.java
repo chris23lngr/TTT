@@ -97,7 +97,7 @@ public class ListenerGameStateChange implements Listener {
 
                     if(!TTT.core.getPlayerManager().existsPlayer(player.getUniqueId())) {
                         DBPlayer dbPlayer = (DBPlayer) TTT.core.getPlayerManager().get(player);
-                        tttPlayer = new TTTPlayer(dbPlayer, null, 0, true);
+                        tttPlayer = new TTTPlayer(dbPlayer, null, 0, true,0 );
                     } else {
                         tttPlayer = TTT.core.getPlayerManager().getTTTPlayer(player);
                     }
@@ -136,6 +136,14 @@ public class ListenerGameStateChange implements Listener {
 
             GameEndEvent endEvent = new GameEndEvent(TTT.core.getGameManager().getGameResult(), false);
             Bukkit.getPluginManager().callEvent(endEvent);
+
+            if(TTT.core.getTimerManager().getGameTimer().isActive()) {
+
+                TTT.core.getTimerManager().getGameTimer().cancel();
+
+            }
+
+            TTT.core.getTimerManager().getRestartTimer().runAsync();
 
             return;
         }

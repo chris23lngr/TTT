@@ -8,6 +8,7 @@ import de.z1up.ttt.mysql.SQL;
 import de.z1up.ttt.mysql.SQLConfig;
 import de.z1up.ttt.replay.ReplayFile;
 import de.z1up.ttt.util.MapResetter;
+import de.z1up.ttt.util.o.StatsWand;
 
 /**
  * The Core class is used to access the
@@ -39,6 +40,7 @@ public class Core {
     public WrapperAchievements wrapperAchievements;
 
     private MapResetter mapResetter;
+    private StatsWand statsWand;
 
     /**
      * The load method calls various other methods that
@@ -60,6 +62,7 @@ public class Core {
         ruleBook = new RuleBook();
 
         loadMapResetter();
+        loadStatsWand();
 
         loadClassLoader();
     }
@@ -90,6 +93,10 @@ public class Core {
         mapResetter.record();
     }
 
+    void loadStatsWand() {
+        statsWand = new StatsWand();
+        statsWand.build();
+    }
 
     /**
      * The sql attribute is initialised with the createSQLCon() method.

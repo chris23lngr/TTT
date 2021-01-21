@@ -31,7 +31,6 @@ public class ListenerPlayerKillEnemy implements Listener {
         TTTPlayer tttTarget = TTT.core.getPlayerManager().getTTTPlayer(target);
 
         tttKiller.addKill();
-        tttKiller.addGameKill();
         tttKiller.addKarma(20);
         tttKiller.update();
         killer.sendMessage(Messages.PREFIX + "§aDu hast einen §e" + tttTarget.getTeam().toString() + " §agetötet!");

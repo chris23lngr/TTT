@@ -89,6 +89,7 @@ public class PlayerManager extends WrapperPlayer implements Manager {
     public HashMap<UUID, TTTPlayer> getTTTPlayers() {
         return players;
     }
+
 }
 
 

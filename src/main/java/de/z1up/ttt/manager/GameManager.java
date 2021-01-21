@@ -73,10 +73,6 @@ public class GameManager implements Manager {
 
     public boolean checkPossibleGameEnding() {
 
-        int specSize = TTT.core.getPlayerManager().getSpecs().size();
-        int onlineSize = Bukkit.getOnlinePlayers().size();
-
-
         if(TTT.core.getTeamManager().getTraitorCounter() == 0) {
 
             this.gameResult = GameResult.INNOCENT_WIN;

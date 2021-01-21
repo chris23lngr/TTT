@@ -64,7 +64,7 @@ public class CommandStats implements CommandExecutor {
         int looses = dbTarget.getLooses();
         int karma = dbTarget.getKarma();
 
-        double kd = (double)kills / (double)kills;
+        double kd = (double)kills / (double)deaths;
         NumberFormat n = NumberFormat.getInstance();
         n.setMaximumFractionDigits(2);
 
@@ -76,7 +76,7 @@ public class CommandStats implements CommandExecutor {
         player.sendMessage(prefix + "§7Ranking §8■ §c" + "§4Feature folgt...");
         player.sendMessage(prefix + "§7Kills §8■ §c" + kills);
         player.sendMessage(prefix + "§7Tode §8■ §c" + deaths);
-        player.sendMessage(prefix + "§7K/D §8■ §c" + kd);
+        player.sendMessage(prefix + "§7K/D §8■ §c" + n.format(kd));
         player.sendMessage(prefix + "§7Karma §8■ §c" + karma);
         player.sendMessage(prefix + "§7Spiele gewonnen §8■ §c" + wins);
         player.sendMessage(prefix + "§7Spiele verloren §8■ §c" + looses);

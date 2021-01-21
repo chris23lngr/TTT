@@ -184,7 +184,6 @@ public final class Messages {
         public static final String SB_DISPLAY
                 = "§8« §crenixinside.de §8»";
 
-
     }
 
 }

@@ -45,7 +45,7 @@ public class StatsManager extends WrapperSpawn implements Manager {
         int looses = dbPlayer.getLooses();
         int karma = dbPlayer.getKarma();
 
-        double kd = (double)kills / (double)kills;
+        double kd = (double)kills / (double)deaths;
         NumberFormat n = NumberFormat.getInstance();
         n.setMaximumFractionDigits(2);
 

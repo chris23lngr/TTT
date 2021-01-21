@@ -53,16 +53,18 @@ public class LocationManager extends WrapperLocation implements Manager {
 
     }
 
-    public Location getStatsWandLocation() {
-        return get(NAME_STATS);
+    public Location getStatsWandLocation(int id) {
+        return get(NAME_STATS + "_" + id);
     }
 
-    public void setStatsLocation(Location location) {
+    public void setStatsLocation(Location location, int id) {
 
-        if(exists(NAME_STATS)) {
-            update(NAME_STATS, location);
+        final String FINAL_TAG = NAME_STATS + "_" + id;
+
+        if(exists(FINAL_TAG)) {
+            update(FINAL_TAG, location);
         } else {
-            insert(NAME_STATS, location);
+            insert(FINAL_TAG, location);
         }
 
     }

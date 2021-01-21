@@ -96,6 +96,7 @@ public class ClassLoader {
         new CommandSetSpecSpawn();
 
         new CommandSetHolo();
+        new CommandSetStatsWand();
     }
 
 }

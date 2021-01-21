@@ -14,6 +14,7 @@ public class TimerManager implements Manager {
     private TTTRunnable preSavePhaseTimer;
     private TTTRunnable savePhaseTimer;
     private TTTRunnable gameTimer;
+    private TTTRunnable restartTimer;
 
     public TimerManager() {
         load();
@@ -31,6 +32,7 @@ public class TimerManager implements Manager {
         initPreSavePhaseTimer();
         initSavePhaseTimer();
         initGameTimer();
+        initRestartTimer();
     }
 
     public TTTRunnable getLobbyTimer() {
@@ -47,6 +49,10 @@ public class TimerManager implements Manager {
 
     public TTTRunnable getGameTimer() {
         return gameTimer;
+    }
+
+    public TTTRunnable getRestartTimer() {
+        return restartTimer;
     }
 
     public void checkPossibleGameStart() {
@@ -125,6 +131,12 @@ public class TimerManager implements Manager {
         this.gameTimer = new TTTRunnable(60 * 5, false, GameManager.GameState.INGAME,
                 Messages.PREFIX + "§7Die Spiel wird in §a"
                         + (Integer.parseInt("2") == 1 ? "einer Sekunde" : "%time% Sekunden") + " gestoppt§8!");
+    }
+
+    public void initRestartTimer() {
+        this.restartTimer = new TTTRunnable(10, false, GameManager.GameState.RESTART,
+                Messages.PREFIX + "§cDer Server wird in §4"
+                        + (Integer.parseInt("2") == 1 ? "einer Sekunde" : "%time% Sekunden") + " §cgestoppt§8!");
     }
 
 }

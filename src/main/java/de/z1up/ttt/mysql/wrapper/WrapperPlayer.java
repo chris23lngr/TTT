@@ -196,7 +196,7 @@ public class WrapperPlayer implements Wrapper {
 
     public ArrayList<DBPlayer> getTopPlayers() {
 
-        String stmt = "SELECT * FROM " + TABLE_NAME + " ORDER BY "+ ATTRIBUTE_KARMA + " DESC LIMIT 5;";
+        String stmt = "SELECT * FROM " + TABLE_NAME + " ORDER BY "+ ATTRIBUTE_KARMA + " DESC LIMIT 3;";
         //String stmt = "SELECT * FROM " + TABLE_NAME + "";
 
         ResultSet rs = sql.getResult(stmt, null);
