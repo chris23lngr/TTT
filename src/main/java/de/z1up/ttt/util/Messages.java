@@ -177,6 +177,21 @@ public final class Messages {
         public static final String SHOP
                 = "§4Shop";
 
+        public static final String PLAYER_SETTINGS
+                = "§9Deine Einstellungen";
+
+        public static final String TICKETS
+                = "§4Tickets";
+
+        public static final String TICKET_TRAITOR
+                = "§4Traitor Tickets";
+
+        public static final String TICKET_DETECTIVE
+                = "§9Detective Tickets";
+
+        public static final String TICKET_INNOCENT
+                = "§aInnocent Tickets";
+
     }
 
     public final class Scoreboards {

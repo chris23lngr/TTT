@@ -1,5 +1,6 @@
 package de.z1up.ttt.manager;
 
+import de.dytanic.cloudnet.bridge.internal.util.ItemStackBuilder;
 import de.z1up.ttt.TTT;
 import de.z1up.ttt.interfaces.Manager;
 import de.z1up.ttt.core.Core;
@@ -7,6 +8,7 @@ import de.z1up.ttt.util.ItemBuilder;
 import de.z1up.ttt.util.MathUtils;
 import de.z1up.ttt.util.Messages;
 import de.z1up.ttt.util.o.Achievement;
+import de.z1up.ttt.util.o.DBPlayer;
 import de.z1up.ttt.util.o.Map;
 import org.bukkit.Bukkit;
 import org.bukkit.Color;
@@ -66,24 +68,24 @@ public class InventoryManager implements Manager {
 
                 Inventory inventory = Bukkit.createInventory(player, 9 * 3, Messages.ItemNames.SETTINGS);
 
-                ItemStack filler = new ItemBuilder(Material.STAINED_GLASS_PANE, (short) 14).setDisplayName("§c").build();
+                ItemStack filler = new ItemBuilder(Material.STAINED_GLASS_PANE, 8).setDisplayName("§c").build();
                 for(int i = 0; i < inventory.getSize(); i++) {
                     inventory.setItem(i, filler);
                 }
 
-                inventory.setItem(9, new ItemBuilder(Material.REDSTONE_COMPARATOR, (short) 0)
-                        .setDisplayName("§7Einstellungen").build());
+                inventory.setItem(9, new ItemBuilder(Material.REDSTONE_COMPARATOR, 0)
+                        .setDisplayName(Messages.ItemNames.PLAYER_SETTINGS).build());
 
-                inventory.setItem(11, new ItemBuilder(Material.MAP, (short) 0)
-                        .setDisplayName("§7Pässe").build());
+                inventory.setItem(11, new ItemBuilder(Material.MAP, 0)
+                        .setDisplayName(Messages.ItemNames.TICKETS).build());
 
-                inventory.setItem(13, new ItemBuilder(Material.DIAMOND, (short) 0)
+                inventory.setItem(13, new ItemBuilder(Material.DIAMOND,0)
                         .setDisplayName("§7Force start").build());
 
-                inventory.setItem(15, new ItemBuilder(Material.IRON_BARDING, (short) 0)
+                inventory.setItem(15, new ItemBuilder(Material.IRON_FENCE, 0)
                         .setDisplayName("§7Traitorfalle").build());
 
-                inventory.setItem(17, new ItemBuilder(Material.BARRIER, (short) 0)
+                inventory.setItem(17, new ItemBuilder(Material.BARRIER, 0)
                         .setDisplayName("§cSchließen").build());
 
                 player.openInventory(inventory);
@@ -199,6 +201,69 @@ public class InventoryManager implements Manager {
 
         d = (d + 1) * 9;
         return (int) d;
+    }
+
+    public void openPlayerSettings(Player player) {
+
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+
+                Inventory inventory = Bukkit.createInventory(player, calcSize(),Messages.ItemNames.PLAYER_SETTINGS);
+
+                ItemStack filler = new ItemBuilder(Material.STAINED_GLASS_PANE, (short) 8).setDisplayName("§c").build();
+                for(int i = 0; i < inventory.getSize(); i++) {
+                    inventory.setItem(i, filler);
+                }
+
+                player.openInventory(inventory);
+
+            }
+        }.runTaskAsynchronously(TTT.getInstance());
+
+    }
+
+    public void openPlayerTickets(Player player) {
+
+        new BukkitRunnable() {
+            @Override
+            public void run() {
+
+                Inventory inventory = Bukkit.createInventory(player, 9,Messages.ItemNames.TICKETS);
+
+                if(!TTT.core.getPlayerManager().exists(player)) {
+                   return;
+                }
+
+                DBPlayer dbPlayer = (DBPlayer) TTT.core.getPlayerManager().get(player);
+                int traitorTickets = dbPlayer.getTPasses();
+                int detectiveTickets = dbPlayer.getDPasses();
+                int innnoTickets = dbPlayer.getIPasses();
+
+                ItemStack itemTraitor = new ItemBuilder(Material.WOOL, 14)
+                        .setDisplayName(Messages.ItemNames.TICKET_TRAITOR)
+                        .setLore("§7Übrig: §a" + traitorTickets)
+                        .build();
+
+                ItemStack itemDetective = new ItemBuilder(Material.WOOL, 11)
+                        .setDisplayName(Messages.ItemNames.TICKET_DETECTIVE)
+                        .setLore("§7Übrig: §a" + detectiveTickets)
+                        .build();
+
+                ItemStack itemInnocent = new ItemBuilder(Material.WOOL, 5)
+                        .setDisplayName(Messages.ItemNames.TICKET_INNOCENT)
+                        .setLore("§7Übrig: §a" + innnoTickets)
+                        .build();
+
+                inventory.setItem(1, itemTraitor);
+                inventory.setItem(4, itemDetective);
+                inventory.setItem(7, itemInnocent);
+
+                player.openInventory(inventory);
+
+            }
+        }.runTaskAsynchronously(TTT.getInstance());
+
     }
 
 }

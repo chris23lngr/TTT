@@ -9,6 +9,7 @@ import de.z1up.ttt.util.UserAPI;
 import de.z1up.ttt.util.o.DBPlayer;
 import de.z1up.ttt.util.o.Map;
 import de.z1up.ttt.util.o.Spawn;
+import de.z1up.ttt.util.o.TTTPlayer;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.entity.Player;
@@ -91,6 +92,10 @@ public class ListenerPlayerJoin implements Listener {
 
         context.setJoinMessage(Messages.PREFIX + "§a" + player.getName()
                 + " §7ist dem Spiel beigetreten§8!");
+
+        DBPlayer dbPlayer = (DBPlayer) TTT.core.getPlayerManager().get(player);
+        TTTPlayer tttPlayer = new TTTPlayer(dbPlayer, null, 0, true,0 );
+        TTT.core.getPlayerManager().registerPlayer(tttPlayer);
 
     }
 

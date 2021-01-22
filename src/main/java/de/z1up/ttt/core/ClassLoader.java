@@ -97,6 +97,8 @@ public class ClassLoader {
 
         new CommandSetHolo();
         new CommandSetStatsWand();
+
+        new CommandTicket();
     }
 
 }

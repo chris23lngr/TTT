@@ -99,7 +99,7 @@ public class ListenerGameEnd implements Listener {
                     tttPlayer.update();
                 }
 
-                player.sendMessage(Messages.PREFIX + "§8§m--------- §eRunden Stats §8§m---------");
+                player.sendMessage(Messages.PREFIX + "§8§m--------- §eRunden Stats§8§m---------");
                 player.sendMessage(Messages.PREFIX + "§7Kills: §c" + tttPlayer.getGameKills());
                 player.sendMessage(Messages.PREFIX + "§7Karma: §c" + tttPlayer.getGameKarma());
                 player.sendMessage(Messages.PREFIX + "§7Du hast " + (won ? "§aGewonnen§8!" : "§cVerloren§8!"));

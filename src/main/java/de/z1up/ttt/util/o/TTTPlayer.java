@@ -58,7 +58,7 @@ public class TTTPlayer extends DBPlayer {
     @Override
     public void addKarma(int karma) {
         super.addKarma(karma);
-        gameKarma = gameKarma + 1;
+        gameKarma = gameKarma + karma;
     }
 
     public int getGameKarma() {

@@ -31,17 +31,12 @@ public class ManagerTeam implements Manager {
         traitorCounter = 0;
         detectiveCounter = 0;
         innocentCounter = 0;
+        calcTeamSizes();
     }
 
     public void calcTeamSizes() {
 
-        int aliveSize = Bukkit.getOnlinePlayers().size();
-
-        int specs = TTT.core.getPlayerManager().getSpecs().size();
-
-        aliveSize = aliveSize - specs;
-
-        System.out.println("ALIVE" + aliveSize);
+        int aliveSize = Bukkit.getMaxPlayers();
 
         if(aliveSize <= 6) {
             detectivesNeeded = 1;
@@ -127,5 +122,28 @@ public class ManagerTeam implements Manager {
 
     public void removeTraitor() {
         this.traitorCounter = traitorCounter - 1;
+    }
+
+    public void addDetective() {
+        this.detectiveCounter = detectiveCounter + 1;
+    }
+
+    public void addInnocent() {
+        this.innocentCounter = innocentCounter + 1;
+    }
+    public void addTraitor() {
+        this.traitorCounter = traitorCounter + 1;
+    }
+
+    public int getDetectivesNeeded() {
+        return detectivesNeeded;
+    }
+
+    public int getInnocentsNeeded() {
+        return innocentsNeeded;
+    }
+
+    public int getTraitorsNeeded() {
+        return traitorsNeeded;
     }
 }

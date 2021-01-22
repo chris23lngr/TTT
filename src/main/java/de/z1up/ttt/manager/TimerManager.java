@@ -134,7 +134,7 @@ public class TimerManager implements Manager {
     }
 
     public void initRestartTimer() {
-        this.restartTimer = new TTTRunnable(10, false, GameManager.GameState.RESTART,
+        this.restartTimer = new TTTRunnable(30, false, GameManager.GameState.RESTART,
                 Messages.PREFIX + "§cDer Server wird in §4"
                         + (Integer.parseInt("2") == 1 ? "einer Sekunde" : "%time% Sekunden") + " §cgestoppt§8!");
     }

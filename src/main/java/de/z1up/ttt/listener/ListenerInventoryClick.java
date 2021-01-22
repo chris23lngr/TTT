@@ -5,6 +5,7 @@ import de.z1up.ttt.core.Core;
 import de.z1up.ttt.util.Messages;
 import de.z1up.ttt.util.o.Map;
 import org.bukkit.Bukkit;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
@@ -36,7 +37,28 @@ public class ListenerInventoryClick implements Listener {
         }
 
         if(TTT.core.getGameManager().inGame()) {
-            event.setCancelled(false);
+
+            if(!this.contextInvalid(event)) {
+
+                ItemStack itemStack = event.getCurrentItem();
+
+                if(itemStack.getType() == Material.LEATHER_CHESTPLATE) {
+                    event.setCancelled(true);
+                    return;
+                }
+
+                if(itemStack.getType() == Material.STICK) {
+                    event.setCancelled(true);
+                    return;
+                }
+
+                if(itemStack.getType() == Material.EMERALD) {
+                    event.setCancelled(true);
+                    return;
+                }
+
+            }
+
         }
 
         if (TTT.core.getPlayerManager().isSpec(whoClicked)) {
@@ -44,16 +66,31 @@ public class ListenerInventoryClick implements Listener {
         }
 
         if(this.contextInvalid(event)) {
-            System.out.println("CONTEXT INVALID");
+            return;
+        }
+
+        if(TTT.core.getGameManager().inLobby()) {
+            event.setCancelled(true);
+        }
+
+        if(event.getClickedInventory().getTitle().equals(Messages.ItemNames.NAVIGATOR)) {
+            this.onNavigatorClick(event);
             return;
         }
 
         if(event.getClickedInventory().getTitle().equals(Messages.ItemNames.MAP_VOTING)) {
             this.onMapClick(event);
+            return;
         }
 
-        if(event.getClickedInventory().getTitle().equals(Messages.ItemNames.NAVIGATOR)) {
-            this.onNavigatorClick(event);
+        if(event.getClickedInventory().getTitle().equals(Messages.ItemNames.SETTINGS)) {
+            this.onSettingsClick(event);
+            return;
+        }
+
+        if(event.getClickedInventory().getTitle().equals(Messages.ItemNames.TICKETS)) {
+            this.onTicketsClick(event);
+            return;
         }
 
     }
@@ -121,13 +158,10 @@ public class ListenerInventoryClick implements Listener {
 
     private void onNavigatorClick(final InventoryClickEvent context) {
 
-        System.out.println("CLICKED METHOD  " + "onNavigatorClick");
-
         ItemStack itemStack = context.getCurrentItem();
         String display = itemStack.getItemMeta().getDisplayName();
 
         String targetName = display.replaceAll("§e", "");
-        System.out.println("CLICKED PLAYER " + targetName);
 
         if(Bukkit.getPlayer(targetName) == null) {
             context.getWhoClicked().closeInventory();
@@ -138,6 +172,73 @@ public class ListenerInventoryClick implements Listener {
 
         context.getWhoClicked().teleport(target.getLocation());
         context.getWhoClicked().closeInventory();
+
+    }
+
+    private void onSettingsClick(final InventoryClickEvent context) {
+
+        ItemStack clicked = context.getCurrentItem();
+
+        if(clicked.getType() == Material.REDSTONE_COMPARATOR) {
+
+            context.getWhoClicked().closeInventory();
+
+
+        } else if(clicked.getType() == Material.DIAMOND) {
+
+            context.getWhoClicked().closeInventory();
+
+            if(context.getWhoClicked() instanceof Player) {
+                Player player = (Player) context.getWhoClicked();
+                player.chat("/forcestart");
+            }
+
+        } else if(clicked.getType() == Material.IRON_FENCE) {
+
+        } else if(clicked.getType() == Material.MAP) {
+
+            context.getWhoClicked().closeInventory();
+
+            if(context.getWhoClicked() instanceof Player) {
+
+                Player player = (Player) context.getWhoClicked();
+                player.closeInventory();
+                TTT.core.getInvManager().openPlayerTickets(player);
+            }
+
+        } else if(clicked.getType() == Material.BARRIER) {
+
+            context.getWhoClicked().closeInventory();
+
+        }
+
+    }
+
+    private void onTicketsClick(final InventoryClickEvent context) {
+
+        ItemStack clicked = context.getCurrentItem();
+        String attribute = "none";
+
+
+        if(clicked.getItemMeta().getDisplayName().equals(Messages.ItemNames.TICKET_TRAITOR)) {
+
+            attribute = "traitor";
+
+        } else if(clicked.getItemMeta().getDisplayName().equals(Messages.ItemNames.TICKET_INNOCENT)) {
+
+            attribute = "innocent";
+
+        }else if(clicked.getItemMeta().getDisplayName().equals(Messages.ItemNames.TICKET_DETECTIVE)) {
+
+            attribute = "detective";
+
+        }
+
+        if(context.getWhoClicked() instanceof Player) {
+
+            Player player = (Player) context.getWhoClicked();
+            player.chat("/ticket " + attribute);
+        }
 
     }
 
